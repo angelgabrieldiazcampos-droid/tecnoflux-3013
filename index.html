@@ -1,0 +1,2784 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORTAL DEL OPERARIO TECNOFLUX — Módulo 3013 (1.º CFGB Electricidad y Electrónica)</title>
+  <style>
+    :root {
+      --bg-slate: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #263449;
+      --bg-darker: #090e1a;
+      --border-subtle: rgba(148, 163, 184, 0.18);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-orange: #f97316;
+      --accent-blue: #38bdf8;
+      --accent-green: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-red: #ef4444;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      --shadow-card: 0 10px 25px -5px rgba(0, 0, 0, 0.45);
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-slate);
+      background-image:
+        linear-gradient(to right, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 28px 28px;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    button, input, select, textarea { font-family: inherit; }
+    button {
+      cursor: pointer;
+      border: none;
+      transition: transform 0.12s ease, background-color 0.2s ease, opacity 0.2s ease;
+    }
+    button:active { transform: scale(0.98); }
+
+    /* CABECERA Y NAVEGACIÓN */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .topbar-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0.7rem 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .brand { display: flex; align-items: center; gap: 0.75rem; }
+    .brand-logo {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-orange), #ea580c);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.35rem; font-weight: 900; color: #fff;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.45);
+    }
+    .brand-title {
+      font-size: 1rem; font-weight: 800;
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .badge-module {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .brand-sub { font-size: 0.74rem; color: var(--text-muted); }
+    .topbar-actions { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+
+    .btn-action {
+      padding: 0.55rem 0.9rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-teacher {
+      background: linear-gradient(135deg, var(--accent-orange), #d97706);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.35);
+    }
+
+    .nav-tabs-wrap {
+      background: var(--bg-darker);
+      border-top: 1px solid var(--border-subtle);
+    }
+    .nav-tabs {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0.5rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 0.4rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .tab-btn:hover { background: var(--bg-card-hover); color: var(--text-main); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+    }
+    @media (max-width: 960px) {
+      .nav-tabs { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* CONTENEDOR PRINCIPAL */
+    .main-container {
+      flex: 1;
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.25rem 1rem 3rem;
+    }
+    .tab-panel { display: none; animation: fadeIn 0.2s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-header {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-left: 5px solid var(--accent-orange);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.15rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+    }
+    .section-header h1 { font-size: 1.2rem; font-weight: 800; color: #fff; }
+    .section-header p { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      box-shadow: var(--shadow-card);
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.85rem; }
+
+    /* BANNER CARGOS ACTIVOS EN PESTAÑA PRINCIPAL */
+    .main-roles-strip {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1.15rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* MAPA DE 10 UTs */
+    .ut-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px, 1fr)); gap: 1rem; }
+    .ut-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.05rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.8rem;
+    }
+    .ut-card.unlocked {
+      border-color: rgba(16, 185, 129, 0.45);
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, var(--bg-card) 48%);
+    }
+    .ut-card.locked { opacity: 0.65; background: rgba(30, 41, 59, 0.55); }
+    .ut-top { display: flex; align-items: center; justify-content: space-between; }
+    .ut-code {
+      font-family: var(--font-mono); font-weight: 800; font-size: 0.78rem;
+      padding: 0.2rem 0.55rem; border-radius: 6px;
+      background: rgba(249, 115, 22, 0.18); color: var(--accent-orange);
+      border: 1px solid rgba(249, 115, 22, 0.4);
+    }
+    .ut-status { font-size: 0.7rem; font-weight: 700; padding: 0.18rem 0.55rem; border-radius: 999px; }
+    .ut-status.open { background: rgba(16, 185, 129, 0.2); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.4); }
+    .ut-status.closed { background: rgba(148, 163, 184, 0.15); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.3); }
+    .btn-launch-sim {
+      width: 100%; padding: 0.6rem; border-radius: var(--radius-sm);
+      font-size: 0.78rem; font-weight: 800; background: var(--accent-green); color: #052e16;
+    }
+    .btn-locked-sim {
+      width: 100%; padding: 0.6rem; border-radius: var(--radius-sm);
+      font-size: 0.75rem; font-weight: 700; background: rgba(15, 23, 42, 0.8);
+      color: var(--text-muted); border: 1px solid var(--border-subtle); cursor: not-allowed;
+    }
+
+    /* LOGIN PIN PRIVADO */
+    .pin-login-box {
+      max-width: 460px; margin: 1.5rem auto;
+      background: var(--bg-card);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem; text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .pin-input-row { display: flex; gap: 0.5rem; justify-content: center; margin: 1.2rem 0 0.6rem; }
+    .pin-field {
+      width: 170px; padding: 0.7rem 1rem;
+      font-family: var(--font-mono); font-size: 1.45rem; font-weight: 800;
+      letter-spacing: 0.35em; text-align: center;
+      border-radius: var(--radius-md); background: var(--bg-darker);
+      color: var(--accent-blue); border: 2px solid rgba(56, 189, 248, 0.45); outline: none;
+    }
+    .btn-pin-enter {
+      padding: 0.7rem 1.2rem; border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-blue), #0284c7);
+      color: #082f49; font-weight: 900; font-size: 0.88rem;
+    }
+
+    /* EXPEDIENTE OPERARIO */
+    .op-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 1rem; margin-bottom: 1.15rem;
+    }
+    .role-pill {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.3rem 0.7rem; border-radius: 999px; font-size: 0.76rem; font-weight: 800;
+    }
+    .role-blue   { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8; }
+    .role-green  { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+    .role-yellow { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b; }
+    .role-red    { background: rgba(239, 68, 68, 0.2);  color: #f87171; border: 1px solid #ef4444; }
+    .role-white, .role-none { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid #64748b; }
+
+    .ra-row { margin-bottom: 0.85rem; }
+    .ra-row-top { display: flex; justify-content: space-between; font-size: 0.78rem; margin-bottom: 0.25rem; }
+    .ra-bar-bg { height: 11px; background: var(--bg-darker); border-radius: 999px; overflow: hidden; border: 1px solid var(--border-subtle); }
+    .ra-bar-fill { height: 100%; border-radius: 999px; transition: width 0.4s ease; }
+
+    .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(125px, 1fr)); gap: 0.55rem; margin-top: 0.65rem; }
+    .badge-item { padding: 0.65rem 0.45rem; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-subtle); background: var(--bg-darker); }
+    .badge-item.earned { border-color: rgba(245, 158, 11, 0.6); background: linear-gradient(180deg, rgba(245, 158, 11, 0.14) 0%, var(--bg-darker) 100%); }
+    .badge-item.locked { opacity: 0.4; filter: grayscale(1); }
+
+    .btn-payslip {
+      width: 100%; padding: 0.85rem 1rem; border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-green), #059669);
+      color: #fff; font-size: 0.88rem; font-weight: 800; margin-top: 0.9rem;
+    }
+
+    /* TABLAS GENERALES */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .data-table th, .data-table td { padding: 0.6rem 0.65rem; border-bottom: 1px solid var(--border-subtle); text-align: left; }
+    .data-table th { background: var(--bg-darker); color: var(--text-muted); font-family: var(--font-mono); font-size: 0.71rem; text-transform: uppercase; }
+    .data-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+
+    /* SEMÁFORO PERMISOS / ABSENTISMO */
+    .traffic-light-box {
+      background: var(--bg-darker);
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem; text-align: center;
+    }
+    .traffic-light-box.state-green { border-color: var(--accent-green); }
+    .traffic-light-box.state-amber { border-color: var(--accent-amber); }
+    .traffic-light-box.state-red   { border-color: var(--accent-red); }
+    .timer-display { font-family: var(--font-mono); font-size: 2.8rem; font-weight: 900; margin: 0.4rem 0; }
+    .lights-row { display: flex; justify-content: center; gap: 0.75rem; margin: 0.5rem 0; }
+    .bulb { width: 22px; height: 22px; border-radius: 50%; background: #1e293b; border: 2px solid #334155; }
+    .bulb.on-green { background: var(--accent-green); box-shadow: 0 0 12px var(--accent-green); }
+    .bulb.on-amber { background: var(--accent-amber); box-shadow: 0 0 12px var(--accent-amber); }
+    .bulb.on-red   { background: var(--accent-red);   box-shadow: 0 0 12px var(--accent-red); }
+
+    /* MODALES Y TOAST */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(5px);
+      z-index: 100; display: none;
+      align-items: center; justify-content: center;
+      padding: 1rem; overflow-y: auto;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: var(--radius-lg);
+      max-width: 920px; width: 100%; max-height: 92vh;
+      overflow-y: auto; padding: 1.4rem; position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
+    }
+    .modal-close {
+      position: absolute; top: 0.9rem; right: 0.9rem;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg-darker); color: var(--text-muted); font-weight: 800;
+    }
+    .modal-close:hover { color: #fff; background: var(--accent-red); }
+
+    .toast {
+      position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 200;
+      background: #0f172a; border: 1px solid var(--accent-blue); color: #fff;
+      padding: 0.8rem 1.1rem; border-radius: var(--radius-md);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6); font-size: 0.8rem;
+      max-width: 380px; transform: translateY(140%); opacity: 0; transition: all 0.25s ease;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* IMPRESIÓN NÓMINA */
+    .payslip-paper { background: #fff; color: #0f172a; border-radius: 12px; padding: 1.4rem; border: 3px solid #0f172a; }
+    .payslip-table { width: 100%; border-collapse: collapse; margin: 0.9rem 0; font-size: 0.82rem; }
+    .payslip-table th, .payslip-table td { border: 1px solid #cbd5e1; padding: 0.5rem 0.65rem; text-align: left; }
+    .payslip-table th { background: #f1f5f9; font-weight: 800; }
+
+    @media print {
+      body * { visibility: hidden !important; }
+      #payslip-printable, #payslip-printable * { visibility: visible !important; }
+      #payslip-printable {
+        position: fixed !important; left: 0 !important; top: 0 !important;
+        width: 100% !important; border: 4px double #0f172a !important;
+        background: #fff !important; color: #0f172a !important;
+      }
+      .no-print { display: none !important; }
+    }
+  </style>
+  <!-- Leaflet CSS y JS para Mapa Interactivo de Sevilla -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <style>
+    /* ESTILOS MAPA INTERACTIVO DE SEVILLA Y CONSOLA NPC CLIENTES */
+    .seville-world-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 980px) {
+      .seville-world-layout { grid-template-columns: 1fr; }
+    }
+    #seville-map {
+      width: 100%;
+      height: 490px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: #0b1120;
+      z-index: 5;
+    }
+    .map-filter-strip {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      background: var(--bg-darker);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+    .npc-console-card {
+      background: linear-gradient(165deg, #1e293b 0%, #090e1a 100%);
+      border: 1px solid rgba(249, 115, 22, 0.45);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.85rem;
+      box-shadow: var(--shadow-card);
+    }
+    .npc-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .npc-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      background: rgba(249, 115, 22, 0.18);
+      border: 2px solid var(--accent-orange);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .npc-speech-bubble {
+      background: rgba(15, 23, 42, 0.9);
+      border-left: 4px solid var(--accent-blue);
+      border-radius: 10px;
+      padding: 0.9rem;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      color: #f1f5f9;
+      min-height: 128px;
+      border-top: 1px solid var(--border-subtle);
+      border-right: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .npc-dialog-btns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.45rem;
+    }
+    .npc-dialog-btn {
+      padding: 0.5rem 0.4rem;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      font-weight: 800;
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      text-align: center;
+    }
+    .npc-dialog-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    .leaflet-popup-content-wrapper {
+      background: #0f172a !important;
+      color: #f8fafc !important;
+      border: 1px solid #38bdf8;
+      border-radius: 10px !important;
+    }
+    .leaflet-popup-tip { background: #0f172a !important; }
+  </style>
+</head>
+<body>
+
+  <!-- CABECERA CORPORATIVA -->
+  <header class="topbar no-print">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">⚡</div>
+        <div>
+          <div class="brand-title">
+            <span>PORTAL DEL OPERARIO TECNOFLUX</span>
+            <span class="badge-module">MÓDULO 3013 · 1.º CFGB</span>
+          </div>
+          <div class="brand-sub">Instalaciones Eléctricas y Domóticas · Salesianos Santísima Trinidad</div>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <span id="data-source-pill" style="font-size:0.72rem; font-family:var(--font-mono); padding:0.3rem 0.6rem; border-radius:6px; background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.35);">
+          🟢 Base Sincronizada (21 Operarios · RGPD)
+        </span>
+        <button class="btn-action btn-teacher" onclick="openTeacherAccess()">
+          <span>⚙️</span>
+          <span>Modo Profesor</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-tabs-wrap">
+      <nav class="nav-tabs" aria-label="Navegación principal">
+        <button class="tab-btn active" id="tab-btn-1" onclick="switchTab(1)">🗺️ Mapa 10 Misiones (UTs)</button>
+        <button class="tab-btn" id="tab-btn-2" onclick="switchTab(2)">🔐 Expediente Operario (PIN)</button>
+        <button class="tab-btn" id="tab-btn-3" onclick="switchTab(3)">🏛️ Cargos Principales</button>
+        <button class="tab-btn" id="tab-btn-4" onclick="switchTab(4)">🗺️ Mapa Sevilla &amp; 27 Clientes</button>
+        <button class="tab-btn" id="tab-btn-5" onclick="switchTab(5)">📅 Calendario &amp; Cuenta Atrás Dual</button>
+        <button class="tab-btn" id="tab-btn-6" onclick="switchTab(6)">🚽 Permisos / Absentismo</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- ======================================================================
+         PESTAÑA 1: MAPA DE LAS 10 MISIONES + CARGOS PRINCIPALES EN PORTADA
+         ====================================================================== -->
+    <section id="panel-1" class="tab-panel active">
+      <div class="main-roles-strip">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.65rem;">
+          <div style="font-size:0.82rem; font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.04em;">
+            🛡️ Cuadro de Mando Activo en Taller · Titulares de Guardia (M - X - J)
+          </div>
+          <button onclick="switchTab(3)" style="padding:0.3rem 0.65rem; border-radius:6px; background:rgba(56,189,248,0.15); color:var(--accent-blue); border:1px solid rgba(56,189,248,0.35); font-size:0.72rem; font-weight:700;">
+            Ver Turnos, Radar e Instrucciones ➔
+          </button>
+        </div>
+        <div id="main-active-roles" class="grid-4"></div>
+      </div>
+
+      <div class="section-header">
+        <div>
+          <h1>🗺️ Edificio en Construcción: Las 10 Misiones del Módulo 3013</h1>
+          <p>Supera los exámenes de trazabilidad (70% peso) junto a las 27 prácticas de taller (30% peso) para sumar hasta 10.000 puntos.</p>
+        </div>
+        <div style="text-align:right; font-family:var(--font-mono); font-size:0.8rem;">
+          <div style="color:var(--accent-green); font-weight:800;" id="ut-unlocked-count">4 / 10 Misiones Abiertas</div>
+          <div style="color:var(--text-muted); font-size:0.72rem;">Desbloqueo progresivo</div>
+        </div>
+      </div>
+
+      <div class="ut-grid" id="ut-cards-container"></div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 2: EXPEDIENTE DEL OPERARIO (SIN ACCESOS DEMO)
+         ====================================================================== -->
+    <section id="panel-2" class="tab-panel">
+      <div id="pin-login-view" class="pin-login-box">
+        <div style="font-size:2.3rem;">🔐</div>
+        <h2 style="font-size:1.2rem; font-weight:800; margin-top:0.35rem;">Acceso Privado al Expediente de Operario</h2>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.35rem;">
+          Introduce tu <strong>PIN personal e intransferible de 4 dígitos</strong>. En cumplimiento de la normativa RGPD, no se exponen datos personales ni accesos directos públicos.
+        </p>
+
+        <div class="pin-input-row">
+          <input id="pin-input" type="password" inputmode="numeric" maxlength="4" placeholder="••••" class="pin-field"
+            onkeydown="if(event.key==='Enter') loginWithPin()" />
+          <button class="btn-pin-enter" onclick="loginWithPin()">ENTRAR ➔</button>
+        </div>
+        <div id="pin-error-msg" style="color:var(--accent-red); font-size:0.78rem; font-weight:700; min-height:1.1rem;"></div>
+      </div>
+
+      <!-- Vista privada tras meter el PIN -->
+      <div id="operator-dashboard-view" style="display:none;">
+        <div class="op-banner">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+              <span id="op-code-title" style="font-size:1.3rem; font-weight:900; color:#fff;"></span>
+              <span id="op-rank-badge" style="font-family:var(--font-mono); font-size:0.74rem; padding:0.22rem 0.6rem; border-radius:6px; font-weight:800;"></span>
+            </div>
+            <div style="margin-top:0.45rem; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <span id="op-role-pill" class="role-pill role-blue"></span>
+              <span id="op-shift-pill" style="font-size:0.76rem; color:var(--text-muted); font-family:var(--font-mono);"></span>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="text-align:right;">
+              <div style="font-size:0.7rem; color:var(--text-muted);">PONDERACIÓN GLOBAL (70% EX + 30% PR)</div>
+              <div id="op-global-score" style="font-family:var(--font-mono); font-size:1.6rem; font-weight:900; color:var(--accent-blue);"></div>
+            </div>
+            <button onclick="logoutOperator()" style="padding:0.55rem 0.85rem; border-radius:8px; background:var(--bg-darker); color:var(--text-muted); border:1px solid var(--border-subtle); font-size:0.78rem; font-weight:700;">
+              🔒 Cerrar Sesión
+            </button>
+          </div>
+        </div>
+
+        <!-- Medidor Visual 70% Exámenes (10 UTs) + 30% Prácticas (27 P) -->
+        <div class="card" style="margin-bottom:1rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.5rem;">
+            <h3 style="font-size:0.95rem; font-weight:800;">⚖️ Desglose Oficial de Criterios: 70% Exámenes (10 UTs) + 30% Prácticas (27 O.T.)</h3>
+            <span id="op-split-summary" style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-orange); font-weight:800;"></span>
+          </div>
+          <div style="height:18px; background:var(--bg-darker); border-radius:999px; overflow:hidden; display:flex; border:1px solid var(--border-subtle);">
+            <div id="bar-70-exams" style="height:100%; background:linear-gradient(90deg, #0284c7, #38bdf8); transition:width 0.4s;" title="70% Exámenes"></div>
+            <div id="bar-30-pracs" style="height:100%; background:linear-gradient(90deg, #059669, #10b981); transition:width 0.4s;" title="30% Prácticas"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.74rem; color:var(--text-muted); margin-top:0.4rem;">
+            <span id="label-70-exams">📘 70% Exámenes (Máx. 7.000 pts)</span>
+            <span id="label-30-pracs">🛠️ 30% 27 Prácticas Taller (Máx. 3.000 pts)</span>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:1rem;">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+              <h3 style="font-size:0.98rem; font-weight:800;">📊 Progreso RPG por Resultados de Aprendizaje (RA1–RA5)</h3>
+              <span id="op-total-xp" style="font-family:var(--font-mono); font-size:0.78rem; color:var(--accent-orange); font-weight:800;"></span>
+            </div>
+            <div id="op-ra-bars"></div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:1rem;">
+            <div class="card">
+              <h3 style="font-size:0.95rem; font-weight:800; margin-bottom:0.4rem;">🚽 Registro de Permisos / Absentismo de Aula</h3>
+              <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:0.5rem; text-align:center; margin-top:0.5rem;">
+                <div style="background:var(--bg-darker); padding:0.55rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-size:0.68rem; color:var(--text-muted);">Cupo Semanal</div>
+                  <div id="op-restroom-quota" style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem;"></div>
+                </div>
+                <div style="background:var(--bg-darker); padding:0.55rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-size:0.68rem; color:var(--text-muted);">Minutos Fuera</div>
+                  <div id="op-restroom-mins" style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem;"></div>
+                </div>
+                <div style="background:var(--bg-darker); padding:0.55rem; border-radius:8px; border:1px solid var(--border-subtle);">
+                  <div style="font-size:0.68rem; color:var(--text-muted);">Penalización</div>
+                  <div id="op-restroom-penalty" style="font-family:var(--font-mono); font-weight:800; font-size:0.95rem;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3 style="font-size:0.95rem; font-weight:800;">🏅 Vitrina de Licencias e Insignias</h3>
+              <div id="op-badges-grid" class="badges-grid"></div>
+              <button class="btn-payslip" onclick="openPayslipModal()">
+                📄 DESCARGAR / IMPRIMIR NÓMINA VIRTUAL DEL MES (PDF)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla de los 10 Exámenes (EX1_UT1 a EX10_UT10) -->
+        <div class="card" style="margin-bottom:1rem;">
+          <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.35rem;">📘 Calificaciones de los 10 Exámenes (`EX1_UT1` a `EX10_UT10` · 70% de los Criterios)</h3>
+          <p style="font-size:0.76rem; color:var(--text-muted); margin-bottom:0.75rem;">
+            Sincronizado con las columnas <code>EX1_UT1</code> a <code>EX10_UT10</code> de tu hoja de cálculo y matriz de Criterios de Evaluación (RD 127/2014).
+          </p>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Columna Sheet</th>
+                  <th>Título de la Unidad de Trabajo</th>
+                  <th>Criterios de Evaluación (CE Aplicados)</th>
+                  <th>Calificación</th>
+                  <th>Puntos Aportados (Máx 700/UT)</th>
+                </tr>
+              </thead>
+              <tbody id="op-exams-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Evolución de las 27 Prácticas de Taller (P1 a P27) -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+            <div>
+              <h3 style="font-size:1rem; font-weight:800;">🛠️ Evolución de las 27 Prácticas del Cuaderno de Taller (`P1` a `P27` · 30% de los Criterios)</h3>
+              <p id="op-pracs-summary" style="font-size:0.76rem; color:var(--text-muted);"></p>
+            </div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button class="btn-action" style="background:linear-gradient(135deg, #0284c7, #0369a1); color:#fff;" onclick="openPersonalizedSevilleMap()">🗺️ Ver Mis Misiones en Mapa de Sevilla</button>
+              <button class="btn-action" style="background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle);" onclick="filterOperatorPracs('all')">Todas (27)</button>
+              <button class="btn-action" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981;" onclick="filterOperatorPracs('done')">Superadas</button>
+              <button class="btn-action" style="background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid #f59e0b;" onclick="filterOperatorPracs('pending')">Pendientes</button>
+            </div>
+          </div>
+          <div id="op-pracs-grid" class="grid-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 3: CARGOS PRINCIPALES (ORDEN: 1º TABLA, 2º RADAR, 3º INSTRUCCIONES)
+         ====================================================================== -->
+    <section id="panel-3" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h1>🏛️ Cargos Principales y Escalafón de Mando TECNOFLUX</h1>
+          <p>1.º Tabla de Cargos y Turnos (M-X-J) · 2.º Radar de Ascenso del Operario · 3.º Instrucciones de cómo se consigue el cargo.</p>
+        </div>
+      </div>
+
+      <!-- 1.º PRIMERO: LA TABLA DE CARGOS PRINCIPALES -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem; margin-bottom:0.9rem;">
+          <div>
+            <span style="font-size:0.72rem; font-family:var(--font-mono); color:var(--accent-blue); font-weight:800;">1. CUADRANTE OFICIAL DE MANDOS</span>
+            <h2 style="font-size:1.1rem; font-weight:800; color:#fff;">Tabla de Cargos Principales y Turnos de Guardia (Martes · Miércoles · Jueves)</h2>
+          </div>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button id="cycle-btn-oct" onclick="setRolesCycle('octubre')" style="padding:0.45rem 0.8rem; border-radius:8px; font-size:0.75rem; font-weight:800; background:var(--bg-darker); color:var(--text-muted); border:1px solid var(--border-subtle);">
+              📜 Histórico Octubre
+            </button>
+            <button id="cycle-btn-nov" onclick="setRolesCycle('noviembre')" style="padding:0.45rem 0.8rem; border-radius:8px; font-size:0.75rem; font-weight:800; background:var(--accent-blue); color:#082f49;">
+              🟢 Actual Noviembre
+            </button>
+            <button id="cycle-btn-dic" onclick="setRolesCycle('diciembre')" style="padding:0.45rem 0.8rem; border-radius:8px; font-size:0.75rem; font-weight:800; background:var(--bg-darker); color:var(--text-muted); border:1px solid var(--border-subtle);">
+              🔮 Proyección Diciembre
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; background:var(--bg-darker); padding:0.65rem 0.9rem; border-radius:10px; border:1px solid var(--border-subtle); margin-bottom:0.85rem;">
+          <span style="font-size:0.78rem; color:var(--text-muted);">
+            🔄 <strong>Rotación Semanal de Turnos (M - X - J):</strong> Pulsa cada semana para ver quién ejerce como Titular cada día:
+          </span>
+          <div style="display:flex; gap:0.4rem;">
+            <button id="wk-btn-1" onclick="setRolesWeek(1)" style="padding:0.35rem 0.75rem; border-radius:6px; font-size:0.74rem; font-weight:800; background:var(--accent-orange); color:#fff;">Semana 1</button>
+            <button id="wk-btn-2" onclick="setRolesWeek(2)" style="padding:0.35rem 0.75rem; border-radius:6px; font-size:0.74rem; font-weight:800; background:var(--bg-card); color:var(--text-muted);">Semana 2</button>
+            <button id="wk-btn-3" onclick="setRolesWeek(3)" style="padding:0.35rem 0.75rem; border-radius:6px; font-size:0.74rem; font-weight:800; background:var(--bg-card); color:var(--text-muted);">Semana 3</button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Cargo / Departamento</th>
+                <th>MARTES (3h Taller)</th>
+                <th>MIÉRCOLES (3h Taller)</th>
+                <th>JUEVES (4h Cierre Obra)</th>
+                <th>Suplente de Retén &amp; Observaciones</th>
+              </tr>
+            </thead>
+            <tbody id="cargos-main-table-body"></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:0.8rem; padding:0.65rem 0.85rem; border-radius:8px; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); font-size:0.76rem; color:#fca5a5;">
+          ⚠️ <strong>Registro de Trazabilidad PRL:</strong> El puesto de Inspector PRL del tercer turno fue relevado del <strong>Operario #09</strong> al <strong>Operario #10</strong> por incumplimiento de EPIs (no usar guantes de protección).
+        </div>
+      </div>
+
+      <!-- 2.º DEBAJO: EL RADAR DEL OPERARIO -->
+      <div class="card" style="margin-bottom:1.25rem;">
+        <span style="font-size:0.72rem; font-family:var(--font-mono); color:var(--accent-green); font-weight:800;">2. RADAR DE OPOSICIÓN Y MÉRITO EN TIEMPO REAL</span>
+        <h2 style="font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:0.3rem;">📡 Radar del Operario: ¿Quiénes están más cerca de lograr el cargo y por qué?</h2>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:0.9rem;">
+          Calculado según las calificaciones sincronizadas de exámenes (`EX1_UT1`–`EX4_UT4`), prácticas (`P1`–`P8`), asignaturas transversales y sanciones de PRL/absentismo.
+        </p>
+
+        <div id="radar-candidates-grid" class="grid-2"></div>
+      </div>
+
+      <!-- 3.º ABAJO DEL TODO: LAS INSTRUCCIONES DE CÓMO SE CONSIGUE EL CARGO -->
+      <div class="card">
+        <span style="font-size:0.72rem; font-family:var(--font-mono); color:var(--accent-orange); font-weight:800;">3. REGLAMENTO OFICIAL DE ACCESO Y MANTENIMIENTO DE CARGOS</span>
+        <h2 style="font-size:1.1rem; font-weight:800; color:#fff; margin-bottom:0.35rem;">📜 Instrucciones: ¿Cómo se consigue, qué funciones tiene y cómo se pierde cada cargo?</h2>
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:1rem;">
+          Cada cargo se calcula con una fórmula transversal distinta por asignaturas para que todos los perfiles tengan oportunidades reales de ascenso.
+        </p>
+
+        <div class="grid-2" style="margin-bottom:1rem;">
+          <div style="background:var(--bg-darker); border-top:4px solid #38bdf8; border-radius:12px; padding:1rem; border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); border-left:1px solid var(--border-subtle);">
+            <strong style="color:#38bdf8; font-size:0.95rem;">🔵 1. SUPERVISOR DE OBRA (+200 Cr/mes)</strong>
+            <div style="margin-top:0.5rem; font-size:0.77rem; color:#e2e8f0;">
+              <strong>• Cómo se consigue:</strong> 40% Media Módulo 3015 (Equipos) + 40% Media Ámbito Científico-Aplicado + 20% Media Módulo 3013.
+            </div>
+            <div style="margin-top:0.4rem; font-size:0.75rem; color:var(--text-muted);">
+              <strong>• 3 Funciones Observables:</strong> 1) Auditar continuidad y aislamiento con polímetro antes de dar tensión. 2) Verificar nivelación de cajas y tubos. 3) Firmar el visto bueno en la O.T.<br>
+              <strong style="color:var(--accent-green);">• 2 Privilegios:</strong> 1 Comodín del Instructor gratuito por semana + Bonificación en CE (1.i, 2.j, 3.i, 4.i, 5.d).
+            </div>
+          </div>
+
+          <div style="background:var(--bg-darker); border-top:4px solid #10b981; border-radius:12px; padding:1rem; border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); border-left:1px solid var(--border-subtle);">
+            <strong style="color:#10b981; font-size:0.95rem;">🟢 2. JEFE DE HERRAMIENTAS (+200 Cr/mes)</strong>
+            <div style="margin-top:0.5rem; font-size:0.77rem; color:#e2e8f0;">
+              <strong>• Cómo se consigue:</strong> 50% Evolución práctica en Módulo 3013 + 50% Prácticas de montaje en Módulo 3015.
+            </div>
+            <div style="margin-top:0.4rem; font-size:0.75rem; color:var(--text-muted);">
+              <strong>• 3 Funciones Observables:</strong> 1) Control de préstamos de herramientas. 2) Inspección del aislamiento VDE 1000V. 3) Orden del carro al abrir y cerrar el taller.<br>
+              <strong style="color:var(--accent-green);">• 2 Privilegios:</strong> Uso VIP del destornillador eléctrico y pelacables automático + Bonificación en CE (1.h, 2.h, 4.g, 5.f).
+            </div>
+          </div>
+
+          <div style="background:var(--bg-darker); border-top:4px solid #f59e0b; border-radius:12px; padding:1rem; border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); border-left:1px solid var(--border-subtle);">
+            <strong style="color:#fbbf24; font-size:0.95rem;">🟡 3. JEFE DE MATERIALES (+200 Cr/mes)</strong>
+            <div style="margin-top:0.5rem; font-size:0.77rem; color:#e2e8f0;">
+              <strong>• Cómo se consigue:</strong> 50% Media Ámbito Comunicación e Inglés Técnico + 30% Cuaderno Ciencias Aplicadas + 20% Identificación de materiales (3013).
+            </div>
+            <div style="margin-top:0.4rem; font-size:0.75rem; color:var(--text-muted);">
+              <strong>• 3 Funciones Observables:</strong> 1) Cálculo exacto de tubos y cables sin mermas. 2) Validación de albaranes TPV. 3) Separación y reciclaje de recortes de cobre y PVC.<br>
+              <strong style="color:var(--accent-green);">• 2 Privilegios:</strong> 15% de descuento en compras de almacén para su cooperativa + Bonificación en CE (1.g, 2.a, 3.a, 4.a).
+            </div>
+          </div>
+
+          <div style="background:var(--bg-darker); border-top:4px solid #ef4444; border-radius:12px; padding:1rem; border-right:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); border-left:1px solid var(--border-subtle);">
+            <strong style="color:#f87171; font-size:0.95rem;">🔴 4. INSPECTOR DE PRL Y 5S (+200 Cr/mes)</strong>
+            <div style="margin-top:0.5rem; font-size:0.77rem; color:#e2e8f0;">
+              <strong>• Cómo se consigue:</strong> 60% Calificación Seguridad/PRL (3013) + 40% Constancia transversal (0 entregas en cero) + 0 sanciones de EPIs.
+            </div>
+            <div style="margin-top:0.4rem; font-size:0.75rem; color:var(--text-muted);">
+              <strong>• 3 Funciones Observables:</strong> 1) Verificar que toda la cuadrilla lleva gafas y guantes. 2) Colocar candado LOTO sin tensión. 3) Auditar el Check-List 5S de cierre.<br>
+              <strong style="color:var(--accent-green);">• 2 Privilegios:</strong> Escudo mensual que anula 1 penalización leve de su equipo + Bonificación en CE (1.j, 2.i, 3.h, 5.e, 5.g).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 4: MAPA INTERACTIVO DE SEVILLA, CLIENTES NPC Y LAS 27 PRÁCTICAS
+         ====================================================================== -->
+    <section id="panel-4" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h1>🗺️ Mapa Operativo de Sevilla: Clientes (NPCs) y las 27 Órdenes de Trabajo</h1>
+          <p>Pincha en los edificios de Sevilla para hablar con cada cliente, conocer su personalidad y ver tus misiones pendientes o superadas.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <select id="prac-ut-filter" onchange="renderPracticesCatalog(); updateSevilleMapMarkers();" style="padding:0.55rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-size:0.8rem;">
+            <option value="ALL">Todas las Unidades (27 O.T. en Sevilla)</option>
+            <option value="UT1-UT3">UT1–UT3 (Alargador e Inicio)</option>
+            <option value="UT2-UT5">UT2–UT5 (Serie y Paralelo)</option>
+            <option value="UT4-UT5">UT4–UT5 (Canalizaciones y Alumbrado)</option>
+            <option value="UT5">UT5 (Conductores, Mixtos y Timbres)</option>
+            <option value="UT6">UT6 (Tomas Schuko y Cuadros)</option>
+            <option value="UT8">UT8 (Conmutadas, Fluorescencia y LED)</option>
+            <option value="UT9">UT9–UT10 (Telerruptor, Minutero, Dimmer y Sensores)</option>
+          </select>
+          <input type="text" id="prac-search" placeholder="🔍 Buscar barrio, cliente o práctica..." oninput="renderPracticesCatalog(); updateSevilleMapMarkers();"
+            style="padding:0.55rem 0.85rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid rgba(56,189,248,0.4); font-size:0.8rem; min-width:210px;" />
+        </div>
+      </div>
+
+      <!-- MUNDO INTERACTIVO: MAPA DE SEVILLA (IZQUIERDA) + CONSOLA DE DIÁLOGO NPC (DERECHA) -->
+      <div class="seville-world-layout">
+        <div class="card" style="padding:0.9rem;">
+          <div class="map-filter-strip">
+            <div id="map-operator-status" style="font-size:0.76rem; font-weight:800; color:var(--accent-blue);">
+              🌐 Vista General de Sevilla (Inicia sesión con tu PIN para ver tus misiones pendientes)
+            </div>
+            <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+              <button id="map-flt-all" onclick="setMapStatusFilter('all')" style="padding:0.3rem 0.6rem; border-radius:6px; font-size:0.72rem; font-weight:800; background:var(--accent-blue); color:#082f49;">📍 Todas (27)</button>
+              <button id="map-flt-pending" onclick="setMapStatusFilter('pending')" style="padding:0.3rem 0.6rem; border-radius:6px; font-size:0.72rem; font-weight:800; background:var(--bg-card); color:#fbbf24; border:1px solid #f59e0b;">⏳ Pendientes</button>
+              <button id="map-flt-done" onclick="setMapStatusFilter('done')" style="padding:0.3rem 0.6rem; border-radius:6px; font-size:0.72rem; font-weight:800; background:var(--bg-card); color:#10b981; border:1px solid #10b981;">✅ Superadas</button>
+            </div>
+          </div>
+          <div id="seville-map"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-top:0.55rem; font-size:0.72rem; color:var(--text-muted);">
+            <span>🟢 <strong>Pin Verde:</strong> O.T. Superada por el operario · 🟠 <strong>Pin Naranja:</strong> Misión Pendiente en Sevilla</span>
+            <button onclick="resetSevilleMapView()" style="padding:0.25rem 0.6rem; border-radius:6px; background:var(--bg-darker); color:var(--accent-blue); border:1px solid var(--border-subtle); font-size:0.7rem; font-weight:700;">🎯 Centrar Mapa Sevilla</button>
+          </div>
+        </div>
+
+        <!-- CONSOLA DE DIÁLOGO CON EL CLIENTE (NPC) -->
+        <div class="npc-console-card" id="npc-console-box">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.45rem;">
+              <span id="npc-ot-badge" style="font-family:var(--font-mono); font-size:0.74rem; font-weight:900; padding:0.2rem 0.55rem; border-radius:6px; background:rgba(249,115,22,0.2); color:var(--accent-orange);">O.T. P1 · UT1-UT3</span>
+              <span id="npc-op-status-badge" style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; padding:0.2rem 0.55rem; border-radius:999px; background:rgba(148,163,184,0.15); color:var(--text-muted);">Selecciona Pin</span>
+            </div>
+
+            <div class="npc-header">
+              <div class="npc-avatar" id="npc-avatar-icon">👨‍🔧</div>
+              <div>
+                <div id="npc-name-title" style="font-size:1.05rem; font-weight:900; color:#fff;">Manolo "El Chispas"</div>
+                <div id="npc-role-hood" style="font-size:0.76rem; color:var(--accent-blue); font-weight:700;">📍 Salesianos Trinidad (C/ María Auxiliadora)</div>
+                <div id="npc-personality-tag" style="display:inline-block; margin-top:0.25rem; font-size:0.69rem; padding:0.12rem 0.45rem; border-radius:4px; background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid rgba(245,158,11,0.35);">
+                  😤 Rasgo: Veterano implacable del REBT
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:0.75rem;">
+              <div style="font-size:0.7rem; font-family:var(--font-mono); color:var(--text-muted); margin-bottom:0.35rem;">PREGUNTA AL CLIENTE (INTERACCIÓN NPC):</div>
+              <div class="npc-dialog-btns">
+                <button class="npc-dialog-btn active" id="npc-btn-brief" onclick="switchNPCDialogMode('brief')">💬 1. ¿Qué necesita?</button>
+                <button class="npc-dialog-btn" id="npc-btn-trap" onclick="switchNPCDialogMode('trap')">⚠️ 2. Trampa CSI</button>
+                <button class="npc-dialog-btn" id="npc-btn-spec" onclick="switchNPCDialogMode('spec')">📐 3. Criterios y Red</button>
+              </div>
+            </div>
+
+            <div class="npc-speech-bubble" id="npc-speech-text" style="margin-top:0.65rem;">
+              Haz clic en cualquiera de los 27 edificios del mapa de Sevilla para hablar con el cliente y recibir las instrucciones de la Orden de Trabajo.
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--border-subtle); padding-top:0.75rem; display:flex; flex-direction:column; gap:0.5rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.76rem;">
+              <span style="color:var(--text-muted);">Recompensa Base O.T.: <strong id="npc-reward-cr" style="color:var(--accent-green); font-family:var(--font-mono);">+150 Cr</strong></span>
+              <span style="color:var(--text-muted);">Riesgo Queja Cliente: <strong id="npc-penalty-cr" style="color:var(--accent-red); font-family:var(--font-mono);">-50 Cr</strong></span>
+            </div>
+            <div id="npc-video-action-wrap"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="practices-catalog-grid" class="grid-3"></div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 5: CALENDARIO DE CURSO Y CUENTA ATRÁS A EMPRESA (DUAL)
+         ====================================================================== -->
+    <section id="panel-5" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h1>📅 Calendario Oficial de Curso 2026/27 &amp; Cuenta Atrás a Empresa (Fase Dual)</h1>
+          <p>Seguimiento de días lectivos, sesiones reales de taller (Martes, Miércoles y Jueves) y fechas de los 10 exámenes.</p>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:1.15rem;">
+        <div class="card" style="border-top:4px solid var(--accent-orange);">
+          <div style="font-size:0.74rem; color:var(--text-muted); font-family:var(--font-mono);">CUENTA ATRÁS INCORPORACIÓN A EMPRESA</div>
+          <div id="dual-days-left" style="font-size:2.1rem; font-weight:900; color:var(--accent-orange); margin:0.3rem 0;">— días naturales</div>
+          <div id="dual-sessions-left" style="font-size:0.8rem; color:#e2e8f0; font-weight:700;">— sesiones de taller (M-X-J) restantes</div>
+          <p style="font-size:0.74rem; color:var(--text-muted); margin-top:0.35rem;">Fecha prevista salida a Fase Dual: <strong>03 / 05 / 2027</strong>.</p>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--accent-blue);">
+          <div style="font-size:0.74rem; color:var(--text-muted); font-family:var(--font-mono);">PROGRESO DEL CURSO 2026/27</div>
+          <div id="course-progress-pct" style="font-size:2.1rem; font-weight:900; color:var(--accent-blue); margin:0.3rem 0;">— % completado</div>
+          <div class="ra-bar-bg" style="height:12px; margin:0.4rem 0;">
+            <div id="course-progress-bar" class="ra-bar-fill" style="width:30%; background:var(--accent-blue);"></div>
+          </div>
+          <p style="font-size:0.74rem; color:var(--text-muted);">1.ª Evaluación: Sep–Dic · 2.ª Evaluación: Ene–Abr · Fase Empresa: Mayo–Junio.</p>
+        </div>
+
+        <div class="card" style="border-top:4px solid var(--accent-green);">
+          <div style="font-size:0.74rem; color:var(--text-muted); font-family:var(--font-mono);">PRÓXIMO HITO DE EVALUACIÓN</div>
+          <div id="next-exam-banner" style="font-size:1.15rem; font-weight:900; color:var(--accent-green); margin:0.35rem 0;"></div>
+          <p style="font-size:0.75rem; color:var(--text-muted);">Prepara tus esquemas multifilares y repasa los simuladores de la unidad activa.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
+          <h3 style="font-size:1rem; font-weight:800;">🗓️ Cronograma de los 10 Exámenes Oficiales (`EX1_UT1` a `EX10_UT10` · 70% de los Criterios)</h3>
+          <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">Fechas gestionadas por Dirección de Obra</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Columna Sheet</th>
+                <th>Unidad de Trabajo</th>
+                <th>Evaluación</th>
+                <th>Fecha Examen</th>
+                <th>Criterios Evaluados (RD 127/2014)</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="calendar-exams-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 6: PERMISOS / ABSENTISMO (CON SÍMBOLO DE LAVABO) & BUZÓN RRHH
+         ====================================================================== -->
+    <section id="panel-6" class="tab-panel">
+      <div class="section-header">
+        <div>
+          <h1>🚽 Control de Permisos / Absentismo de Aula &amp; Buzón Ético RRHH</h1>
+          <p>Registro cronometrado de salidas al lavabo conectado con la pestaña <code>PERMISOS_AULA</code> de tu Google Sheet.</p>
+        </div>
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+          <button class="btn-action" style="background:rgba(56,189,248,0.15); color:var(--accent-blue); border:1px solid rgba(56,189,248,0.4);" onclick="exportCustomsCSV()">
+            📥 Descargar CSV de Permisos
+          </button>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:1.25rem;">
+        <div class="card">
+          <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.7rem;">🚽 Terminal de Salida al Lavabo / Regreso al Puesto</h3>
+          <div style="display:flex; gap:0.5rem; margin-bottom:0.8rem;">
+            <select id="customs-op-select" style="flex:1; padding:0.65rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-weight:700;"></select>
+          </div>
+
+          <div id="traffic-box" class="traffic-light-box state-green">
+            <div id="customs-active-label" style="font-size:0.74rem; font-family:var(--font-mono); color:var(--text-muted);">
+              PUESTO EN ESPERA · NINGÚN OPERARIO FUERA DEL TALLER
+            </div>
+            <div class="lights-row">
+              <div id="bulb-green" class="bulb on-green"></div>
+              <div id="bulb-amber" class="bulb"></div>
+              <div id="bulb-red" class="bulb"></div>
+            </div>
+            <div id="customs-timer" class="timer-display" style="color:var(--accent-green);">00:00</div>
+            <div id="customs-status-text" style="font-size:0.8rem; font-weight:700; color:var(--accent-green);">
+              🟢 Cortesía: 0:00 a 3:59 min (Máx. 2 salidas/semana)
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.65rem; margin-top:0.8rem;">
+            <button id="btn-start-exit" onclick="startRestroomExit()" style="padding:0.8rem; border-radius:10px; background:var(--accent-orange); color:#fff; font-weight:800; font-size:0.84rem;">
+              🚽 Registrar Salida
+            </button>
+            <button id="btn-end-exit" onclick="endRestroomExit()" disabled style="padding:0.8rem; border-radius:10px; background:var(--accent-green); color:#052e16; font-weight:800; font-size:0.84rem; opacity:0.5;">
+              ✅ Registrar Regreso
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+            <h3 style="font-size:1rem; font-weight:800;">📋 Historial Guardado (`PERMISOS_AULA`)</h3>
+            <span id="customs-log-count" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-blue);"></span>
+          </div>
+          <div style="max-height:320px; overflow-y:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Fecha/Hora</th>
+                  <th>Operario</th>
+                  <th>Duración</th>
+                  <th>Estado</th>
+                  <th>Nómina</th>
+                </tr>
+              </thead>
+              <tbody id="customs-log-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size:1rem; font-weight:800; margin-bottom:0.3rem;">📮 Buzón Ético RRHH, Mediación y Tutoría</h3>
+        <form onsubmit="submitHRForm(event)" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; margin-top:0.6rem;">
+          <input id="hr-op-code" type="text" placeholder="Código Operario (Opcional / Anónimo)" style="padding:0.6rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle);" />
+          <select id="hr-category" style="padding:0.6rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle);">
+            <option value="Convivencia / Tutor">🔴 Alerta personal o convivencia (Solo Tutor)</option>
+            <option value="Mediación Equipo">🟡 Desajuste de tareas en Cooperativa</option>
+            <option value="Revisión Cargo/Nómina">🔵 Consulta de Cargo, Turno o Nómina</option>
+            <option value="Mejora Taller">🟢 Sugerencia de mejora para el taller</option>
+          </select>
+          <textarea id="hr-message" rows="2" required placeholder="Describe la situación y tu propuesta de solución..." style="grid-column:1/-1; padding:0.6rem; border-radius:8px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle);"></textarea>
+          <div style="grid-column:1/-1; text-align:right;">
+            <button type="submit" style="padding:0.65rem 1.25rem; border-radius:8px; background:var(--accent-blue); color:#082f49; font-weight:800; font-size:0.82rem;">
+              📨 Enviar Parte Confidencial
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       MODAL 1: ACCESO Y CUADRO DE MANDO SIMPLIFICADO DEL PROFESOR
+       ======================================================================== -->
+  <div id="modal-teacher" class="modal-backdrop no-print">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('modal-teacher')">✕</button>
+
+      <!-- Vista 1: Solicitud de clave docente -->
+      <div id="teacher-auth-view" style="text-align:center; padding:1.5rem 0.5rem;">
+        <div style="font-size:2.4rem;">🛡️</div>
+        <h2 style="font-size:1.2rem; font-weight:800; margin-top:0.4rem;">Autenticación de Dirección de Obra</h2>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.25rem;">Introduce la credencial privada de docente para desbloquear el cuadro de mando.</p>
+        <div style="display:flex; justify-content:center; gap:0.5rem; margin-top:1rem;">
+          <input id="teacher-pass-input" type="password" placeholder="••••••••"
+            style="padding:0.65rem 1rem; border-radius:8px; background:var(--bg-darker); color:var(--accent-orange); border:1px solid var(--border-subtle); font-family:var(--font-mono); font-size:1.1rem; text-align:center; width:190px;"
+            onkeydown="if(event.key==='Enter') verifyTeacherPass()" />
+          <button onclick="verifyTeacherPass()" style="padding:0.65rem 1.15rem; border-radius:8px; background:var(--accent-orange); color:#fff; font-weight:800;">Desbloquear</button>
+        </div>
+        <div id="teacher-auth-err" style="color:var(--accent-red); font-size:0.76rem; font-weight:700; margin-top:0.5rem; min-height:1rem;"></div>
+      </div>
+
+      <!-- Vista 2: Panel Simplificado del Profesor -->
+      <div id="teacher-panel-view" style="display:none;">
+        <h2 style="font-size:1.15rem; font-weight:800; color:var(--accent-orange); margin-bottom:0.85rem;">⚙️ Cuadro de Mando Simplificado del Profesor</h2>
+
+        <!-- BLOQUE 1: SINCRONIZACIÓN DIRECTA POR SEPARADO (PRÁCTICAS vs EXÁMENES vs TODO) -->
+        <div style="background:var(--bg-darker); border:2px solid rgba(16,185,129,0.45); border-radius:12px; padding:1rem; margin-bottom:1rem;">
+          <h3 style="font-size:0.92rem; font-weight:800; color:var(--accent-green); margin-bottom:0.35rem;">
+            1. Centro de Sincronización con tu Google Sheet (Prácticas `P1`–`P27` y Exámenes `EX1_UT1`–`EX10_UT10`)
+          </h3>
+          <p style="font-size:0.74rem; color:var(--text-muted); margin-bottom:0.7rem;">
+            Pega tu URL de Webhook (`/exec` de Apps Script) para leer todas las pestañas de tu Google Sheet sin desvíos de columnas, o usa los botones separados para sincronizar Prácticas (`PORTAL_PUBLICO`) y Exámenes (`EXAMENES_10UT` / `Examenes subir`).
+          </p>
+
+          <!-- Fila Webhook Maestro -->
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.7rem;">
+            <input id="webhook-url-input" type="url" placeholder="URL Webhook Google Apps Script (https://script.google.com/macros/s/.../exec)"
+              style="flex:1; min-width:240px; padding:0.55rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.76rem;" />
+            <button onclick="saveWebhookConfig()" style="padding:0.55rem 0.9rem; border-radius:6px; background:var(--accent-orange); color:#fff; font-weight:800; font-size:0.75rem;">
+              💾 Guardar URL Webhook
+            </button>
+            <button onclick="syncAllFromWebhook()" style="padding:0.55rem 1rem; border-radius:6px; background:var(--accent-green); color:#052e16; font-weight:900; font-size:0.76rem;">
+              ⚡ Sincronizar TODO (Prácticas + Exámenes + Vídeos)
+            </button>
+          </div>
+
+          <!-- Dos tarjetas separadas: Sincronizar Prácticas vs Sincronizar Exámenes -->
+          <div class="grid-2" style="margin-bottom:0.65rem;">
+            <!-- Lado A: Sincronizar Prácticas (PORTAL_PUBLICO) -->
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:8px; border:1px solid var(--border-subtle);">
+              <strong style="font-size:0.8rem; color:var(--accent-blue);">🛠️ A) Sincronizar las 27 Prácticas (`PORTAL_PUBLICO`)</strong>
+              <p style="font-size:0.7rem; color:var(--text-muted); margin:0.25rem 0 0.5rem;">Lee `PIN`, `Codigo_Op`, `Cargo`, `RA1..RA5` y columnas `P1` a `P27`.</p>
+              <input id="csv-url-input" type="url" placeholder="URL CSV publicada de PORTAL_PUBLICO..."
+                style="width:100%; padding:0.45rem; border-radius:6px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-size:0.72rem; margin-bottom:0.45rem;" />
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button onclick="syncPracticesNow()" style="flex:1; padding:0.5rem; border-radius:6px; background:var(--accent-blue); color:#082f49; font-weight:800; font-size:0.74rem;">
+                  🔄 Sincronizar Prácticas Ahora
+                </button>
+                <button onclick="downloadPortalPublicoTemplate()" style="padding:0.5rem 0.65rem; border-radius:6px; background:var(--bg-darker); color:var(--text-main); border:1px solid var(--border-subtle); font-size:0.72rem;">
+                  📥 Plantilla P1-P27
+                </button>
+              </div>
+            </div>
+
+            <!-- Lado B: Sincronizar Exámenes (EXAMENES_10UT o Examenes subir) -->
+            <div style="background:var(--bg-card); padding:0.75rem; border-radius:8px; border:1px solid var(--border-subtle);">
+              <strong style="font-size:0.8rem; color:var(--accent-green);">📘 B) Sincronizar los 10 Exámenes (`EX1_UT1`–`EX10_UT10`)</strong>
+              <div style="display:flex; gap:0.4rem; align-items:center; margin:0.3rem 0;">
+                <label style="font-size:0.7rem; color:var(--text-muted);">Pestaña origen:</label>
+                <select id="exam-sheet-tab-select" style="flex:1; padding:0.35rem; border-radius:6px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-size:0.72rem;">
+                  <option value="Examenes subir">Pestaña "Examenes subir" (13 cols: PIN, Codigo_Op, Coop, EX1..EX10)</option>
+                  <option value="EXAMENES_10UT">Pestaña "EXAMENES_10UT" (11 cols: Codigo_Op, EX1..EX10)</option>
+                </select>
+              </div>
+              <input id="exams-csv-url-input" type="url" placeholder="Opcional: URL CSV publicada de la pestaña de exámenes..."
+                style="width:100%; padding:0.45rem; border-radius:6px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-size:0.72rem; margin-bottom:0.45rem;" />
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button onclick="syncExamsNow()" style="flex:1; padding:0.5rem; border-radius:6px; background:var(--accent-green); color:#052e16; font-weight:800; font-size:0.74rem;">
+                  🔄 Sincronizar Exámenes Ahora
+                </button>
+                <button onclick="downloadExamsCSVTemplate()" style="padding:0.5rem 0.65rem; border-radius:6px; background:var(--bg-darker); color:var(--text-main); border:1px solid var(--border-subtle); font-size:0.72rem;">
+                  📥 Plantilla EX1-EX10
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="sync-diagnostic-log" style="font-family:var(--font-mono); font-size:0.72rem; color:#fde047; background:#050811; padding:0.55rem 0.75rem; border-radius:6px; border:1px solid var(--border-subtle);">
+            Estado: Datos iniciales de tus 21 operarios (`PORTAL_PUBLICO` + `Examenes subir` + `CATALOGO_PRACTICAS`) activos.
+          </div>
+        </div>
+
+        <!-- BLOQUE 2: TABLA DE MANDO SIMPLIFICADA PARA LOS 4 CARGOS ESPECIALES -->
+        <div style="background:var(--bg-darker); border:1px solid var(--border-subtle); border-radius:12px; padding:1rem; margin-bottom:1rem;">
+          <h3 style="font-size:0.9rem; font-weight:800; color:var(--accent-blue); margin-bottom:0.45rem;">
+            2. Tabla de Mando Simplificada: Selección de los 4 Cargos Principales
+          </h3>
+          <div style="overflow-x:auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Departamento / Cargo</th>
+                  <th>Titular MARTES</th>
+                  <th>Titular MIÉRCOLES</th>
+                  <th>Titular JUEVES</th>
+                </tr>
+              </thead>
+              <tbody id="teacher-roles-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- BLOQUE 3: SUBIR / EDITAR UNA NOTA RÁPIDA DESDE EL PORTAL AL GOOGLE SHEET -->
+        <div style="background:var(--bg-darker); border:1px solid var(--border-subtle); border-radius:12px; padding:1rem; margin-bottom:1rem;">
+          <h3 style="font-size:0.9rem; font-weight:800; color:#fbbf24; margin-bottom:0.45rem;">
+            3. Subir / Modificar Calificación Individual (Examen o Práctica)
+          </h3>
+          <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+            <select id="teacher-grade-op" style="padding:0.5rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.76rem;"></select>
+            <select id="teacher-grade-type" onchange="populateGradeItemSelect()" style="padding:0.5rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.76rem;">
+              <option value="EXAM">📘 Examen (EX1_UT1 a EX10_UT10)</option>
+              <option value="PRAC">🛠️ Práctica (P1 a P27)</option>
+            </select>
+            <select id="teacher-grade-item" style="padding:0.5rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.76rem;"></select>
+            <input id="teacher-grade-val" type="number" step="0.05" min="0" max="10" placeholder="Nota (0-10)"
+              style="width:105px; padding:0.5rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.76rem;" />
+            <button onclick="saveQuickGrade()" style="padding:0.5rem 0.95rem; border-radius:6px; background:var(--accent-green); color:#052e16; font-weight:800; font-size:0.76rem;">
+              💾 Guardar y Subir al Google Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- BLOQUE 4: ABRIR / CERRAR LAS 10 UNIDADES -->
+        <div style="background:var(--bg-darker); border:1px solid var(--border-subtle); border-radius:12px; padding:1rem;">
+          <h3 style="font-size:0.9rem; font-weight:800; color:var(--text-main); margin-bottom:0.5rem;">4. Abrir / Cerrar Unidades de Trabajo y Fechas de Examen</h3>
+          <div id="teacher-ut-list" style="display:flex; flex-direction:column; gap:0.45rem; max-height:190px; overflow-y:auto;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: NÓMINA VIRTUAL IMPRIMIBLE -->
+  <div id="modal-payslip" class="modal-backdrop">
+    <div class="modal-box" style="max-width:740px;">
+      <button class="modal-close no-print" onclick="closeModal('modal-payslip')">✕</button>
+      <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.9rem; padding-right:2rem;">
+        <span style="font-size:0.85rem; font-weight:800; color:var(--accent-green);">📄 Recibo Oficial de Nómina Virtual</span>
+        <button onclick="window.print()" style="padding:0.55rem 1rem; border-radius:8px; background:var(--accent-green); color:#052e16; font-weight:900; font-size:0.8rem;">
+          🖨️ Imprimir / Guardar PDF
+        </button>
+      </div>
+
+      <div id="payslip-printable" class="payslip-paper">
+        <div style="display:flex; justify-content:space-between; border-bottom:2px solid #0f172a; padding-bottom:0.7rem;">
+          <div>
+            <div style="font-size:1.2rem; font-weight:900;">TECNOFLUX INSTALACIONES S.L.</div>
+            <div style="font-size:0.74rem; color:#475569;">Módulo 3013 · Instalaciones Eléctricas y Domóticas (1.º CFGB)</div>
+            <div style="font-size:0.72rem; color:#64748b;">Salesianos Santísima Trinidad · Sevilla</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-weight:800; font-size:0.85rem; background:#f1f5f9; padding:0.2rem 0.55rem; border:1px solid #94a3b8;">NÓMINA VIRTUAL MENSUAL</div>
+            <div id="pay-period" style="font-size:0.72rem; margin-top:0.25rem; font-family:monospace;"></div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-top:0.75rem; font-size:0.78rem; background:#f8fafc; padding:0.65rem; border:1px solid #cbd5e1;">
+          <div><strong>Operario (RGPD):</strong> <span id="pay-op-code"></span></div>
+          <div><strong>Cooperativa:</strong> <span id="pay-coop"></span></div>
+          <div><strong>Rango Profesional:</strong> <span id="pay-rank"></span></div>
+          <div><strong>Cargo Rotativo:</strong> <span id="pay-role"></span></div>
+        </div>
+
+        <table class="payslip-table">
+          <thead>
+            <tr>
+              <th>Concepto Retributivo / Evaluación Continua</th>
+              <th style="text-align:right;">Devengos (+)</th>
+              <th style="text-align:right;">Deducciones (-)</th>
+            </tr>
+          </thead>
+          <tbody id="pay-lines-tbody"></tbody>
+          <tfoot>
+            <tr style="background:#f1f5f9; font-weight:900; font-size:0.92rem;">
+              <td colspan="2">LÍQUIDO VIRTUAL TOTAL A PERCIBIR (CRÉDITOS TECNOFLUX)</td>
+              <td id="pay-net-total" style="text-align:right; color:#047857;"></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.85rem; padding-top:0.65rem; border-top:1px dashed #94a3b8; font-size:0.75rem;">
+          <div>
+            <strong>Dictamen Incorporación a Empresa (Fase Dual):</strong><br>
+            <span id="pay-dual-stamp" style="display:inline-block; margin-top:0.25rem; padding:0.2rem 0.55rem; font-weight:900; border:2px solid #059669; border-radius:6px;"></span>
+          </div>
+          <div style="text-align:right; color:#475569;">
+            <div>Sello Dirección de Obra</div>
+            <div style="font-weight:800; color:#0f172a; margin-top:0.4rem;">Dpto. Electricidad · DOMO 3013</div>
+          </div>
+        </div>
+        <div style="margin-top:0.65rem; padding-top:0.45rem; border-top:1px solid #cbd5e1; font-size:0.68rem; color:#64748b; text-align:center;">
+          * Aviso Legal Educativo: Los importes reflejados en este recibo están expresados exclusivamente en <strong>Cr (Créditos Virtuales Tecnoflux)</strong> como gamificación pedagógica del módulo 3013, sin valor monetario real ni derecho de cobro económico.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast no-print"></div>
+
+  <!-- ========================================================================
+       LÓGICA JAVASCRIPT COMPLETA Y CORREGIDA
+       ======================================================================== -->
+  <script>
+    // -------------------------------------------------------------------------
+    // 1. MATRIZ DE LAS 10 UNIDADES (NOMBRES EXACTOS DE COLUMNA: EX1_UT1 .. EX10_UT10)
+    // -------------------------------------------------------------------------
+    const defaultUnitsData = [
+      { ut: 'UT1',  col: 'EX1_UT1',  title: 'Herramientas y Equipación', simName: 'Simulador Escape Room LOTO & EPIs', ra: 'RA1 / RA2', evalTerm: '1.ª Eval', examDate: '2026-10-22', ce: '1a, 1g, 1h, 1i, 2b, 2c', unlocked: true, simUrl: 'ut1.html', summary: 'Identificación de herramientas VDE 1000V, fijaciones y equipamiento de taller.' },
+      { ut: 'UT2',  col: 'EX2_UT2',  title: 'Circuitos Eléctricos y Magnitudes', simName: 'El Gran Apagón (Ley de Ohm y Polímetro)', ra: 'RA1 / RA3 / RA5', evalTerm: '1.ª Eval', examDate: '2026-11-12', ce: '1b, 1g, 1j, 2a, 2h, 2i, 3a, 3d, 3g, 3i, 4e, 5d', unlocked: true, simUrl: 'ut2.html', summary: 'Polímetro en serie y paralelo, reparto de tensión en serie y corriente en paralelo.' },
+      { ut: 'UT3',  col: 'EX3_UT3',  title: 'Esquemas Eléctricos y Simbología', simName: 'El Jeroglífico del Arquitecto', ra: 'RA1 / RA2 / RA3', evalTerm: '1.ª Eval', examDate: '2026-11-26', ce: '1a, 1d, 1e, 1h, 1i, 2c, 2e, 2f, 2g, 2j, 3c, 3e, 3f, 3h, 4c, 4f, 5h', unlocked: true, simUrl: 'ut3.html', summary: 'Esquemas unifilares, multifilares y representación normalizada.' },
+      { ut: 'UT4',  col: 'EX4_UT4',  title: 'Canalizaciones y Mecanismos', simName: 'Misión Canalizaciones y Física de Materiales', ra: 'RA1 / RA2 / RA4', evalTerm: '1.ª Eval', examDate: '2026-12-10', ce: '1a, 1c, 1d, 1e, 2a, 2b, 2c, 2d, 2e, 2f, 2j, 3b, 3d, 3e, 3i, 4a, 4b, 4c, 4d, 4e, 4f, 4h, 4i, 5f', unlocked: true, simUrl: 'ut4.html', summary: 'Cotas 60 mm, 0,50 m y 15 m, tubos PVC/LH/Acero y Regla del Aire.' },
+      { ut: 'UT5',  col: 'EX5_UT5',  title: 'Conductores Eléctricos', simName: 'La Ley del Cobre y Caída de Tensión', ra: 'RA1 / RA3 / RA4', evalTerm: '2.ª Eval', examDate: '2027-01-21', ce: '1b, 2a, 2d, 3a, 3b, 3c, 3d, 3e, 3f, 3g, 3h, 3i, 4e, 4f, 5f', unlocked: false, simUrl: 'ut5.html', summary: 'Código de colores REBT, secciones 1,5 a 6 mm², pelado y embornado.' },
+      { ut: 'UT6',  col: 'EX6_UT6',  title: 'Instalaciones de Enlace y Protecciones', simName: 'El Corazón del Cuadro (Carril DIN)', ra: 'RA1 / RA2 / RA3 / RA5', evalTerm: '2.ª Eval', examDate: '2027-02-11', ce: '1b, 1c, 1d, 1f, 1j, 2b, 2d, 2e, 2f, 2g, 2h, 3a, 3b, 3c, 3f, 3j, 4g, 5a, 5c, 5d, 5e, 5g', unlocked: false, simUrl: 'ut6.html', summary: 'Montaje de IGA, Diferencial 30 mA y PIAs C10/C16 con separación de neutros.' },
+      { ut: 'UT7',  col: 'EX7_UT7',  title: 'Cargas y Alumbrados', simName: 'Laboratorio Lumínico (Conmutadas y LED)', ra: 'RA1 / RA4 / RA5', evalTerm: '2.ª Eval', examDate: '2027-03-04', ce: '1e, 1f, 4a, 4b, 4d, 4h, 5b', unlocked: false, simUrl: 'ut7.html', summary: 'Conmutadas desde 3 y 4 puntos, tubos fluorescentes y conversión a LED.' },
+      { ut: 'UT8',  col: 'EX8_UT8',  title: 'Seguridad y PRL Avanzada', simName: 'Auditoría LOTO y Riesgo Eléctrico', ra: 'RA2 / RA3 / RA4 / RA5', evalTerm: '2.ª Eval', examDate: '2027-03-18', ce: '2h, 2i, 3j, 4g, 4i, 5a, 5c, 5e, 5g, 5h', unlocked: false, simUrl: 'ut8.html', summary: 'Las 5 Reglas de Oro, bloqueo LOTO y prevención de riesgos antes de Dual.' },
+      { ut: 'UT9',  col: 'EX9_UT9',  title: 'Domótica y Automatismos', simName: 'Cerebros de Silicio (Telerruptor, Minutero y PIR)', ra: 'RA1 / RA2 / RA4 / RA5', evalTerm: '2.ª Eval', examDate: '2027-04-08', ce: '1c, 1f, 1i, 2g, 4a, 4b, 4c, 4d, 4h, 5b', unlocked: false, simUrl: 'ut9.html', summary: 'Telerruptor modular, minutero de escalera, reloj horario, dimmer y sensores.' },
+      { ut: 'UT10', col: 'EX10_UT10', title: 'Mantenimiento y Averías (CSI)', simName: 'Inspector Jefe CSI: Diagnóstico Contrarreloj', ra: 'RA1 / RA2 / RA3 / RA4 / RA5', evalTerm: '2.ª Eval', examDate: '2027-04-22', ce: '1g, 1h, 1j, 2i, 2j, 3g, 3h, 3j, 4g, 4i, 5a, 5b, 5c, 5d, 5e, 5f, 5g, 5h', unlocked: false, simUrl: 'ut10.html', summary: 'Diagnóstico de cortocircuitos, derivaciones a tierra y puesta en marcha final.' }
+    ];
+
+    let unitsData = JSON.parse(localStorage.getItem('tf_units_v4')) || defaultUnitsData;
+
+    // -------------------------------------------------------------------------
+    // 2. CATÁLOGO DE LAS 27 PRÁCTICAS (CON TUS ENLACES REALES DE YOUTUBE)
+    // -------------------------------------------------------------------------
+    let practicesCatalog = [
+      { code: 'P1',  name: 'Construcción de un alargador con manguera y regletero', ut: 'UT1-UT3', ce: '1b,g,h,j 3a,g,h 4e,f,i 6e,g', client: 'Fabricación de alargador monofásico reforzado con manguera y clavija con regleta múltiple para banco de taller.', video: '' },
+      { code: 'P2',  name: 'Instalación de un punto de luz simple (1 lámpara)', ut: 'UT4-UT5', ce: '1a,c,e 2a,d,e,g 3c,f 4a,b,d,f 5d', client: 'Montaje de punto de luz simple bajo tubo para iluminación de distribuidor en nave auxiliar.', video: '' },
+      { code: 'P3',  name: 'Instalación de dos lámparas en serie', ut: 'UT2-UT5', ce: '1g,h,j 2i 3a,c,f 4b,f 5d,e', client: 'Circuito de prueba de luminarias en serie para análisis de reparto de tensión en zona de control.', video: 'https://www.youtube.com/watch?v=yb7TxevHMiI' },
+      { code: 'P4',  name: 'Instalación de dos lámparas en paralelo', ut: 'UT2-UT5', ce: '1c,i 2a,h 3b,c,f 4f,i 5d', client: 'Instalación de dos puntos de alumbrado en paralelo con encendido simultáneo para pasillo de oficinas.', video: 'https://www.youtube.com/watch?v=94YF-X_WUIA' },
+      { code: 'P5',  name: 'Instalación de tres lámparas en serie', ut: 'UT2-UT5', ce: '1c,j 2e 3b,f 4c,f 5c,d', client: 'Montaje de circuito señalizador con tres luminarias en serie para panel de aviso de maquinaria.', video: 'https://www.youtube.com/watch?v=gvnwv1j847A' },
+      { code: 'P6',  name: 'Instalación de cuatro lámparas en paralelo', ut: 'UT5', ce: '1h,i 2h,i 3b,f,h 4c,f 5a,e', client: 'Distribución de cuatro luminarias en paralelo para cobertura lumínica continua en línea de producción.', video: 'https://www.youtube.com/watch?v=ea1aANwokbo' },
+      { code: 'P7',  name: 'Instalación de dos lámparas en serie, en paralelo con otra lámpara', ut: 'UT5', ce: '1c,i 2e,j 3f,i 4b,f 5d,h', client: 'Circuito mixto de iluminación técnica para banco de pruebas con ramas serie y paralelo independientes.', video: 'https://www.youtube.com/watch?v=zF0pCxsD4AQ' },
+      { code: 'P8',  name: 'Dos lámparas en serie con su interruptor y dos en paralelo con su interruptor', ut: 'UT5', ce: '1a,c 2a,g,i 3f 4a,b,d,f 5d', client: 'Instalación bi-zona con interruptores independientes para iluminación de trabajo y alumbrado de cortesía.', video: 'https://www.youtube.com/watch?v=e18irNw19Mc' },
+      { code: 'P9',  name: 'Instalación de un timbre accionado por dos pulsadores', ut: 'UT5', ce: '1a,c 2d,f 3c 4b,d,f 5c,d', client: 'Avisador acústico para almacén accionado indistintamente desde puerta principal y muelle de carga.', video: 'https://www.youtube.com/watch?v=TPcOpognwdA' },
+      { code: 'P10', name: 'Punto de luz simple con toma de corriente con toma de tierra', ut: 'UT6', ce: '1b,c 2g 3a,c 4a,e,f,h 5e,g', client: 'Puesto de mantenimiento con punto de iluminación cenital y toma de corriente schuko de 16A.', video: 'https://www.youtube.com/watch?v=AjheFsRJirM' },
+      { code: 'P11', name: 'Punto de luz simple, toma de corriente con tierra y timbre con pulsador', ut: 'UT6', ce: '1c,h 2h,i 3a,b,c 4e,f 6d,g', client: 'Instalación de cabina de control: alumbrado general, toma de corriente auxiliar y señalización acústica.', video: 'https://www.youtube.com/watch?v=3jtXFKN_XcY' },
+      { code: 'P12', name: 'Dos lámparas en serie y dos en paralelo (con interruptores) y tomas de corriente', ut: 'UT6', ce: '1c,i 2e,f,g 3f,h 4d,f,h 5e', client: 'Cuadro mixto con circuitos de alumbrado sectorizado y bases de enchufe para taller electrotécnico.', video: 'https://www.youtube.com/watch?v=k5IxeLREFyE' },
+      { code: 'P13', name: 'Dos lámparas en paralelo, timbre con dos pulsadores y dos tomas de corriente', ut: 'UT6', ce: '1a,h 2h,j 3c,g,i 4b,f 5c,d', client: 'Dotación integral de oficina de planta: alumbrado doble, llamada bi-zona y dos tomas de corriente.', video: 'https://www.youtube.com/watch?v=8JhxQJuDdW4' },
+      { code: 'P14', name: 'Tres lámparas en paralelo, dos timbres con un pulsador y dos tomas de corriente', ut: 'UT6', ce: '1c,j 2d,i 3b,c,f 4f,g 5a,h', client: 'Instalación de zona logística: triple iluminación paralela, aviso sonoro doble simultáneo y tomas de fuerza.', video: 'https://www.youtube.com/watch?v=GDkhzrVCixY' },
+      { code: 'P15', name: 'Lámparas en serie conmutadas desde 2 puntos y tomas de corriente lateral', ut: 'UT8', ce: '1c,i 2b,c 3d,e,f 4a,b,f 5a,c,d', client: 'Pasillo de acceso con alumbrado en serie conmutado desde ambos extremos y base de servicio.', video: 'https://www.youtube.com/watch?v=RrSryTzlAzw' },
+      { code: 'P16', name: 'Cuatro lámparas en paralelo conmutadas desde 3 puntos y dos timbres', ut: 'UT8', ce: '1c,g 2f,j 3e,f 4b,d,f 6d,f', client: 'Nave principal con conmutación desde 3 puntos mediante mecanismo de cruzamiento y avisadores acústicos.', video: 'https://www.youtube.com/watch?v=YqCop7rm4M4' },
+      { code: 'P17', name: 'Tres lámparas en serie conmutadas desde 4 puntos', ut: 'UT8', ce: '1h,i 2e,h 3f,i 4c,e,f 5c,d', client: 'Circuito de balizamiento perimetral conmutado desde 4 accesos distintos con dos cruzamientos.', video: 'https://www.youtube.com/watch?v=ISC92Q5V17M' },
+      { code: 'P18', name: 'Cuatro lámparas en paralelo accionadas mediante telerruptor (4 pulsadores) y base', ut: 'UT9', ce: '1f,i 2g 3c 4a,b,c,f 5b,d', client: 'Automatización de alumbrado de almacén mediante telerruptor unipolar y cuatro pulsadores repartidos.', video: 'https://www.youtube.com/watch?v=aRy4NMtJs_8' },
+      { code: 'P19', name: 'Dos lámparas en paralelo accionadas mediante minutero con pulsadores y tomas', ut: 'UT9', ce: '1f 2g 3a,c 4e,f 5b,d', client: 'Instalación de escalera y rellano temporizado con minutero electrónico y pulsadores luminosos.', video: 'https://www.youtube.com/watch?v=HqHuFC6JSEc' },
+      { code: 'P20', name: 'Lámparas accionadas mediante Interruptor Horario analógico y Digital', ut: 'UT9', ce: '1f 2g,j 3c 4a,b,c,f 5d', client: 'Automatización de encendido/apagado programado de alumbrado de fachada mediante interruptor horario.', video: '' },
+      { code: 'P21', name: 'Instalación de un tubo fluorescente con reactancia magnética', ut: 'UT8', ce: '1e,g 2i 3a 4c,f 6a,c,f', client: 'Montaje y verificación funcional de luminaria fluorescente con balasto inductivo electromagnético y cebador.', video: '' },
+      { code: 'P22', name: 'Instalación de un tubo fluorescente con reactancia electrónica', ut: 'UT8', ce: '1e 2h 3f 4c,f 5d,f', client: 'Sustitución e instalación de pantalla fluorescente con reactancia electrónica de alta eficiencia.', video: '' },
+      { code: 'P23', name: 'Cambio de luminaria: Tubo LED con alimentación por los dos extremos', ut: 'UT8', ce: '1e,g 2i 3c,f 4d,f,i 5e,f,g', client: 'Modernización de nave con reconversión a tubo LED con alimentación bilateral Fase-Neutro en extremos.', video: '' },
+      { code: 'P24', name: 'Cambio de luminaria: Tubo LED con alimentación por un extremo', ut: 'UT8', ce: '1e,j 2i 3c,f 4f,i 5e,f,g', client: 'Sustitución de fluorescencia por tubo LED con alimentación directa unilateral a un único casquillo.', video: '' },
+      { code: 'P25', name: 'Regulador de luz (dimmer) actuando sobre dos lámparas en paralelo (con conmutador)', ut: 'UT9', ce: '1c,f 2f 3c 4b,d,f 5a', client: 'Control de nivel lumínico con regulador electrónico rotativo y conmutador en sala de reuniones.', video: '' },
+      { code: 'P26', name: 'Regulador de luz (dimmer) en pastilla actuando sobre lámparas (por pulsación)', ut: 'UT9', ce: '1c,f,g 2f 3f 4d,e,f 5c', client: 'Instalación domótica en pastilla tras pulsador de pared para regulación de intensidad lumínica progresiva.', video: '' },
+      { code: 'P27', name: 'Interruptor crepuscular y detector de movimiento (actuando sobre lámparas distintas)', ut: 'UT9', ce: '1f 2g 3c 4a,b,d,f 6b,d', client: 'Automatización perimetral combinada: encendido crepuscular de balizas y activación por presencia PIR.', video: '' }
+    ];
+
+    // DATOS GEOLOCALIZADOS EN SEVILLA Y PERSONALIDADES NPC PARA LAS 27 PRÁCTICAS
+    const sevilleNPCProfiles = {
+      'P1':  { lat: 37.3968, lng: -5.9832, hood: 'Trinidad · Salesianos (C/ María Auxiliadora)', npcName: 'Manolo "El Chispas"', npcAvatar: '👨‍🔧', npcTrait: '😤 Veterano implacable del REBT', rewardCr: 120, npcQuote: '«¡Escuchadme bien, novatos! Antes de pisar la calle en Sevilla tenéis que fabricarme un alargador con manguera H05VV-F 3G1,5 mm² y regletero para mi banco de pruebas. Como vea un solo milímetro de cobre asomando fuera del prensaestopas, no salís del taller.»', npcTrap: '⚠️ Trampa CSI de Manolo: Olvidar sujetar la cubierta blanca/gris con la abrazadera prensacables o no conectar el conductor Verde-Amarillo al borne central de Tierra.' },
+      'P2':  { lat: 37.3905, lng: -5.9942, hood: 'Centro · Calle Sierpes (Boutique Moda)', npcName: 'Valeria Montes (Boutique Sierpes)', npcAvatar: '👩‍💼', npcTrait: '✨ Perfeccionista con la estética', rewardCr: 130, npcQuote: '«Hola equipo Tecnoflux. Necesito un punto de luz simple impecable en el probador principal de mi tienda en Calle Sierpes. Quiero que el interruptor corte siempre la Fase para que mi personal pueda cambiar la bombilla sin peligro.»', npcTrap: '⚠️ Trampa CSI de Valeria: Cortar el Neutro en lugar de la Fase en el interruptor S1 (la lámpara apaga, pero el casquillo sigue a 230V con riesgo de descarga).' },
+      'P3':  { lat: 37.3888, lng: -5.9955, hood: 'Centro · Plaza Nueva (Escaparate Vintage)', npcName: 'Valeria Montes (Boutique Sierpes)', npcAvatar: '👩‍💼', npcTrait: '✨ Exigente con los ambientes de luz', rewardCr: 140, npcQuote: '«Quiero un efecto de luz cálida y tenue a media tensión (115V por bombilla) con dos lámparas en serie para mi escaparate retro de Plaza Nueva. Pero explicadme antes qué pasa si una bombilla se funde.»', npcTrap: '⚠️ Trampa CSI de Valeria: No medir los ~115V en cada receptor con el polímetro o usar bombillas LED no preparadas que parpadean al caer la tensión a la mitad.' },
+      'P4':  { lat: 37.3826, lng: -5.9731, hood: 'Nervión · Av. Eduardo Dato (Oficinas)', npcName: 'Valeria Montes (Sede Nervión)', npcAvatar: '👩‍💼', npcTrait: '⚡ Cero tolerancia a apagones', rewardCr: 140, npcQuote: '«En el pasillo de oficinas de Nervión necesito dos puntos de luz en paralelo a 230V reales. Si una bombilla se funde en plena jornada, la otra tiene que seguir encendida sí o sí.»', npcTrap: '⚠️ Trampa CSI de Valeria: Empalmar sin conectores Wago/regleta dentro de la caja de registro o cruzar el retorno con el neutro.' },
+      'P5':  { lat: 37.4025, lng: -5.9891, hood: 'Macarena · Arco de la Macarena', npcName: 'Valeria Montes (Showroom Macarena)', npcAvatar: '👩‍💼', npcTrait: '🔍 Auditora de caídas de tensión', rewardCr: 150, npcQuote: '«Para el panel señalizador del showroom necesito tres lámparas en serie (~76,6V cada una). Quiero ver en vuestro albarán la medición real con el voltímetro en cada portalámparas.»', npcTrap: '⚠️ Trampa CSI de Valeria: Poner el polímetro en serie en lugar de en paralelo al medir tensión y provocar un bloqueo.' },
+      'P6':  { lat: 37.3834, lng: -6.0035, hood: 'Triana · Calle Betis (Hotel Patio de Triana)', npcName: 'Don Carlos Alvear (Director Hotel)', npcAvatar: '🎩', npcTrait: '🛎️ Anfitrión obsesionado con el confort', rewardCr: 160, npcQuote: '«Bienvenidos al Hotel Patio de Triana. Necesito cuatro luminarias en paralelo en la recepción con vista al Guadalquivir. Exijo usar conectores rápidos de 5 entradas y comprobar con pinza amperimétrica la suma de corrientes.»', npcTrap: '⚠️ Trampa CSI de Don Carlos: Dejar peladuras de cobre fuera de las clemas de 5 vías en la caja de derivación.' },
+      'P7':  { lat: 37.3852, lng: -6.0078, hood: 'Triana · Calle San Jacinto (Salón Mudéjar)', npcName: 'Don Carlos Alvear (Director Hotel)', npcAvatar: '🎩', npcTrait: '🧐 Crítico con el equilibrio lumínico', rewardCr: 170, npcQuote: '«En nuestro Salón Mudéjar quiero un circuito mixto: una lámpara principal E3 a máxima potencia (230V) en paralelo con dos apliques laterales E1 y E2 en serie (115V). Si falla un aplique, la lámpara central no puede apagarse.»', npcTrap: '⚠️ Trampa CSI de Don Carlos: Conectar las tres en serie o equivocarse en el nodo de bifurcación dentro de la caja de registro.' },
+      'P8':  { lat: 37.3765, lng: -6.0021, hood: 'Los Remedios · Plaza de Cuba (Suites Hotel)', npcName: 'Don Carlos Alvear (Director Hotel)', npcAvatar: '🎩', npcTrait: '🛎️ Exigente con el mando independiente', rewardCr: 170, npcQuote: '«En las suites de Plaza de Cuba el huésped necesita dos interruptores independientes (S1 y S2): uno para la luz tenue de cortesía (2 en serie) y otro para la luz principal de lectura (2 en paralelo).»', npcTrap: '⚠️ Trampa CSI de Don Carlos: Cruzar los retornos de S1 y S2 haciendo que un interruptor dependa del otro.' },
+      'P9':  { lat: 37.4095, lng: -6.0062, hood: 'Isla de la Cartuja · Parque Tecnológico PCT', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '🚨 Estricto con los avisos acústicos', rewardCr: 160, npcQuote: '«Aquí el Sargento Morales. En el almacén de la Cartuja necesito un zumbador accionado indistintamente desde dos pulsadores NA: puerta principal y muelle de carga. ¡Usad pulsadores con retorno, jamás interruptores!»', npcTrap: '⚠️ Trampa CSI del Sargento: Conectar los dos pulsadores en serie (obligaría a pulsar los dos a la vez para que suene) o montar un interruptor fijo que queme la bobina del timbre.' },
+      'P10': { lat: 37.3948, lng: -5.9565, hood: 'San Pablo · Polígono Ind. Carretera Amarilla', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '🛡️ Inflexible con la separación C1 / C2', rewardCr: 180, npcQuote: '«En la garita de mantenimiento de Carretera Amarilla quiero un punto de luz (Circuito C1, PIA 10A, 1,5 mm²) y una base Schuko con Tierra (Circuito C2, PIA 16A, 2,5 mm²). ¡Como mezcléis los neutros de ambos circuitos os cierro la obra!»', npcTrap: '⚠️ Trampa CSI del Sargento: Unir el neutro azul de 1,5 mm² (alumbrado) con el neutro azul de 2,5 mm² (enchufe) o meter cable de 1,5 mm² en la toma de 16A.' },
+      'P11': { lat: 37.3742, lng: -5.9715, hood: 'El Plantinar · Av. Ramón y Cajal', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '🛡️ Auditor de aislamiento galvánico', rewardCr: 185, npcQuote: '«Cabina de control en Ramón y Cajal: necesito alumbrado simple, timbre con pulsador en la línea de 10A y base de enchufe Schuko independiente en la línea de 16A con su conductor PE verde-amarillo.»', npcTrap: '⚠️ Trampa CSI del Sargento: Alimentar el timbre desde el circuito de fuerza de 16A o dejar la patilla de tierra del Schuko sin conectar.' },
+      'P12': { lat: 37.3758, lng: -5.9482, hood: 'Amate · Av. de los Gavilanes (Taller)', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '🔧 Inspector de par de apriete', rewardCr: 190, npcQuote: '«En el banco electrotécnico de Amate quiero alumbrado sectorizado (serie + paralelo con 2 interruptores en C1) y dos tomas de corriente Schuko en paralelo en C2 (2,5 mm²). Pasaré a hacer la prueba del tirón en cada borna.»', npcTrap: '⚠️ Trampa CSI del Sargento: Dejar bornas flojas en el puente entre TC1 y TC2 o no respetar las secciones de 1,5 mm² y 2,5 mm².' },
+      'P13': { lat: 37.3585, lng: -5.9868, hood: 'Heliópolis · Av. de la Palmera', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '📋 Supervisor de oficinas de planta', rewardCr: 195, npcQuote: '«Dotación completa para la oficina de seguridad en Heliópolis: dos lámparas en paralelo, timbre accionado desde dos accesos y dos bases de enchufe Schuko de 16A.»', npcTrap: '⚠️ Trampa CSI del Sargento: Confundir los retornos de los pulsadores del timbre con el retorno del interruptor de alumbrado.' },
+      'P14': { lat: 37.4172, lng: -5.9745, hood: 'Pino Montano · Parque Empresarial Torneo', npcName: 'Sargento Morales (Jefe Seguridad)', npcAvatar: '👮‍♂️', npcTrait: '🔊 Exigente con la potencia sonora', rewardCr: 200, npcQuote: '«Nave logística en Pino Montano: hay mucho ruido de carretillas, así que necesito que un solo pulsador active DOS timbres (Z1 y Z2) en paralelo a 230V, además de tres lámparas en paralelo y dos tomas de fuerza.»', npcTrap: '⚠️ Trampa CSI del Sargento: Conectar los dos timbres Z1 y Z2 en serie haciendo que reciban solo 115V y apenas suenen.' },
+      'P15': { lat: 37.3728, lng: -6.0005, hood: 'Los Remedios · Calle Asunción (Piso 5.º)', npcName: 'Amparo "La del 5.º"', npcAvatar: '👵', npcTrait: '😤 Indecisa y miedosa de la oscuridad', rewardCr: 200, npcQuote: '«¡Ay hijos míos, menos mal que venís! Mi pasillo de la Calle Asunción es muy largo y me da pánico ir a oscuras. Quiero encender las luces desde la puerta de entrada y apagarlas desde el fondo, con un enchufe al lado para la aspiradora.»', npcTrap: '⚠️ Trampa CSI de Amparo: Conectar mal el borne común (L) de los conmutadores S1 y S2 con los dos puentes viajeros (solo encenderá cuando el otro esté en una posición concreta).' },
+      'P16': { lat: 37.3918, lng: -5.9762, hood: 'Santa Justa · Av. Kansas City', npcName: 'Amparo "La del 5.º" (Casa Familiar)', npcAvatar: '👵', npcTrait: '🔄 Cambia de opinión a mitad de obra', rewardCr: 220, npcQuote: '«Oye, que lo he pensado mejor: además de encender desde la entrada y el salón, quiero un TERCER punto en mitad del pasillo (conmutador de cruzamiento) para las 4 lámparas en paralelo, y dos timbres para oírlos desde la cocina.»', npcTrap: '⚠️ Trampa CSI de Amparo: No cruzar correctamente las entradas y salidas en el mecanismo de cruzamiento S2 de 4 bornes.' },
+      'P17': { lat: 37.3812, lng: -5.9875, hood: 'Arenal · Paseo de Cristóbal Colón', npcName: 'Amparo "La del 5.º" (Ático Colón)', npcAvatar: '👵', npcTrait: '👑 Exige control desde 4 puertas', rewardCr: 230, npcQuote: '«En el ático tengo tres dormitorios y el salón dando al mismo distribuidor. Quiero encender y apagar las tres lámparas desde los CUATRO puntos (2 conmutadores simples en extremos + 2 de cruzamiento en medio).»', npcTrap: '⚠️ Trampa CSI de Amparo: Olvidar la regla de oro N puntos = 2 conmutadores simples + (N-2) cruzamientos, o cruzar los puentes entre S2 y S3.' },
+      'P18': { lat: 37.3715, lng: -5.9618, hood: 'Cerro del Águila · C/ Afán de Ribera', npcName: 'Don Julio (Pdte. Comunidad Los Naranjos)', npcAvatar: '📋', npcTrait: '⏱️ Cronómetro en mano y ahorrador', rewardCr: 240, npcQuote: '«Soy Julio, presidente de la comunidad. Pasar 6 cables por todo el bloque para conmutar desde 4 sitios nos sale carísimo. Montadme un TELERRUPTOR en el carril DIN gobernado por 4 pulsadores en paralelo a 2 hilos y una base de servicio.»', npcTrap: '⚠️ Trampa CSI de Don Julio: Confundir los bornes de la bobina del telerruptor (A1-A2) con el contacto seco de potencia (1-2).' },
+      'P19': { lat: 37.3524, lng: -5.9838, hood: 'Los Bermejales · Av. de Finlandia', npcName: 'Don Julio (Pdte. Comunidad Los Naranjos)', npcAvatar: '📋', npcTrait: '💸 Obsesionado con el recibo de la luz', rewardCr: 240, npcQuote: '«¡Los vecinos se dejan siempre la luz de la escalera encendida toda la noche! Instaladme un MINUTERO DE ESCALERA en carril DIN (esquema a 4 hilos) con pulsadores y tomas de limpieza para que se apague sola al minuto.»', npcTrap: '⚠️ Trampa CSI de Don Julio: No revisar el selector 3 hilos / 4 hilos en el lateral del minutero antes de dar tensión.' },
+      'P20': { lat: 37.3922, lng: -5.9275, hood: 'Sevilla Este · Av. Emilio Lemos', npcName: 'Don Julio (Comunidad Comercial Este)', npcAvatar: '📋', npcTrait: '🕰️ Puntualidad suiza en fachadas', rewardCr: 240, npcQuote: '«Para el rótulo y fachada de los locales de Sevilla Este necesitamos un INTERRUPTOR HORARIO programable en el cuadro que encienda automáticamente de 20:00 a 02:00 sin que el conserje tenga que tocar nada.»', npcTrap: '⚠️ Trampa CSI de Don Julio: Alimentar el motor del reloj (L-N) pero olvidar puentear la Fase al borne común del contacto conmutado.' },
+      'P21': { lat: 37.4148, lng: -5.9675, hood: 'Polígono Store · Sede Industrial', npcName: 'Ing. Elena Vargas (Ayuntamiento Sevilla)', npcAvatar: '👷‍♀️', npcTrait: '🔬 Inspectora técnica municipal', rewardCr: 230, npcQuote: '«Soy Elena Vargas, ingeniera municipal. Antes de modernizar los talleres municipales del Polígono Store, debéis montar y diagnosticar una pantalla fluorescente clásica con REACTANCIA MAGNÉTICA y CEBADOR midiendo su consumo inductivo.»', npcTrap: '⚠️ Trampa CSI de la Ing. Vargas: Conectar el cebador en paralelo directo con la red de 230V (explosión instantánea) en lugar de en serie entre los filamentos de ambos extremos.' },
+      'P22': { lat: 37.3645, lng: -6.0145, hood: 'Puerto de Sevilla · Zona Franca', npcName: 'Ing. Elena Vargas (Ayuntamiento Sevilla)', npcAvatar: '👷‍♀️', npcTrait: '⚡ Enemiga del parpadeo a 50 Hz', rewardCr: 235, npcQuote: '«En las oficinas técnicas del Puerto necesitamos eliminar el parpadeo y el zumbido. Instalad el tubo fluorescente con REACTANCIA ELECTRÓNICA de alta frecuencia (recuerda: este sistema NO lleva cebador).»', npcTrap: '⚠️ Trampa CSI de la Ing. Vargas: Intentar intercalar un cebador en un balasto electrónico o cruzar los pares de salida de los zócalos G13.' },
+      'P23': { lat: 37.3782, lng: -6.0195, hood: 'Tablada · Hangares Logísticos', npcName: 'Ing. Elena Vargas (Plan Retrofit LED)', npcAvatar: '👷‍♀️', npcTrait: '🌱 Auditora de Ahorro Energético', rewardCr: 240, npcQuote: '«Plan de ahorro energético en Tablada: anulad y retirad por completo la reactancia y el cebador de la pantalla antigua y recableadla para un TUBO LED CON ALIMENTACIÓN POR LOS DOS EXTREMOS (Fase en zócalo A, Neutro en zócalo B).»', npcTrap: '⚠️ Trampa CSI de la Ing. Vargas: No etiquetar la pantalla modificada advirtiendo que ya va a 230V directos o meter Fase y Neutro en el mismo extremo.' },
+      'P24': { lat: 37.3385, lng: -5.9788, hood: 'Bellavista · Centro Cívico Municipal', npcName: 'Ing. Elena Vargas (Plan Retrofit LED)', npcAvatar: '👷‍♀️', npcTrait: '🚨 Máxima alerta ante cortocircuitos', rewardCr: 250, npcQuote: '«¡Mucho cuidado en el Parking del Centro Cívico de Bellavista! Estos nuevos TUBOS LED SE ALIMENTAN POR UN SOLO EXTREMO (INPUT L-N en el mismo zócalo). Comprobad con el polímetro antes de insertar el tubo.»', npcTrap: '⚠️ Trampa CSI de la Ing. Vargas: Insertar el extremo del tubo LED que lleva el puente interno en el zócalo alimentado con Fase y Neutro, provocando un cortocircuito franco.' },
+      'P25': { lat: 37.3845, lng: -5.9995, hood: 'Arenal · Restaurante Mirador del Río', npcName: 'Chef Roberto (Restaurante VIP)', npcAvatar: '👨‍🍳', npcTrait: '🍷 Dramático con la atmósfera VIP', rewardCr: 250, npcQuote: '«¡Mon Dieu! En mi comedor privado junto al río no puedo deslumbrar a los comensales. Necesito regular la intensidad de dos lámparas en paralelo con un DIMMER ROTATIVO conmutado desde la entrada del maître.»', npcTrap: '⚠️ Trampa CSI del Chef Roberto: Montar bombillas LED normales no regulables (Non-Dimmable) haciendo que parpadeen como una feria al girar la ruleta.' },
+      'P26': { lat: 37.3772, lng: -5.9869, hood: 'Plaza de España · Terraza Real', npcName: 'Chef Roberto (Terraza Plaza España)', npcAvatar: '👨‍🍳', npcTrait: '✨ Fanático del diseño minimalista', rewardCr: 260, npcQuote: '«Para el reservado junto a Plaza de España no quiero ruletas feas en la pared. Ocultad una PASTILLA REGULADORA (Dimmer en caja) gobernada por un pulsador normal: toque corto enciende/apaga, toque largo regula el brillo.»', npcTrap: '⚠️ Trampa CSI del Chef Roberto: No alimentar la pastilla con Neutro o equivocar el borne de entrada de pulsación (S) con la salida modulada (~).»' },
+      'P27': { lat: 37.4012, lng: -5.9185, hood: 'Parque Alcosa · Nave Agroindustrial', npcName: 'Don Eusebio (Gerente Agroindustrial)', npcAvatar: '🏭', npcTrait: '🦅 Vigilante nocturno implacable', rewardCr: 280, npcQuote: '«Terminamos a lo grande en mi nave de Alcosa. Quiero dos circuitos inteligentes separados: un INTERRUPTOR CREPUSCULAR que encienda las balizas exteriores E1-E2 solo cuando anochezca, y un DETECTOR PIR que encienda los focos E3-E4 cuando alguien se mueva por el muelle.»', npcTrap: '⚠️ Trampa CSI de Don Eusebio: Mezclar las salidas conmutadas de la fotocélula (cable rojo) y del sensor PIR (L') o no ajustar los potenciómetros de LUX y TIME.' }
+    };
+
+    practicesCatalog.forEach(p => {
+      const npc = sevilleNPCProfiles[p.code] || {};
+      p.lat = npc.lat || 37.389;
+      p.lng = npc.lng || -5.984;
+      p.hood = npc.hood || 'Sevilla';
+      p.npcName = npc.npcName || 'Cliente Tecnoflux';
+      p.npcAvatar = npc.npcAvatar || '🏢';
+      p.npcTrait = npc.npcTrait || 'Cliente Corporativo';
+      p.rewardCr = npc.rewardCr || 150;
+      p.npcQuote = npc.npcQuote || p.client;
+      p.npcTrap = npc.npcTrap || 'Verificar continuidad y aislamiento antes de dar tensión.';
+    });
+
+    let sevilleMapInstance = null;
+    let sevilleMarkersLayer = null;
+    let mapStatusFilter = 'all';
+    let selectedPracticeCode = 'P1';
+    let currentNPCDialogMode = 'brief';
+
+    function getOperatorPracticeGrade(pCode) {
+      if (!activeOperator || !activeOperator.pracs) return null;
+      const idx = parseInt(pCode.replace('P', ''), 10) - 1;
+      const val = activeOperator.pracs[idx];
+      return (val !== null && val !== undefined && !isNaN(val)) ? Number(val) : null;
+    }
+
+    function initSevilleMap() {
+      const mapEl = document.getElementById('seville-map');
+      if (!mapEl || typeof L === 'undefined') return;
+      if (!sevilleMapInstance) {
+        sevilleMapInstance = L.map('seville-map').setView([37.3885, -5.9780], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '&copy; OpenStreetMap · Tecnoflux Sevilla'
+        }).addTo(sevilleMapInstance);
+        sevilleMarkersLayer = L.layerGroup().addTo(sevilleMapInstance);
+      }
+      updateSevilleMapMarkers();
+      selectPracticeNPC(selectedPracticeCode, false);
+    }
+
+    function resetSevilleMapView() {
+      if (sevilleMapInstance) {
+        sevilleMapInstance.setView([37.3885, -5.9780], 12);
+      }
+    }
+
+    function setMapStatusFilter(mode) {
+      mapStatusFilter = mode;
+      ['all', 'pending', 'done'].forEach(k => {
+        const b = document.getElementById('map-flt-' + k);
+        if (!b) return;
+        if (k === mode) {
+          b.style.background = 'var(--accent-blue)';
+          b.style.color = '#082f49';
+        } else {
+          b.style.background = 'var(--bg-card)';
+          b.style.color = k === 'pending' ? '#fbbf24' : (k === 'done' ? '#10b981' : 'var(--text-main)');
+        }
+      });
+      updateSevilleMapMarkers();
+    }
+
+    function updateSevilleMapMarkers() {
+      const statusBanner = document.getElementById('map-operator-status');
+      if (statusBanner) {
+        if (activeOperator) {
+          const doneCount = (activeOperator.pracs || []).filter(v => v !== null && !isNaN(v)).length;
+          statusBanner.innerHTML = `👷 Mapa Personalizado de <strong>${activeOperator.code}</strong> (${activeOperator.coop}): <span style="color:#10b981;">${doneCount} Superadas</span> · <span style="color:#fbbf24;">${27 - doneCount} Pendientes en Sevilla</span>`;
+        } else {
+          statusBanner.innerHTML = `🌐 Vista General de Sevilla (27 O.T.) · <em>Entra con tu PIN en "Expediente Operario" para personalizar tus misiones</em>`;
+        }
+      }
+
+      if (!sevilleMarkersLayer) return;
+      sevilleMarkersLayer.clearLayers();
+
+      const utFilter = document.getElementById('prac-ut-filter') ? document.getElementById('prac-ut-filter').value : 'ALL';
+      const q = (document.getElementById('prac-search') ? document.getElementById('prac-search').value : '').toLowerCase().trim();
+
+      practicesCatalog.forEach(p => {
+        const grade = getOperatorPracticeGrade(p.code);
+        const isDone = grade !== null && grade >= 5;
+
+        if (mapStatusFilter === 'done' && !isDone) return;
+        if (mapStatusFilter === 'pending' && isDone) return;
+
+        const matchUt = (utFilter === 'ALL') || (p.ut === utFilter);
+        const matchQ = !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || p.hood.toLowerCase().includes(q) || p.npcName.toLowerCase().includes(q);
+        if (!matchUt || !matchQ) return;
+
+        const fillColor = isDone ? '#10b981' : '#f97316';
+        const marker = L.circleMarker([p.lat, p.lng], {
+          radius: p.code === selectedPracticeCode ? 11 : 8,
+          fillColor: fillColor,
+          color: p.code === selectedPracticeCode ? '#38bdf8' : '#ffffff',
+          weight: p.code === selectedPracticeCode ? 3 : 2,
+          opacity: 1,
+          fillOpacity: 0.92
+        }).addTo(sevilleMarkersLayer);
+
+        const statusText = grade !== null
+          ? `<span style="color:#10b981;font-weight:800;">✅ Superada (${grade.toFixed(1)}/10)</span>`
+          : `<span style="color:#fbbf24;font-weight:800;">⏳ Misión Pendiente (+${p.rewardCr} Cr)</span>`;
+
+        marker.bindPopup(`
+          <div style="font-family:system-ui,sans-serif; min-width:210px;">
+            <div style="font-size:0.72rem; color:#38bdf8; font-weight:800;">${p.code} · ${p.ut}</div>
+            <div style="font-size:0.9rem; font-weight:900; margin:2px 0;">${p.npcAvatar} ${p.npcName}</div>
+            <div style="font-size:0.74rem; color:#94a3b8;">📍 ${p.hood}</div>
+            <div style="font-size:0.76rem; margin-top:5px;"><strong>O.T.:</strong> ${p.name}</div>
+            <div style="font-size:0.75rem; margin-top:4px;">${statusText}</div>
+          </div>
+        `);
+
+        marker.on('click', () => {
+          selectPracticeNPC(p.code, false);
+        });
+      });
+    }
+
+    function selectPracticeNPC(pCode, panToPin = true) {
+      const p = practicesCatalog.find(x => x.code === pCode) || practicesCatalog[0];
+      if (!p) return;
+      selectedPracticeCode = p.code;
+
+      document.getElementById('npc-ot-badge').textContent = `O.T. ${p.code} · ${p.ut}`;
+      const grade = getOperatorPracticeGrade(p.code);
+      const stEl = document.getElementById('npc-op-status-badge');
+      if (grade !== null) {
+        stEl.textContent = `✅ SUPERADA (${grade.toFixed(1)} / 10)`;
+        stEl.style.background = 'rgba(16,185,129,0.2)';
+        stEl.style.color = '#10b981';
+      } else {
+        stEl.textContent = activeOperator ? `⏳ PENDIENTE PARA ${activeOperator.code}` : '⏳ MISIÓN ACTIVA EN SEVILLA';
+        stEl.style.background = 'rgba(245,158,11,0.2)';
+        stEl.style.color = '#fbbf24';
+      }
+
+      document.getElementById('npc-avatar-icon').textContent = p.npcAvatar;
+      document.getElementById('npc-name-title').textContent = p.npcName;
+      document.getElementById('npc-role-hood').textContent = `📍 ${p.hood}`;
+      document.getElementById('npc-personality-tag').textContent = p.npcTrait;
+      document.getElementById('npc-reward-cr').textContent = `+${p.rewardCr} Cr`;
+
+      const vidWrap = document.getElementById('npc-video-action-wrap');
+      if (p.video) {
+        vidWrap.innerHTML = `<a href="${p.video}" target="_blank" rel="noopener" style="display:block; text-align:center; text-decoration:none; padding:0.55rem; border-radius:8px; background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981; font-size:0.78rem; font-weight:800;">🎬 Ver Vídeo Real del Encargo (${p.code}) en YouTube</a>`;
+      } else {
+        vidWrap.innerHTML = `<div style="text-align:center; padding:0.5rem; border-radius:8px; background:var(--bg-darker); color:var(--text-muted); border:1px solid var(--border-subtle); font-size:0.74rem;">📹 Briefing presencial en Taller Salesianos Trinidad (${p.code})</div>`;
+      }
+
+      renderNPCSpeechContent();
+
+      if (sevilleMapInstance && panToPin) {
+        sevilleMapInstance.setView([p.lat, p.lng], 14, { animate: true });
+      }
+      updateSevilleMapMarkers();
+    }
+
+    function switchNPCDialogMode(mode) {
+      currentNPCDialogMode = mode;
+      ['brief', 'trap', 'spec'].forEach(m => {
+        const b = document.getElementById('npc-btn-' + m);
+        if (b) b.className = 'npc-dialog-btn' + (m === mode ? ' active' : '');
+      });
+      renderNPCSpeechContent();
+    }
+
+    function renderNPCSpeechContent() {
+      const p = practicesCatalog.find(x => x.code === selectedPracticeCode) || practicesCatalog[0];
+      const box = document.getElementById('npc-speech-text');
+      if (!p || !box) return;
+
+      if (currentNPCDialogMode === 'brief') {
+        box.style.borderLeftColor = 'var(--accent-blue)';
+        box.innerHTML = `
+          <div style="font-size:0.72rem; color:var(--accent-blue); font-weight:800; margin-bottom:0.25rem;">🗣️ ${p.npcName.toUpperCase()} TE DICE:</div>
+          <div style="font-style:italic;">${p.npcQuote}</div>
+          <div style="margin-top:0.5rem; font-size:0.74rem; color:var(--text-muted);"><strong>Instalación requerida:</strong> ${p.name}</div>
+        `;
+      } else if (currentNPCDialogMode === 'trap') {
+        box.style.borderLeftColor = 'var(--accent-red)';
+        box.innerHTML = `
+          <div style="font-size:0.72rem; color:var(--accent-red); font-weight:800; margin-bottom:0.25rem;">🚨 CONDICIÓN INNEGOCIABLE DEL CLIENTE:</div>
+          <div>${p.npcTrap}</div>
+          <div style="margin-top:0.5rem; font-size:0.73rem; color:#fca5a5;">Si cometes este fallo, el cliente publicará una reclamación y restará <strong>-50 Cr</strong> al grupo.</div>
+        `;
+      } else {
+        box.style.borderLeftColor = 'var(--accent-green)';
+        box.innerHTML = `
+          <div style="font-size:0.72rem; color:var(--accent-green); font-weight:800; margin-bottom:0.25rem;">📐 ESPECIFICACIÓN TÉCNICA Y CRITERIOS (RD 127/2014):</div>
+          <div><strong>Criterios evaluados:</strong> <code style="color:var(--accent-blue);">${p.ce}</code></div>
+          <div style="margin-top:0.35rem; font-size:0.76rem; color:var(--text-muted);"><strong>Resumen en Hoja:</strong> ${p.client}</div>
+        `;
+      }
+    }
+
+    function openPersonalizedSevilleMap() {
+      switchTab(4);
+      setMapStatusFilter('pending');
+      if (activeOperator) {
+        const nextPending = practicesCatalog.find(p => getOperatorPracticeGrade(p.code) === null) || practicesCatalog[0];
+        if (nextPending) selectPracticeNPC(nextPending.code, true);
+        showToast(`🗺️ Mostrando misiones pendientes de ${activeOperator.code} en Sevilla.`);
+      }
+    }
+
+
+    // -------------------------------------------------------------------------
+    // 3. BASE DE DATOS DE LOS 21 OPERARIOS (CON TUS NOTAS REALES DE PRÁCTICAS Y EXÁMENES)
+    // -------------------------------------------------------------------------
+    function buildPracsArray(first8) {
+      const arr = new Array(27).fill(null);
+      first8.forEach((v, i) => { arr[i] = v; });
+      return arr;
+    }
+    function buildExamsArray(vals) {
+      const arr = new Array(10).fill(null);
+      vals.forEach((v, i) => { arr[i] = v; });
+      return arr;
+    }
+
+    const defaultOperatorsDB = {
+      '4725': { pin:'4725', code:'Operario #01', coop:'Cooperativa ALFA',  role:'Sin Cargo', roleColor:'white', shift:'', ra:[1700,1680,1680,1720,1720], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([8.5,8.5,8.0,9.0,8.5,8.5,9.0,8.5]), exams:buildExamsArray([6.4,5.05,5.2,null]) },
+      '4253': { pin:'4253', code:'Operario #02', coop:'Cooperativa BETA',  role:'Sin Cargo', roleColor:'white', shift:'', ra:[1480,1450,1720,1700,1680], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([7.5,8.0,8.5,8.5,8.0,8.0,8.5,7.5]), exams:buildExamsArray([2.1,1.0,1.0,null]) },
+      '9875': { pin:'9875', code:'Operario #03', coop:'Cooperativa GAMMA', role:'Supervisor de Obra', roleColor:'white', shift:'', ra:[1050,1020,1720,1480,1450], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([6.0,6.0,7.5,7.0,7.0,6.5,7.0,6.5]), exams:buildExamsArray([null,null,null,null]) },
+      '1142': { pin:'1142', code:'Operario #04', coop:'Cooperativa DELTA', role:'Sin Cargo', roleColor:'white', shift:'', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:['escudo_prl','polimetro','planos','materiales'], pracs:buildPracsArray([9.0,8.5,8.5,9.0,8.5,8.5,9.0,8.5]), exams:buildExamsArray([6.15,1.8,2.8,null]) },
+      '1254': { pin:'1254', code:'Operario #05', coop:'Cooperativa ALFA',  role:'Sin Cargo', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([7.5,7.5,7.0,8.0,7.5,7.5,7.5,7.5]), exams:buildExamsArray([9.0,7.6,8.0,7.8]) },
+      '1024': { pin:'1024', code:'Operario #06', coop:'Cooperativa ALFA',  role:'Supervisor de Obra', roleColor:'blue', shift:'Martes (Semana 1) · Suplente X-J', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:['escudo_prl','polimetro','planos','materiales'], pracs:buildPracsArray([9.0,9.0,8.5,9.0,9.0,9.0,9.5,9.0]), exams:buildExamsArray([9.2,8.8,9.0,8.6]) },
+      '6834': { pin:'6834', code:'Operario #07', coop:'Cooperativa BETA',  role:'Sin Cargo', roleColor:'white', shift:'', ra:[920,1050,1020,1040,880], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([5.0,5.5,5.0,5.5,5.0,5.0,5.5,5.0]), exams:buildExamsArray([8.2,7.4,7.5,7.6]) },
+      '9514': { pin:'9514', code:'Operario #08', coop:'Cooperativa GAMMA', role:'Sin Cargo', roleColor:'white', shift:'', ra:[1080,1020,960,1010,1050], exits:0, mins:0, prlPen:0, badges:['planos'], pracs:buildPracsArray([5.5,5.0,5.0,5.5,5.0,5.5,5.0,5.5]), exams:buildExamsArray([9.0,8.5,8.8,8.4]) },
+      '3072': { pin:'3072', code:'Operario #09', coop:'Cooperativa GAMMA', role:'Responsable PRL', roleColor:'red', shift:'En Reserva / Plan de Recuperación PRL', ra:[1000,1050,1020,1040,2000], exits:4, mins:26, prlPen:150, badges:['polimetro'], pracs:buildPracsArray([5.5,5.5,6.0,6.0,6.0,6.5,6.5,7.0]), exams:buildExamsArray([4.0,5.2,5.0,4.8]) },
+      '7558': { pin:'7558', code:'Operario #10', coop:'Cooperativa DELTA', role:'Sin Cargo', roleColor:'white', shift:'', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:['escudo_prl','planos'], pracs:buildPracsArray([9.0,8.5,8.5,9.0,8.5,8.5,9.0,8.5]), exams:buildExamsArray([9.0,6.8,7.0,6.5]) },
+      '3625': { pin:'3625', code:'Operario #11', coop:'Cooperativa ALFA',  role:'Supervisor de Obra', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([7.5,7.5,7.5,7.0,7.5,8.0,7.5,7.5]), exams:buildExamsArray([3.8,6.2,6.5,6.4]) },
+      '2345': { pin:'2345', code:'Operario #12', coop:'Cooperativa BETA',  role:'Jefe de Materiales', roleColor:'white', shift:'', ra:[920,1050,1020,1040,880], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([5.0,5.0,5.5,5.0,5.5,5.0,5.0,5.5]), exams:buildExamsArray([6.8,6.2,6.5,6.4]) },
+      '2048': { pin:'2048', code:'Operario #13', coop:'Cooperativa BETA',  role:'Jefe de Herramientas', roleColor:'green', shift:'Miércoles (Semana 1) · Suplente M-J', ra:[1520,1480,1450,1500,1500], exits:1, mins:3, prlPen:0, badges:['escudo_prl','polimetro','planos','materiales'], pracs:buildPracsArray([8.0,8.0,7.5,8.0,7.5,8.0,8.0,8.0]), exams:buildExamsArray([9.0,8.8,9.2,9.0]) },
+      '2525': { pin:'2525', code:'Operario #14', coop:'Cooperativa GAMMA', role:'Responsable PRL', roleColor:'white', shift:'', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([8.5,9.0,8.5,9.0,8.5,9.0,8.5,8.5]), exams:buildExamsArray([7.8,7.4,7.6,7.5]) },
+      '8652': { pin:'8652', code:'Operario #15', coop:'Cooperativa DELTA', role:'Responsable PRL', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:['escudo_prl','planos'], pracs:buildPracsArray([7.5,7.5,7.0,7.5,7.5,7.5,8.0,7.5]), exams:buildExamsArray([6.0,4.2,5.5,5.2]) },
+      '4657': { pin:'4657', code:'Operario #16', coop:'Cooperativa ALFA',  role:'Jefe de Herramientas', roleColor:'white', shift:'', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([9.0,8.5,9.0,8.5,8.5,9.0,8.5,9.0]), exams:buildExamsArray([9.0,7.8,8.2,8.4]) },
+      '4454': { pin:'4454', code:'Operario #17', coop:'Cooperativa BETA',  role:'Jefe de Materiales', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:['escudo_prl','planos'], pracs:buildPracsArray([7.5,7.5,7.5,7.5,7.0,7.5,7.5,8.0]), exams:buildExamsArray([7.4,6.8,7.2,7.4]) },
+      '2528': { pin:'2528', code:'Operario #18', coop:'Cooperativa GAMMA', role:'Sin Cargo', roleColor:'white', shift:'', ra:[1750,1700,1680,1720,1700], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([9.0,8.5,8.5,9.0,9.0,8.5,8.5,9.0]), exams:buildExamsArray([4.8,5.2,5.8,5.6]) },
+      '4096': { pin:'4096', code:'Operario #19', coop:'Cooperativa DELTA', role:'Jefe de Materiales', roleColor:'yellow', shift:'Suplente de Retén · Plan de Impulso', ra:[2000,1020,960,1010,1050], exits:3, mins:17, prlPen:30, badges:['escudo_prl','planos'], pracs:buildPracsArray([10.0,6.0,5.5,5.5,6.0,5.5,6.0,6.0]), exams:buildExamsArray([6.2,5.8,6.0,6.4]) },
+      '6865': { pin:'6865', code:'Operario #20', coop:'Cooperativa DELTA', role:'Sin Cargo', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([7.5,7.5,7.5,7.0,7.5,7.5,8.0,7.5]), exams:buildExamsArray([7.1,7.5,7.5,7.5]) },
+      '6461': { pin:'6461', code:'Operario #21', coop:'Cooperativa ALFA',  role:'Sin Cargo', roleColor:'white', shift:'', ra:[1520,1480,1450,1500,1500], exits:0, mins:0, prlPen:0, badges:[], pracs:buildPracsArray([7.5,7.5,7.0,7.5,7.5,8.0,7.5,7.5]), exams:buildExamsArray([7.5,7.5,7.5,8.0]) }
+    };
+
+    let operatorsDB = JSON.parse(localStorage.getItem('tf_operators_v4')) || defaultOperatorsDB;
+    let activeOperator = null;
+    let currentPracFilter = 'all';
+
+    // -------------------------------------------------------------------------
+    // 4. ESTADO DE LOS 4 CARGOS PRINCIPALES (OCTUBRE, NOVIEMBRE, DICIEMBRE)
+    // -------------------------------------------------------------------------
+    const defaultCyclesRoles = {
+      octubre: [
+        { key: 'supervisor',   area: '🔵 1. SUPERVISORES DE OBRA', sub: 'Calidad, Polímetro y Nivelación', color: '#38bdf8', titulares: ['Operario #20', 'Operario #15', 'Operario #08'], reten: 'Retén: Operario #13 · Fase Piloto Octubre' },
+        { key: 'herramientas', area: '🟢 2. JEFES DE HERRAMIENTAS', sub: 'Carros VDE 1000V y Equipos', color: '#10b981', titulares: ['Operario #11', 'Operario #18', 'Operario #21'], reten: 'Retén: Operario #04 · Fase Piloto Octubre' },
+        { key: 'materiales',   area: '🟡 3. JEFES DE MATERIALES',   sub: 'Almacén, Stock y Albaranes TPV', color: '#fbbf24', titulares: ['Operario #01', 'Operario #17', 'Operario #02'], reten: 'Retén: Operario #16 · Fase Piloto Octubre' },
+        { key: 'prl',          area: '🔴 4. INSPECTORES PRL Y 5S',  sub: 'EPIs, Guantes, LOTO y Limpieza', color: '#f87171', titulares: ['Operario #07', 'Operario #06', 'Operario #10*'], reten: '*Operario #10 relevó al #09 por sanción de guantes' }
+      ],
+      noviembre: [
+        { key: 'supervisor',   area: '🔵 1. SUPERVISORES DE OBRA', sub: 'Asignación activa en PORTAL_PUBLICO', color: '#38bdf8', titulares: ['Operario #06', 'Operario #11', 'Operario #03'], reten: '1.º Retén: Operario #13' },
+        { key: 'herramientas', area: '🟢 2. JEFES DE HERRAMIENTAS', sub: 'Asignación activa en PORTAL_PUBLICO', color: '#10b981', titulares: ['Operario #13', 'Operario #16', 'Operario #04'], reten: '1.º Retén: Operario #20' },
+        { key: 'materiales',   area: '🟡 3. JEFES DE MATERIALES',   sub: 'Asignación activa en PORTAL_PUBLICO', color: '#fbbf24', titulares: ['Operario #12', 'Operario #17', 'Operario #19'], reten: '1.º Retén: Operario #01' },
+        { key: 'prl',          area: '🔴 4. INSPECTORES PRL Y 5S',  sub: 'Asignación activa en PORTAL_PUBLICO', color: '#f87171', titulares: ['Operario #14', 'Operario #15', 'Operario #09*'], reten: '*Operario #09 en Plan de Recuperación PRL / Relevo #10' }
+      ],
+      diciembre: [
+        { key: 'supervisor',   area: '🔵 1. SUPERVISORES DE OBRA', sub: 'Proyección según puntos actuales (Rotación)', color: '#38bdf8', titulares: ['Operario #13', 'Operario #16', 'Operario #05'], reten: 'Candidato Beca Impulso: Operario #14' },
+        { key: 'herramientas', area: '🟢 2. JEFES DE HERRAMIENTAS', sub: 'Proyección por evolución en 27 Prácticas', color: '#10b981', titulares: ['Operario #06', 'Operario #10', 'Operario #08'], reten: 'Candidato Beca Impulso: Operario #07' },
+        { key: 'materiales',   area: '🟡 3. JEFES DE MATERIALES',   sub: 'Proyección por rotación mensual obligatoria', color: '#fbbf24', titulares: ['Operario #01', 'Operario #04', 'Operario #18'], reten: 'Candidato recuperación: Operario #11' },
+        { key: 'prl',          area: '🔴 4. INSPECTORES PRL Y 5S',  sub: 'Proyección 0 multas PRL ni absentismo', color: '#f87171', titulares: ['Operario #10', 'Operario #17', 'Operario #21'], reten: 'Condicionado a 0 salidas rojas de aula' }
+      ]
+    };
+
+    let cyclesRoles = JSON.parse(localStorage.getItem('tf_cycles_roles_v4')) || defaultCyclesRoles;
+    let currentCycle = 'noviembre';
+    let currentWeek = 1;
+
+    const allBadgesCatalog = [
+      { id: 'escudo_prl', icon: '🛡️', name: 'Escudo PRL & LOTO', desc: 'UT1 Superada' },
+      { id: 'polimetro',  icon: '⚡', name: 'Maestro Polímetro', desc: 'UT2 Superada' },
+      { id: 'planos',     icon: '📐', name: 'Intérprete Planos', desc: 'UT3 Superada' },
+      { id: 'materiales', icon: '🔧', name: 'Técnico Materiales', desc: 'UT4 Superada' },
+      { id: 'cobre',      icon: '🔌', name: 'Especialista Cobre', desc: 'UT5 Superada' },
+      { id: 'cuadrista',  icon: '🧰', name: 'Cuadrista DIN', desc: 'UT6 Superada' },
+      { id: 'luminico',   icon: '💡', name: 'Ing. Iluminación', desc: 'UT7 Superada' },
+      { id: 'inspector_csi', icon: '🏆', name: 'Inspector Jefe CSI', desc: 'UT10 Global' }
+    ];
+
+    // -------------------------------------------------------------------------
+    // 5. FUNCIONES AUXILIARES E INTELIGENCIA DE PARSEO SIN DESVÍOS DE COLUMNA
+    // -------------------------------------------------------------------------
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.remove('show'), 3800);
+    }
+
+    function setDiagLog(msg) {
+      const el = document.getElementById('sync-diagnostic-log');
+      if (el) el.textContent = msg;
+    }
+
+    function savePersistentData() {
+      localStorage.setItem('tf_operators_v4', JSON.stringify(operatorsDB));
+      localStorage.setItem('tf_units_v4', JSON.stringify(unitsData));
+      localStorage.setItem('tf_cycles_roles_v4', JSON.stringify(cyclesRoles));
+    }
+
+    function switchTab(num) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + num).classList.add('active');
+      document.getElementById('tab-btn-' + num).classList.add('active');
+      if (num === 4) {
+        setTimeout(() => {
+          initSevilleMap();
+          if (sevilleMapInstance) sevilleMapInstance.invalidateSize();
+        }, 120);
+      }
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    // Parser seguro de números españoles: NO convierte textos como "Operario #01" en 1
+    function parseStrictGrade(val) {
+      if (val === null || val === undefined) return null;
+      const s = String(val).trim().replace(/^"|"$/g, '').trim();
+      if (s === '') return null;
+      // Solo acepta formato numérico real (ej: "8,5", "10", "6.95", "0")
+      if (!/^-?\d+([.,]\d+)?$/.test(s)) return null;
+      const num = parseFloat(s.replace(',', '.'));
+      return isNaN(num) ? null : num;
+    }
+
+    function parseCSVToMatrix(text) {
+      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+      return lines.map(line => {
+        const res = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          if (ch === '"') inQuotes = !inQuotes;
+          else if (ch === ',' && !inQuotes) { res.push(cur.trim()); cur = ''; }
+          else cur += ch;
+        }
+        res.push(cur.trim());
+        return res;
+      });
+    }
+
+    // Procesa una matriz 2D de PORTAL_PUBLICO detectando las cabeceras exactas
+    function applyPortalPublicoMatrix(rows) {
+      if (!rows || rows.length < 2) return 0;
+      const headers = rows[0].map(h => String(h).trim());
+
+      const idxPin    = headers.indexOf('PIN');
+      const idxCode   = headers.indexOf('Codigo_Op');
+      const idxCoop   = headers.indexOf('Cooperativa');
+      const idxCargo  = headers.indexOf('Cargo');
+      const idxColor  = headers.indexOf('Color_Cargo');
+      const idxTurno  = headers.indexOf('Turno');
+      const idxRA1    = headers.indexOf('RA1');
+      const idxRA2    = headers.indexOf('RA2');
+      const idxRA3    = headers.indexOf('RA3');
+      const idxRA4    = headers.indexOf('RA4');
+      const idxRA5    = headers.indexOf('RA5');
+      const idxSal    = headers.indexOf('Salidas_Sem');
+      const idxMin    = headers.indexOf('Min_Fuera');
+      const idxMul    = headers.indexOf('Multas_PRL');
+      const idxIns    = headers.indexOf('Insignias');
+
+      // Localizar índices exactos de P1..P27
+      const pracIndices = [];
+      for (let p = 1; p <= 27; p++) {
+        pracIndices.push(headers.indexOf('P' + p));
+      }
+
+      // También comprobar si la hoja incluye columnas EX1_UT1..EX10_UT10
+      const examIndices = [];
+      for (let u = 1; u <= 10; u++) {
+        let eIdx = headers.indexOf(`EX${u}_UT${u}`);
+        if (eIdx === -1) eIdx = headers.indexOf(`UT${u}`);
+        examIndices.push(eIdx);
+      }
+
+      let updatedCount = 0;
+      for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        const pin = idxPin !== -1 ? String(row[idxPin] || '').trim() : '';
+        const code = idxCode !== -1 ? String(row[idxCode] || '').trim() : '';
+        if (!pin && !code) continue;
+
+        // Buscar operario existente por PIN o por Codigo_Op
+        let targetKey = pin;
+        if (!operatorsDB[targetKey]) {
+          const found = Object.values(operatorsDB).find(o => o.code === code);
+          if (found) targetKey = found.pin;
+        }
+        const prev = operatorsDB[targetKey] || { exams: new Array(10).fill(null), pracs: new Array(27).fill(null) };
+
+        const newPracs = [];
+        for (let p = 0; p < 27; p++) {
+          const cIdx = pracIndices[p];
+          newPracs.push(cIdx !== -1 ? parseStrictGrade(row[cIdx]) : (prev.pracs ? prev.pracs[p] : null));
+        }
+
+        const newExams = prev.exams ? [...prev.exams] : new Array(10).fill(null);
+        for (let u = 0; u < 10; u++) {
+          if (examIndices[u] !== -1) {
+            newExams[u] = parseStrictGrade(row[examIndices[u]]);
+          }
+        }
+
+        operatorsDB[targetKey] = {
+          pin: targetKey,
+          code: code || prev.code || 'Operario',
+          coop: idxCoop !== -1 ? (row[idxCoop] || prev.coop) : prev.coop,
+          role: idxCargo !== -1 ? (row[idxCargo] || 'Sin Cargo') : prev.role,
+          roleColor: idxColor !== -1 ? (row[idxColor] || 'white') : prev.roleColor,
+          shift: idxTurno !== -1 ? (row[idxTurno] || '') : prev.shift,
+          ra: [
+            idxRA1 !== -1 ? (parseStrictGrade(row[idxRA1]) || 0) : 0,
+            idxRA2 !== -1 ? (parseStrictGrade(row[idxRA2]) || 0) : 0,
+            idxRA3 !== -1 ? (parseStrictGrade(row[idxRA3]) || 0) : 0,
+            idxRA4 !== -1 ? (parseStrictGrade(row[idxRA4]) || 0) : 0,
+            idxRA5 !== -1 ? (parseStrictGrade(row[idxRA5]) || 0) : 0
+          ],
+          exits: idxSal !== -1 ? (parseStrictGrade(row[idxSal]) || 0) : 0,
+          mins: idxMin !== -1 ? (parseStrictGrade(row[idxMin]) || 0) : 0,
+          prlPen: idxMul !== -1 ? (parseStrictGrade(row[idxMul]) || 0) : 0,
+          badges: idxIns !== -1 ? String(row[idxIns] || '').split('|').map(s => s.trim()).filter(s => s && s !== 'ninguna') : (prev.badges || []),
+          pracs: newPracs,
+          exams: newExams
+        };
+        updatedCount++;
+      }
+      return updatedCount;
+    }
+
+    // Procesa una matriz 2D de EXAMENES_10UT (11 cols) o de Examenes subir (13 cols) sin desvíos
+    function applyExamsMatrix(rows) {
+      if (!rows || rows.length < 2) return 0;
+      const headers = rows[0].map(h => String(h).trim().toUpperCase());
+
+      const idxPin  = headers.indexOf('PIN');
+      const idxCode = headers.indexOf('CODIGO_OP');
+
+      // Detectar automáticamente en qué columna está cada examen (EX1_UT1..EX10_UT10 o UT1..UT10)
+      const examColIndices = [];
+      for (let u = 1; u <= 10; u++) {
+        let cIdx = headers.indexOf(`EX${u}_UT${u}`);
+        if (cIdx === -1) cIdx = headers.indexOf(`UT${u}`);
+        if (cIdx === -1) cIdx = headers.findIndex(h => h.includes(`EX${u}`) || h.endsWith(`UT${u}`));
+        examColIndices.push(cIdx);
+      }
+
+      let updatedCount = 0;
+      for (let r = 1; r < rows.length; r++) {
+        const row = rows[r];
+        const pinVal  = idxPin !== -1 ? String(row[idxPin] || '').trim() : '';
+        const codeVal = idxCode !== -1 ? String(row[idxCode] || '').trim() : String(row[0] || '').trim();
+
+        let op = null;
+        if (pinVal && operatorsDB[pinVal]) {
+          op = operatorsDB[pinVal];
+        } else if (codeVal) {
+          op = Object.values(operatorsDB).find(o => o.code.toLowerCase() === codeVal.toLowerCase());
+        }
+        if (!op) continue;
+
+        const newExams = new Array(10).fill(null);
+        for (let u = 0; u < 10; u++) {
+          const colPos = examColIndices[u];
+          if (colPos !== -1 && colPos < row.length) {
+            newExams[u] = parseStrictGrade(row[colPos]);
+          }
+        }
+        op.exams = newExams;
+        updatedCount++;
+      }
+      return updatedCount;
+    }
+
+    // Procesa matriz 2D de CATALOGO_PRACTICAS para actualizar vídeos de clientes
+    function applyCatalogoMatrix(rows) {
+      if (!rows || rows.length < 2) return 0;
+      let count = 0;
+      for (let r = 1; r < rows.length; r++) {
+        const code = String(rows[r][0] || '').trim();
+        const item = practicesCatalog.find(p => p.code === code);
+        if (item) {
+          if (rows[r][1]) item.name = rows[r][1];
+          if (rows[r][2]) item.ut = rows[r][2];
+          if (rows[r][3]) item.ce = rows[r][3].replace(/^CE:\s*/i, '');
+          if (rows[r][4]) item.client = rows[r][4];
+          if (rows[r][5] !== undefined) item.video = String(rows[r][5] || '').trim();
+          count++;
+        }
+      }
+      return count;
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. BOTONES DE SINCRONIZACIÓN SEPARADOS Y BOTÓN MAESTRO WEBHOOK
+    // -------------------------------------------------------------------------
+    async function syncPracticesNow() {
+      const webhookUrl = (document.getElementById('webhook-url-input').value || localStorage.getItem('tf_webhook_url') || '').trim();
+      const csvUrl = (document.getElementById('csv-url-input').value || '').trim();
+
+      if (webhookUrl) {
+        try {
+          setDiagLog('⏳ Leyendo pestaña PORTAL_PUBLICO desde Webhook...');
+          const res = await fetch(`${webhookUrl}?action=READ_SHEET&sheet=PORTAL_PUBLICO`);
+          const data = await res.json();
+          if (data && data.ok && data.rows) {
+            const count = applyPortalPublicoMatrix(data.rows);
+            savePersistentData();
+            refreshAllViews();
+            setDiagLog(`✅ PORTAL_PUBLICO sincronizado vía Webhook: ${count} operarios y sus 27 prácticas actualizados.`);
+            showToast(`✅ Prácticas sincronizadas (${count} operarios).`);
+            return;
+          }
+        } catch (e) { /* Fallback a CSV */ }
+      }
+
+      if (!csvUrl) return showToast('⚠️ Indica la URL CSV de PORTAL_PUBLICO o configura el Webhook.');
+      try {
+        setDiagLog('⏳ Descargando CSV de PORTAL_PUBLICO...');
+        const res = await fetch(csvUrl);
+        const text = await res.text();
+        const rows = parseCSVToMatrix(text);
+        const count = applyPortalPublicoMatrix(rows);
+        savePersistentData();
+        refreshAllViews();
+        setDiagLog(`✅ CSV PORTAL_PUBLICO sincronizado: ${count} operarios actualizados.`);
+        showToast(`✅ Prácticas sincronizadas desde CSV (${count} operarios).`);
+      } catch (err) {
+        setDiagLog('❌ Error al leer el CSV de PORTAL_PUBLICO.');
+        showToast('❌ Error de conexión al leer PORTAL_PUBLICO.');
+      }
+    }
+
+    async function syncExamsNow() {
+      const webhookUrl = (document.getElementById('webhook-url-input').value || localStorage.getItem('tf_webhook_url') || '').trim();
+      const examTab = document.getElementById('exam-sheet-tab-select').value;
+      const examCsvUrl = (document.getElementById('exams-csv-url-input').value || '').trim();
+
+      if (webhookUrl) {
+        try {
+          setDiagLog(`⏳ Leyendo pestaña "${examTab}" desde Webhook...`);
+          const res = await fetch(`${webhookUrl}?action=READ_SHEET&sheet=${encodeURIComponent(examTab)}`);
+          const data = await res.json();
+          if (data && data.ok && data.rows) {
+            const count = applyExamsMatrix(data.rows);
+            savePersistentData();
+            refreshAllViews();
+            setDiagLog(`✅ Pestaña "${examTab}" sincronizada sin desvíos: ${count} expedientes de examen actualizados.`);
+            showToast(`✅ 10 Exámenes sincronizados desde "${examTab}" (${count} operarios).`);
+            return;
+          }
+        } catch (e) { /* Fallback a CSV */ }
+      }
+
+      if (!examCsvUrl) {
+        return showToast(`⚠️ Para leer la pestaña "${examTab}" directamente, guarda tu URL de Webhook o pega el enlace CSV publicado de esa pestaña.`);
+      }
+
+      try {
+        setDiagLog('⏳ Leyendo CSV de Exámenes...');
+        const res = await fetch(examCsvUrl);
+        const text = await res.text();
+        const rows = parseCSVToMatrix(text);
+        const count = applyExamsMatrix(rows);
+        savePersistentData();
+        refreshAllViews();
+        setDiagLog(`✅ CSV de Exámenes sincronizado: ${count} operarios actualizados.`);
+        showToast(`✅ Exámenes sincronizados desde CSV (${count} operarios).`);
+      } catch (err) {
+        setDiagLog('❌ No se pudo leer el CSV de Exámenes.');
+        showToast('❌ Error al leer el CSV de Exámenes.');
+      }
+    }
+
+    async function syncAllFromWebhook() {
+      const webhookUrl = (document.getElementById('webhook-url-input').value || localStorage.getItem('tf_webhook_url') || '').trim();
+      const examTab = document.getElementById('exam-sheet-tab-select').value;
+      if (!webhookUrl) {
+        await syncPracticesNow();
+        return;
+      }
+      localStorage.setItem('tf_webhook_url', webhookUrl);
+      try {
+        setDiagLog('⏳ Sincronizando TODAS las pestañas desde Google Sheets...');
+        const res = await fetch(`${webhookUrl}?action=SYNC_ALL&examSheet=${encodeURIComponent(examTab)}`);
+        const data = await res.json();
+        if (data && data.ok) {
+          const cPortal = applyPortalPublicoMatrix(data.portal);
+          const cExams  = applyExamsMatrix(data.exams);
+          const cCat    = applyCatalogoMatrix(data.catalogo);
+          savePersistentData();
+          refreshAllViews();
+          setDiagLog(`✅ SINCRONIZACIÓN TOTAL OK: ${cPortal} operarios (Prácticas P1-P27), ${cExams} filas de exámenes (${data.examSheetUsed}) y ${cCat} vídeos.`);
+          showToast('✅ ¡Sincronización total completada con éxito!');
+        }
+      } catch (err) {
+        setDiagLog('⚠️ El Webhook actual aún no tiene el nuevo código SYNC_ALL. Actualiza el Apps Script (Paso 1) y vuelve a implementar.');
+        showToast('⚠️ Actualiza primero el código Apps Script de tu hoja (Paso 1).');
+      }
+    }
+
+    function refreshAllViews() {
+      renderMainDashboardRoles();
+      renderUTCards();
+      renderCargosTab();
+      renderPracticesCatalog();
+      if (sevilleMapInstance) updateSevilleMapMarkers();
+      renderCourseCalendar();
+      populateOperatorSelects();
+      if (activeOperator && operatorsDB[activeOperator.pin]) {
+        activeOperator = operatorsDB[activeOperator.pin];
+        renderOperatorDashboard();
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. RENDERIZADO DE PORTADA, 10 UTs Y CARGOS PRINCIPALES
+    // -------------------------------------------------------------------------
+    function renderMainDashboardRoles() {
+      const container = document.getElementById('main-active-roles');
+      if (!container) return;
+      const novRoles = cyclesRoles.noviembre;
+
+      container.innerHTML = novRoles.map(r => {
+        const idxM = (0 + currentWeek - 1) % 3;
+        const idxX = (1 + currentWeek - 1) % 3;
+        const idxJ = (2 + currentWeek - 1) % 3;
+        return `
+          <div style="background:var(--bg-card); padding:0.7rem 0.85rem; border-radius:10px; border-left:4px solid ${r.color}; border:1px solid var(--border-subtle); border-left-width:4px; border-left-color:${r.color};">
+            <div style="font-size:0.74rem; font-weight:800; color:${r.color};">${r.area}</div>
+            <div style="font-size:0.75rem; margin-top:0.3rem; color:#fff;">
+              <strong>M:</strong> ${r.titulares[idxM]} · <strong>X:</strong> ${r.titulares[idxX]} · <strong>J:</strong> ${r.titulares[idxJ]}
+            </div>
+            <div style="font-size:0.68rem; color:var(--text-muted); margin-top:0.2rem;">${r.reten}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderUTCards() {
+      const container = document.getElementById('ut-cards-container');
+      const openCount = unitsData.filter(u => u.unlocked).length;
+      document.getElementById('ut-unlocked-count').textContent = `${openCount} / 10 Misiones Abiertas`;
+
+      container.innerHTML = unitsData.map((u, idx) => `
+        <article class="ut-card ${u.unlocked ? 'unlocked' : 'locked'}">
+          <div>
+            <div class="ut-top">
+              <span class="ut-code">${u.ut} · ${u.col}</span>
+              <span class="ut-status ${u.unlocked ? 'open' : 'closed'}">
+                ${u.unlocked ? '🔓 ABIERTA' : '🔒 BLOQUEADA'}
+              </span>
+            </div>
+            <h2 style="font-size:0.98rem; font-weight:800; color:#fff; margin-top:0.35rem;">${u.title}</h2>
+            <div style="font-size:0.78rem; color:var(--accent-blue); font-weight:600; margin-top:0.25rem;">🎮 ${u.simName}</div>
+            <div style="font-size:0.7rem; color:var(--text-muted); font-family:var(--font-mono); margin-top:0.2rem;">CE: ${u.ce}</div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.45rem;">${u.summary}</p>
+          </div>
+          <div>
+            ${u.unlocked
+              ? `<button class="btn-launch-sim" onclick="window.open('${u.simUrl}', '_blank', 'noopener')">▶ Iniciar Misión / Simulador</button>`
+              : `<button class="btn-locked-sim" disabled>🔒 Bloqueada por Dirección</button>`
+            }
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function setRolesCycle(cycle) {
+      currentCycle = cycle;
+      ['oct', 'nov', 'dic'].forEach(k => {
+        const btn = document.getElementById('cycle-btn-' + k);
+        const match = (k === 'oct' && cycle === 'octubre') || (k === 'nov' && cycle === 'noviembre') || (k === 'dic' && cycle === 'diciembre');
+        btn.style.background = match ? 'var(--accent-blue)' : 'var(--bg-darker)';
+        btn.style.color = match ? '#082f49' : 'var(--text-muted)';
+      });
+      renderCargosTab();
+    }
+
+    function setRolesWeek(wk) {
+      currentWeek = wk;
+      [1, 2, 3].forEach(n => {
+        const b = document.getElementById('wk-btn-' + n);
+        b.style.background = (n === wk) ? 'var(--accent-orange)' : 'var(--bg-card)';
+        b.style.color = (n === wk) ? '#fff' : 'var(--text-muted)';
+      });
+      renderCargosTab();
+      renderMainDashboardRoles();
+    }
+
+    function renderCargosTab() {
+      const tbody = document.getElementById('cargos-main-table-body');
+      const rows = cyclesRoles[currentCycle] || cyclesRoles.noviembre;
+
+      tbody.innerHTML = rows.map(item => {
+        const idxM = (0 + currentWeek - 1) % 3;
+        const idxX = (1 + currentWeek - 1) % 3;
+        const idxJ = (2 + currentWeek - 1) % 3;
+        return `
+          <tr>
+            <td>
+              <strong style="color:${item.color}; font-size:0.86rem;">${item.area}</strong>
+              <div style="font-size:0.72rem; color:var(--text-muted);">${item.sub}</div>
+            </td>
+            <td><span class="role-pill" style="background:rgba(56,189,248,0.15); color:#fff; border:1px solid ${item.color};">${item.titulares[idxM]}</span></td>
+            <td><span class="role-pill" style="background:rgba(56,189,248,0.15); color:#fff; border:1px solid ${item.color};">${item.titulares[idxX]}</span></td>
+            <td><span class="role-pill" style="background:rgba(56,189,248,0.15); color:#fff; border:1px solid ${item.color};">${item.titulares[idxJ]}</span></td>
+            <td style="font-size:0.75rem; color:var(--text-muted);">${item.reten}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Ranking dinámico del Radar calculado con las notas reales sincronizadas
+      const rankedOps = Object.values(operatorsDB).map(op => {
+        const m = calculateOperatorMetrics(op);
+        return { op, m };
+      }).sort((a, b) => b.m.weightedTotalPts - a.m.weightedTotalPts);
+
+      const radarGrid = document.getElementById('radar-candidates-grid');
+      const topSup = rankedOps.slice(0, 3);
+      const topHer = [...rankedOps].sort((a, b) => b.m.avgPracs - a.m.avgPracs).slice(0, 3);
+      const topMat = rankedOps.slice(3, 6);
+      const topPrl = rankedOps.filter(x => (x.op.prlPen || 0) === 0 && (x.op.exits || 0) <= 1).slice(0, 3);
+
+      const blocks = [
+        { title: '🔵 Más cerca de SUPERVISOR DE OBRA', color: '#38bdf8', list: topSup, desc: x => `Media Global: ${x.m.finalGrade10}/10 (${x.m.weightedTotalPts} pts · Exámenes: ${x.m.avgExams.toFixed(2)})` },
+        { title: '🟢 Más cerca de JEFE DE HERRAMIENTAS', color: '#10b981', list: topHer, desc: x => `Media en Prácticas P1–P27: ${x.m.avgPracs.toFixed(2)}/10 (${x.m.validPracs.length} prácticas entregadas)` },
+        { title: '🟡 Más cerca de JEFE DE MATERIALES', color: '#fbbf24', list: topMat, desc: x => `Puntuación combinada: ${x.m.weightedTotalPts} pts · ${x.op.coop}` },
+        { title: '🔴 Más cerca de INSPECTOR PRL Y 5S', color: '#f87171', list: topPrl, desc: x => `0 Cr en multas PRL · ${x.op.exits || 0} salidas de aula · Nota: ${x.m.finalGrade10}/10` }
+      ];
+
+      radarGrid.innerHTML = blocks.map(b => `
+        <div style="background:var(--bg-darker); border-left:4px solid ${b.color}; border-radius:10px; padding:0.9rem; border:1px solid var(--border-subtle); border-left-width:4px; border-left-color:${b.color};">
+          <div style="font-weight:800; font-size:0.88rem; color:${b.color}; margin-bottom:0.55rem;">${b.title}</div>
+          <div style="display:flex; flex-direction:column; gap:0.45rem;">
+            ${b.list.map((item, i) => `
+              <div style="background:var(--bg-card); padding:0.5rem 0.7rem; border-radius:8px; font-size:0.75rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem;">
+                <strong style="color:#fff;">#${i + 1} · ${item.op.code} (${item.op.role})</strong>
+                <span style="color:var(--text-muted); font-family:var(--font-mono); font-size:0.71rem;">${b.desc(item)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 8. EXPEDIENTE PRIVADO DEL OPERARIO (70% EXÁMENES + 30% PRÁCTICAS)
+    // -------------------------------------------------------------------------
+    function loginWithPin() {
+      const pin = document.getElementById('pin-input').value.trim();
+      const err = document.getElementById('pin-error-msg');
+      if (operatorsDB[pin]) {
+        err.textContent = '';
+        activeOperator = operatorsDB[pin];
+        renderOperatorDashboard();
+        if (sevilleMapInstance) updateSevilleMapMarkers();
+        document.getElementById('pin-login-view').style.display = 'none';
+        document.getElementById('operator-dashboard-view').style.display = 'block';
+        showToast(`🔓 Expediente abierto: ${activeOperator.code}`);
+      } else {
+        err.textContent = '❌ PIN no válido. Verifica tu código personal de 4 dígitos.';
+      }
+    }
+
+    function logoutOperator() {
+      activeOperator = null;
+      if (sevilleMapInstance) updateSevilleMapMarkers();
+      document.getElementById('pin-input').value = '';
+      document.getElementById('operator-dashboard-view').style.display = 'none';
+      document.getElementById('pin-login-view').style.display = 'block';
+    }
+
+    function calculateOperatorMetrics(op) {
+      const validExams = (op.exams || []).filter(v => v !== null && v !== undefined && !isNaN(v));
+      const avgExams = validExams.length > 0 ? validExams.reduce((a, b) => a + b, 0) / validExams.length : 0;
+
+      const validPracs = (op.pracs || []).filter(v => v !== null && v !== undefined && !isNaN(v));
+      const avgPracs = validPracs.length > 0 ? validPracs.reduce((a, b) => a + b, 0) / validPracs.length : 0;
+
+      const examPoints = Math.round(avgExams * 700);
+      const pracPoints = Math.round(avgPracs * 300);
+      const weightedTotalPts = examPoints + pracPoints;
+      const finalGrade10 = (weightedTotalPts / 1000).toFixed(2);
+
+      return { validExams, avgExams, validPracs, avgPracs, examPoints, pracPoints, weightedTotalPts, finalGrade10 };
+    }
+
+    function renderOperatorDashboard() {
+      const op = activeOperator;
+      if (!op) return;
+      const m = calculateOperatorMetrics(op);
+
+      document.getElementById('op-code-title').textContent = `${op.code} · ${op.coop}`;
+      const rankEl = document.getElementById('op-rank-badge');
+      if (m.weightedTotalPts >= 8500) { rankEl.textContent = '🏆 INSPECTOR JEFE CSI'; rankEl.style.color = '#10b981'; }
+      else if (m.weightedTotalPts >= 7000) { rankEl.textContent = '🟢 OFICIAL DE 1.ª'; rankEl.style.color = '#38bdf8'; }
+      else if (m.weightedTotalPts >= 5000) { rankEl.textContent = '🟡 OFICIAL DE 2.ª'; rankEl.style.color = '#f59e0b'; }
+      else { rankEl.textContent = '🔴 APRENDIZ EN PRÁCTICAS'; rankEl.style.color = '#ef4444'; }
+
+      const rolePill = document.getElementById('op-role-pill');
+      rolePill.className = `role-pill role-${op.roleColor || 'none'}`;
+      rolePill.textContent = op.role || 'Sin Cargo';
+      document.getElementById('op-shift-pill').textContent = op.shift ? `📅 ${op.shift}` : '📅 Turno rotativo de cooperativa';
+      document.getElementById('op-global-score').textContent = `${m.finalGrade10} / 10`;
+
+      const pctEx = Math.min(70, Math.round((m.examPoints / 10000) * 100));
+      const pctPr = Math.min(30, Math.round((m.pracPoints / 10000) * 100));
+      document.getElementById('bar-70-exams').style.width = `${pctEx}%`;
+      document.getElementById('bar-30-pracs').style.width = `${pctPr}%`;
+      document.getElementById('op-split-summary').textContent = `${m.weightedTotalPts.toLocaleString('es-ES')} / 10.000 pts (${m.validExams.length} ex. y ${m.validPracs.length} prác. calificadas)`;
+      document.getElementById('label-70-exams').textContent = `📘 70% Exámenes (Media ${m.avgExams.toFixed(2)}): ${m.examPoints} / 7.000 pts`;
+      document.getElementById('label-30-pracs').textContent = `🛠️ 30% Prácticas (Media ${m.avgPracs.toFixed(2)}): ${m.pracPoints} / 3.000 pts`;
+
+      const totalRa = op.ra.reduce((a, b) => a + b, 0);
+      document.getElementById('op-total-xp').textContent = `${totalRa.toLocaleString('es-ES')} / 10.000 XP (Hoja PORTAL_PUBLICO)`;
+      const raNames = [
+        'RA1 · Herramientas, Material y PRL',
+        'RA2 · Montaje de Canalizaciones y Cajas',
+        'RA3 · Tendido de Conductores y Empalmes',
+        'RA4 · Mecanismos y Automatismos Domóticos',
+        'RA5 · Diagnóstico, Averías y Fase Dual'
+      ];
+      document.getElementById('op-ra-bars').innerHTML = op.ra.map((pts, i) => {
+        const pct = Math.min(100, Math.round((pts / 2000) * 100));
+        const col = pts >= 1400 ? '#10b981' : (pts >= 1000 ? '#38bdf8' : '#ef4444');
+        return `
+          <div class="ra-row">
+            <div class="ra-row-top">
+              <span>${raNames[i]}</span>
+              <strong style="font-family:var(--font-mono); color:${col};">${pts}/2000 (${(pts/200).toFixed(1)})</strong>
+            </div>
+            <div class="ra-bar-bg"><div class="ra-bar-fill" style="width:${pct}%; background:${col};"></div></div>
+          </div>
+        `;
+      }).join('');
+
+      const freeLeft = Math.max(0, 2 - (op.exits || 0));
+      const pen = (op.exits > 2 ? (op.exits - 2) * 50 : 0) + (op.extraBathPen || 0);
+      document.getElementById('op-restroom-quota').textContent = `${freeLeft} / 2 Libres`;
+      document.getElementById('op-restroom-mins').textContent = `${op.mins || 0} min`;
+      document.getElementById('op-restroom-penalty').textContent = pen > 0 ? `-${pen} Cr` : '0 Cr';
+      document.getElementById('op-restroom-penalty').style.color = pen > 0 ? 'var(--accent-red)' : 'var(--accent-green)';
+
+      document.getElementById('op-badges-grid').innerHTML = allBadgesCatalog.map(b => {
+        const earned = (op.badges || []).includes(b.id);
+        return `
+          <div class="badge-item ${earned ? 'earned' : 'locked'}">
+            <div style="font-size:1.35rem;">${b.icon}</div>
+            <div style="font-size:0.72rem; font-weight:800; margin-top:0.15rem;">${b.name}</div>
+            <div style="font-size:0.65rem; color:var(--text-muted);">${earned ? '✅ Desbloqueada' : '🔒 Pendiente'}</div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('op-exams-tbody').innerHTML = unitsData.map((u, idx) => {
+        const grade = op.exams && op.exams[idx] !== null && op.exams[idx] !== undefined ? Number(op.exams[idx]) : null;
+        const pts = grade !== null ? Math.round(grade * 70) : '—';
+        const badge = grade !== null
+          ? `<span style="font-family:var(--font-mono); font-weight:800; color:${grade >= 5 ? '#10b981' : '#ef4444'};">${grade.toFixed(2)} / 10</span>`
+          : `<span style="color:var(--text-muted);">Pendiente (${u.examDate})</span>`;
+        return `
+          <tr>
+            <td style="font-family:var(--font-mono); font-weight:800; color:var(--accent-orange);">${u.col}</td>
+            <td><strong>${u.title}</strong></td>
+            <td style="font-family:var(--font-mono); font-size:0.73rem; color:var(--accent-blue);">${u.ce}</td>
+            <td>${badge}</td>
+            <td style="font-family:var(--font-mono);">${pts !== '—' ? pts + ' pts' : '—'}</td>
+          </tr>
+        `;
+      }).join('');
+
+      renderOperatorPracsGrid();
+    }
+
+    function filterOperatorPracs(mode) {
+      currentPracFilter = mode;
+      renderOperatorPracsGrid();
+    }
+
+    function renderOperatorPracsGrid() {
+      const op = activeOperator;
+      if (!op) return;
+      const doneCount = (op.pracs || []).filter(v => v !== null && !isNaN(v)).length;
+      document.getElementById('op-pracs-summary').textContent = `Completadas: ${doneCount} de 27 prácticas (${Math.round((doneCount/27)*100)}% del cuaderno de taller).`;
+
+      const filtered = practicesCatalog.map((p, idx) => ({
+        ...p,
+        grade: op.pracs && op.pracs[idx] !== null && op.pracs[idx] !== undefined ? Number(op.pracs[idx]) : null
+      })).filter(item => {
+        if (currentPracFilter === 'done') return item.grade !== null;
+        if (currentPracFilter === 'pending') return item.grade === null;
+        return true;
+      });
+
+      document.getElementById('op-pracs-grid').innerHTML = filtered.map(item => `
+        <div style="background:var(--bg-darker); border:1px solid ${item.grade !== null ? 'rgba(16,185,129,0.45)' : 'var(--border-subtle)'}; border-radius:10px; padding:0.85rem; display:flex; flex-direction:column; justify-content:space-between; gap:0.55rem;">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono); font-weight:800; font-size:0.76rem; color:var(--accent-orange);">${item.code} · ${item.ut}</span>
+              <span style="font-family:var(--font-mono); font-weight:800; font-size:0.8rem; color:${item.grade !== null ? '#10b981' : 'var(--text-muted)'};">
+                ${item.grade !== null ? '✅ ' + item.grade.toFixed(1) + ' / 10' : '⏳ Pendiente'}
+              </span>
+            </div>
+            <div style="font-weight:800; font-size:0.84rem; color:#fff; margin-top:0.25rem;">${item.name}</div>
+            <div style="font-size:0.73rem; color:var(--accent-amber); font-weight:700; margin-top:0.2rem;">${item.npcAvatar} ${item.npcName} · <span style="color:var(--text-muted);">${item.hood}</span></div>
+            <div style="font-size:0.7rem; color:var(--accent-blue); font-family:var(--font-mono); margin-top:0.2rem;">CE: ${item.ce}</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; margin-top:0.25rem;">
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">+${item.rewardCr} Cr</span>
+            <button onclick="switchTab(4); setTimeout(() => selectPracticeNPC('${item.code}', true), 160);" style="padding:0.35rem 0.65rem; border-radius:6px; background:rgba(56,189,248,0.16); color:var(--accent-blue); border:1px solid rgba(56,189,248,0.4); font-size:0.72rem; font-weight:800;">
+              📍 Ver en Mapa / Hablar con Cliente
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 9. NÓMINA VIRTUAL IMPRIMIBLE
+    // -------------------------------------------------------------------------
+    function openPayslipModal() {
+      const op = activeOperator;
+      if (!op) return;
+      const m = calculateOperatorMetrics(op);
+
+      const baseSalary = Math.round((m.weightedTotalPts / 1000) * 100);
+      const hasRole = op.role && op.role !== 'Sin Cargo' && !op.role.includes('Cese');
+      const roleBonus = hasRole ? 200 : 0;
+      const prlDed = op.prlPen || 0;
+      const bathDed = (op.exits > 2 ? (op.exits - 2) * 50 : 0) + (op.extraBathPen || 0);
+      const net = Math.max(0, baseSalary + roleBonus - prlDed - bathDed);
+
+      document.getElementById('pay-op-code').textContent = op.code;
+      document.getElementById('pay-coop').textContent = op.coop;
+      document.getElementById('pay-rank').textContent = document.getElementById('op-rank-badge').textContent;
+      document.getElementById('pay-role').textContent = op.role;
+      document.getElementById('pay-period').textContent = `Emisión: ${new Date().toLocaleDateString('es-ES')}`;
+
+      document.getElementById('pay-lines-tbody').innerHTML = `
+        <tr>
+          <td>Rendimiento Técnico Ponderado (70% Exámenes: ${m.avgExams.toFixed(2)} | 30% Prácticas: ${m.avgPracs.toFixed(2)})</td>
+          <td style="text-align:right; font-family:monospace;">+${baseSalary.toFixed(2)} Cr</td>
+          <td style="text-align:right;">—</td>
+        </tr>
+        <tr>
+          <td>Plus de Responsabilidad por Cargo Principal (${op.role})</td>
+          <td style="text-align:right; font-family:monospace;">+${roleBonus.toFixed(2)} Cr</td>
+          <td style="text-align:right;">—</td>
+        </tr>
+        <tr>
+          <td>Deducción por Incidencias de Seguridad PRL / EPIs</td>
+          <td style="text-align:right;">—</td>
+          <td style="text-align:right; font-family:monospace; color:#dc2626;">-${prlDed.toFixed(2)} Cr</td>
+        </tr>
+        <tr>
+          <td>Deducción por Permisos / Absentismo de Aula (${op.mins || 0} min acumulados)</td>
+          <td style="text-align:right;">—</td>
+          <td style="text-align:right; font-family:monospace; color:#dc2626;">-${bathDed.toFixed(2)} Cr</td>
+        </tr>
+      `;
+      document.getElementById('pay-net-total').textContent = `${net.toFixed(2)} Cr`;
+
+      const stamp = document.getElementById('pay-dual-stamp');
+      const apto = m.weightedTotalPts >= 5000 && prlDed === 0;
+      stamp.textContent = apto ? '✅ APTO PARA FASE DUAL EN EMPRESA' : '⚠️ EN REVISIÓN TÉCNICA / PRL';
+      stamp.style.color = apto ? '#059669' : '#dc2626';
+      stamp.style.borderColor = apto ? '#059669' : '#dc2626';
+
+      openModal('modal-payslip');
+    }
+
+    // -------------------------------------------------------------------------
+    // 10. CATÁLOGO DE VÍDEOS DE CLIENTES Y CALENDARIO
+    // -------------------------------------------------------------------------
+    function renderPracticesCatalog() {
+      const utFilter = document.getElementById('prac-ut-filter').value;
+      const q = (document.getElementById('prac-search').value || '').toLowerCase().trim();
+      const grid = document.getElementById('practices-catalog-grid');
+
+      const list = practicesCatalog.filter(p => {
+        const matchUt = (utFilter === 'ALL') || (p.ut === utFilter);
+        const matchQ = !q || p.name.toLowerCase().includes(q) || p.code.toLowerCase().includes(q) || p.client.toLowerCase().includes(q);
+        return matchUt && matchQ;
+      });
+
+      grid.innerHTML = list.map(p => {
+        const grade = getOperatorPracticeGrade(p.code);
+        const statusPill = grade !== null
+          ? `<span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#10b981;">✅ ${grade.toFixed(1)}/10</span>`
+          : `<span style="font-family:var(--font-mono); font-size:0.72rem; font-weight:800; color:#fbbf24;">+${p.rewardCr} Cr</span>`;
+        return `
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; gap:0.7rem; border-color:${grade !== null ? 'rgba(16,185,129,0.45)' : 'var(--border-subtle)'};">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; font-weight:800; padding:0.18rem 0.5rem; border-radius:6px; background:rgba(249,115,22,0.18); color:var(--accent-orange);">${p.code} · ${p.ut}</span>
+              ${statusPill}
+            </div>
+            <h3 style="font-size:0.95rem; font-weight:800; color:#fff; margin-top:0.35rem;">${p.name}</h3>
+            <div style="margin-top:0.35rem; padding:0.45rem 0.6rem; border-radius:8px; background:var(--bg-darker); border:1px solid var(--border-subtle); font-size:0.75rem;">
+              <div style="font-weight:800; color:var(--accent-amber);">${p.npcAvatar} ${p.npcName}</div>
+              <div style="font-size:0.71rem; color:var(--accent-blue);">📍 ${p.hood}</div>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.35rem;">${p.client}</p>
+            <div style="font-size:0.7rem; font-family:var(--font-mono); color:var(--accent-green); margin-top:0.35rem;">CE: ${p.ce}</div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem;">
+            <button onclick="selectPracticeNPC('${p.code}', true); document.getElementById('seville-map').scrollIntoView({behavior:'smooth', block:'center'});"
+              style="padding:0.55rem; border-radius:8px; background:rgba(56,189,248,0.18); color:var(--accent-blue); border:1px solid rgba(56,189,248,0.45); font-size:0.76rem; font-weight:800;">
+              🗣️ Hablar con ${p.npcName.split(' ')[0]} en Mapa Sevilla
+            </button>
+            ${p.video
+              ? `<a href="${p.video}" target="_blank" rel="noopener" style="text-align:center; text-decoration:none; padding:0.5rem; border-radius:8px; background:rgba(16,185,129,0.18); color:#10b981; border:1px solid #10b981; font-size:0.75rem; font-weight:800;">▶️ Abrir Vídeo del Cliente (YouTube)</a>`
+              : `<span style="text-align:center; padding:0.5rem; border-radius:8px; background:var(--bg-darker); color:var(--text-muted); border:1px solid var(--border-subtle); font-size:0.72rem;">📹 Vídeo en grabación (Briefing en Consola NPC)</span>`
+            }
+          </div>
+        </div>
+      `}).join('');
+    }
+
+    function renderCourseCalendar() {
+      const now = new Date();
+      const startCourse = new Date('2026-09-15T08:00:00');
+      const startDual = new Date('2027-05-03T08:00:00');
+
+      const diffMs = Math.max(0, startDual - now);
+      const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+      let sessions = 0;
+      const cur = new Date(now);
+      while (cur < startDual) {
+        const d = cur.getDay();
+        if (d === 2 || d === 3 || d === 4) sessions++;
+        cur.setDate(cur.getDate() + 1);
+      }
+
+      const totalSpan = startDual - startCourse;
+      const elapsed = Math.min(totalSpan, Math.max(0, now - startCourse));
+      const pct = Math.round((elapsed / totalSpan) * 100);
+
+      document.getElementById('dual-days-left').textContent = `${daysLeft} días naturales`;
+      document.getElementById('dual-sessions-left').textContent = `${sessions} jornadas de taller (M-X-J) hasta Dual`;
+      document.getElementById('course-progress-pct').textContent = `${pct}% completado`;
+      document.getElementById('course-progress-bar').style.width = `${pct}%`;
+
+      let nextExam = unitsData.find(u => new Date(u.examDate) >= now) || unitsData[unitsData.length - 1];
+      document.getElementById('next-exam-banner').textContent = `${nextExam.col}: ${nextExam.title} (${nextExam.examDate})`;
+
+      document.getElementById('calendar-exams-tbody').innerHTML = unitsData.map(u => {
+        const passed = new Date(u.examDate) < now;
+        return `
+          <tr>
+            <td style="font-family:var(--font-mono); font-weight:800; color:var(--accent-orange);">${u.col}</td>
+            <td><strong>${u.title}</strong></td>
+            <td>${u.evalTerm}</td>
+            <td style="font-family:var(--font-mono);">${u.examDate}</td>
+            <td style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-blue);">${u.ce}</td>
+            <td>
+              <span style="padding:0.2rem 0.5rem; border-radius:999px; font-size:0.7rem; font-weight:800; background:${passed ? 'rgba(16,185,129,0.2)' : 'rgba(56,189,248,0.18)'}; color:${passed ? '#10b981' : '#38bdf8'};">
+                ${passed ? '✅ Realizado' : '📅 Programado'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // -------------------------------------------------------------------------
+    // 11. PERMISOS / ABSENTISMO (CON TUS REGISTROS DE PERMISOS_AULA)
+    // -------------------------------------------------------------------------
+    const defaultCustomsLogs = [
+      { date: '16/11/2026 20:28:31', op: 'Operario #01', duration: '0m 5s',  status: '🔴 Exceso Cupo (>2/sem)', penalty: 50 },
+      { date: '16/11/2026 20:28:06', op: 'Operario #01', duration: '0m 14s', status: '🟢 Cortesía OK',          penalty: 0 },
+      { date: '16/11/2026 20:26:58', op: 'Operario #01', duration: '0m 15s', status: '🟢 Cortesía OK',          penalty: 0 }
+    ];
+    let customsLogs = JSON.parse(localStorage.getItem('tf_customs_logs_v4')) || defaultCustomsLogs;
+    const customsState = { activePin: null, startTime: null, intervalId: null };
+
+    function populateOperatorSelects() {
+      const selBath = document.getElementById('customs-op-select');
+      const selGradeOp = document.getElementById('teacher-grade-op');
+      const sorted = Object.values(operatorsDB).sort((a, b) => a.code.localeCompare(b.code));
+      const html = sorted.map(o => `<option value="${o.pin}">${o.code} (${o.coop})</option>`).join('');
+      if (selBath) selBath.innerHTML = html;
+      if (selGradeOp) selGradeOp.innerHTML = html;
+      populateGradeItemSelect();
+    }
+
+    function populateGradeItemSelect() {
+      const type = document.getElementById('teacher-grade-type') ? document.getElementById('teacher-grade-type').value : 'EXAM';
+      const selItem = document.getElementById('teacher-grade-item');
+      if (!selItem) return;
+      if (type === 'EXAM') {
+        selItem.innerHTML = unitsData.map((u, idx) => `<option value="${idx}">${u.col} · ${u.title}</option>`).join('');
+      } else {
+        selItem.innerHTML = practicesCatalog.map((p, idx) => `<option value="${idx}">${p.code} · ${p.name.slice(0, 38)}...</option>`).join('');
+      }
+    }
+
+    function startRestroomExit() {
+      if (customsState.activePin) return;
+      const pin = document.getElementById('customs-op-select').value;
+      const op = operatorsDB[pin];
+      if (!op) return;
+
+      customsState.activePin = pin;
+      customsState.startTime = Date.now();
+      document.getElementById('btn-start-exit').disabled = true;
+      document.getElementById('btn-start-exit').style.opacity = '0.5';
+      document.getElementById('btn-end-exit').disabled = false;
+      document.getElementById('btn-end-exit').style.opacity = '1';
+      document.getElementById('customs-active-label').textContent = `🚽 FUERA DE AULA: ${op.code.toUpperCase()}`;
+
+      updateCustomsTimerUI();
+      customsState.intervalId = setInterval(updateCustomsTimerUI, 1000);
+    }
+
+    function updateCustomsTimerUI() {
+      if (!customsState.startTime) return;
+      const sec = Math.floor((Date.now() - customsState.startTime) / 1000);
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+
+      const timerEl = document.getElementById('customs-timer');
+      const box = document.getElementById('traffic-box');
+      const txt = document.getElementById('customs-status-text');
+      document.getElementById('bulb-green').className = 'bulb';
+      document.getElementById('bulb-amber').className = 'bulb';
+      document.getElementById('bulb-red').className = 'bulb';
+      timerEl.textContent = `${m}:${s}`;
+
+      if (sec < 240) {
+        box.className = 'traffic-light-box state-green';
+        timerEl.style.color = 'var(--accent-green)';
+        document.getElementById('bulb-green').className = 'bulb on-green';
+        txt.style.color = 'var(--accent-green)';
+        txt.textContent = '🟢 Margen de cortesía (< 4:00 min)';
+      } else if (sec < 360) {
+        box.className = 'traffic-light-box state-amber';
+        timerEl.style.color = 'var(--accent-amber)';
+        document.getElementById('bulb-amber').className = 'bulb on-amber';
+        txt.style.color = 'var(--accent-amber)';
+        txt.textContent = '🟡 Retraso en servicio: -15 Cr en nómina virtual';
+      } else {
+        box.className = 'traffic-light-box state-red';
+        timerEl.style.color = 'var(--accent-red)';
+        document.getElementById('bulb-red').className = 'bulb on-red';
+        txt.style.color = 'var(--accent-red)';
+        txt.textContent = '🔴 Exceso grave (>= 6:00 min): -50 Cr y pérdida de puntos de cargo';
+      }
+    }
+
+    function endRestroomExit() {
+      if (!customsState.activePin) return;
+      clearInterval(customsState.intervalId);
+
+      const sec = Math.floor((Date.now() - customsState.startTime) / 1000);
+      const minsRound = Math.max(1, Math.round(sec / 60));
+      const durStr = `${Math.floor(sec / 60)}m ${sec % 60}s`;
+      const op = operatorsDB[customsState.activePin];
+
+      op.exits = (op.exits || 0) + 1;
+      op.mins = (op.mins || 0) + minsRound;
+
+      let penalty = 0;
+      let status = '🟢 Cortesía OK';
+      if (sec >= 360 || op.exits > 2) {
+        penalty = 50;
+        status = op.exits > 2 ? '🔴 Exceso Cupo (>2/sem)' : '🔴 Exceso Tiempo (>=6m)';
+      } else if (sec >= 240) {
+        penalty = 15;
+        status = '🟡 Retraso (4-6m)';
+      }
+      op.extraBathPen = (op.extraBathPen || 0) + (op.exits <= 2 ? penalty : 0);
+
+      const logItem = {
+        date: new Date().toLocaleString('es-ES'),
+        op: op.code,
+        duration: durStr,
+        status,
+        penalty
+      };
+      customsLogs.unshift(logItem);
+      localStorage.setItem('tf_customs_logs_v4', JSON.stringify(customsLogs));
+      savePersistentData();
+      renderCustomsLog();
+
+      sendToWebhook({
+        action: 'LOG_PERMISO',
+        codigoOp: op.code,
+        duracion: durStr,
+        estado: status,
+        penalizacion: penalty,
+        salidasSem: op.exits
+      });
+
+      customsState.activePin = null;
+      customsState.startTime = null;
+      document.getElementById('btn-start-exit').disabled = false;
+      document.getElementById('btn-start-exit').style.opacity = '1';
+      document.getElementById('btn-end-exit').disabled = true;
+      document.getElementById('btn-end-exit').style.opacity = '0.5';
+      document.getElementById('customs-active-label').textContent = 'PUESTO EN ESPERA · NINGÚN OPERARIO FUERA DEL TALLER';
+      document.getElementById('customs-timer').textContent = '00:00';
+      showToast(`✅ Regreso registrado: ${op.code} (${durStr}).`);
+    }
+
+    function renderCustomsLog() {
+      const tbody = document.getElementById('customs-log-tbody');
+      document.getElementById('customs-log-count').textContent = `${customsLogs.length} registros`;
+      tbody.innerHTML = customsLogs.map(l => `
+        <tr>
+          <td style="font-family:var(--font-mono); font-size:0.72rem;">${l.date}</td>
+          <td><strong>${l.op}</strong></td>
+          <td style="font-family:var(--font-mono);">${l.duration}</td>
+          <td>${l.status}</td>
+          <td style="font-family:var(--font-mono); font-weight:800; color:${l.penalty > 0 ? 'var(--accent-red)' : 'var(--accent-green)'};">
+            ${l.penalty > 0 ? '-' + l.penalty + ' Cr' : '0 Cr'}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function exportCustomsCSV() {
+      let csv = 'Fecha_Hora,Codigo_Op,Duracion,Estado,Penalizacion_Creditos_Cr\n';
+      customsLogs.forEach(l => {
+        csv += `"${l.date}","${l.op}","${l.duration}","${l.status}",${l.penalty}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'PERMISOS_AULA_TECNOFLUX.csv';
+      a.click();
+    }
+
+    // -------------------------------------------------------------------------
+    // 12. MODO PROFESOR SIMPLIFICADO Y PLANTILLAS EXACTAS
+    // -------------------------------------------------------------------------
+    let teacherUnlocked = false;
+
+    function openTeacherAccess() {
+      openModal('modal-teacher');
+      if (!teacherUnlocked) {
+        document.getElementById('teacher-auth-view').style.display = 'block';
+        document.getElementById('teacher-panel-view').style.display = 'none';
+        document.getElementById('teacher-pass-input').value = '';
+        setTimeout(() => document.getElementById('teacher-pass-input').focus(), 80);
+      } else {
+        showTeacherPanel();
+      }
+    }
+
+    function verifyTeacherPass() {
+      const val = document.getElementById('teacher-pass-input').value.trim();
+      const target = String.fromCharCode(48, 56, 48, 56, 48, 57, 48, 57);
+      if (val === target) {
+        teacherUnlocked = true;
+        document.getElementById('teacher-auth-err').textContent = '';
+        showTeacherPanel();
+      } else {
+        document.getElementById('teacher-auth-err').textContent = '⛔ Credencial docente incorrecta.';
+      }
+    }
+
+    function showTeacherPanel() {
+      document.getElementById('teacher-auth-view').style.display = 'none';
+      document.getElementById('teacher-panel-view').style.display = 'block';
+      renderTeacherRolesTable();
+      renderTeacherUTList();
+      populateOperatorSelects();
+      document.getElementById('webhook-url-input').value = localStorage.getItem('tf_webhook_url') || '';
+    }
+
+    function renderTeacherRolesTable() {
+      const tbody = document.getElementById('teacher-roles-table-body');
+      const opsList = Object.values(operatorsDB).map(o => o.code).sort();
+      const nov = cyclesRoles.noviembre;
+
+      tbody.innerHTML = nov.map((r, rIdx) => `
+        <tr>
+          <td><strong style="color:${r.color};">${r.area}</strong></td>
+          ${[0, 1, 2].map(tIdx => `
+            <td>
+              <select onchange="updateSpecialRoleHolder(${rIdx}, ${tIdx}, this.value)"
+                style="width:100%; padding:0.4rem; border-radius:6px; background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); font-size:0.75rem;">
+                ${opsList.map(code => `<option value="${code}" ${r.titulares[tIdx].includes(code) ? 'selected' : ''}>${code}</option>`).join('')}
+              </select>
+            </td>
+          `).join('')}
+        </tr>
+      `).join('');
+    }
+
+    function updateSpecialRoleHolder(roleIdx, turnIdx, opCode) {
+      cyclesRoles.noviembre[roleIdx].titulares[turnIdx] = opCode;
+      savePersistentData();
+      renderMainDashboardRoles();
+      renderCargosTab();
+      showToast(`✅ Cargo actualizado: ${opCode} en ${cyclesRoles.noviembre[roleIdx].area}`);
+    }
+
+    function saveQuickGrade() {
+      const pin = document.getElementById('teacher-grade-op').value;
+      const type = document.getElementById('teacher-grade-type').value;
+      const itemIdx = Number(document.getElementById('teacher-grade-item').value);
+      const valStr = document.getElementById('teacher-grade-val').value;
+      if (valStr === '') return showToast('⚠️ Introduce una nota entre 0 y 10.');
+      const grade = Math.min(10, Math.max(0, Number(valStr)));
+
+      const op = operatorsDB[pin];
+      if (!op) return;
+
+      if (type === 'EXAM') {
+        if (!op.exams) op.exams = new Array(10).fill(null);
+        op.exams[itemIdx] = grade;
+        const colName = unitsData[itemIdx].col; // EX1_UT1..EX10_UT10
+        sendToWebhook({ action: 'UPDATE_EXAM', codigoOp: op.code, ut: colName, nota: grade });
+        showToast(`✅ Examen ${colName} (${grade}) guardado para ${op.code}.`);
+      } else {
+        if (!op.pracs) op.pracs = new Array(27).fill(null);
+        op.pracs[itemIdx] = grade;
+        const pCode = 'P' + (itemIdx + 1);
+        sendToWebhook({ action: 'UPDATE_PRAC', codigoOp: op.code, prac: pCode, nota: grade });
+        showToast(`✅ Práctica ${pCode} (${grade}) guardada para ${op.code}.`);
+      }
+
+      savePersistentData();
+      refreshAllViews();
+    }
+
+    function renderTeacherUTList() {
+      const list = document.getElementById('teacher-ut-list');
+      list.innerHTML = unitsData.map((u, idx) => `
+        <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:0.4rem; background:var(--bg-card); padding:0.45rem 0.65rem; border-radius:6px;">
+          <span style="font-size:0.75rem; font-weight:700;"><strong style="color:var(--accent-orange);">${u.col}:</strong> ${u.title}</span>
+          <div style="display:flex; gap:0.4rem; align-items:center;">
+            <input type="date" value="${u.examDate}" onchange="unitsData[${idx}].examDate=this.value; savePersistentData(); renderCourseCalendar();"
+              style="padding:0.25rem 0.4rem; border-radius:4px; background:var(--bg-darker); color:#fff; border:1px solid var(--border-subtle); font-size:0.72rem;" />
+            <button onclick="unitsData[${idx}].unlocked=!unitsData[${idx}].unlocked; savePersistentData(); renderTeacherUTList(); renderUTCards();"
+              style="padding:0.28rem 0.6rem; border-radius:6px; font-size:0.7rem; font-weight:800; background:${u.unlocked ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}; color:${u.unlocked ? '#10b981' : '#f87171'};">
+              ${u.unlocked ? '🔓 Abierta' : '🔒 Cerrada'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Plantilla CSV con las cabeceras EXACTAS de tus pestañas de Exámenes (EX1_UT1 .. EX10_UT10)
+    function downloadExamsCSVTemplate() {
+      let csv = 'PIN,Codigo_Op,Cooperativa,EX1_UT1,EX2_UT2,EX3_UT3,EX4_UT4,EX5_UT5,EX6_UT6,EX7_UT7,EX8_UT8,EX9_UT9,EX10_UT10\n';
+      Object.values(operatorsDB).sort((a,b) => a.code.localeCompare(b.code)).forEach(op => {
+        const ex = (op.exams || new Array(10).fill(null)).map(v => v !== null && v !== undefined ? String(v).replace('.', ',') : '').map(s => s.includes(',') ? `"${s}"` : s).join(',');
+        csv += `${op.pin},"${op.code}","${op.coop}",${ex}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Plantilla_Examenes_EX1_a_EX10.csv';
+      a.click();
+    }
+
+    function downloadPortalPublicoTemplate() {
+      const pHeaders = Array.from({length: 27}, (_, i) => 'P' + (i + 1)).join(',');
+      let csv = `PIN,Codigo_Op,Cooperativa,Cargo,Color_Cargo,Turno,RA1,RA2,RA3,RA4,RA5,Salidas_Sem,Min_Fuera,Multas_PRL,Insignias,${pHeaders}\n`;
+      Object.values(operatorsDB).sort((a,b) => a.code.localeCompare(b.code)).forEach(op => {
+        const pr = (op.pracs || new Array(27).fill(null)).map(v => v !== null && v !== undefined ? `"${String(v).replace('.', ',')}"` : '').join(',');
+        const ins = (op.badges && op.badges.length > 0) ? op.badges.join('|') : 'ninguna';
+        csv += `${op.pin},"${op.code}","${op.coop}","${op.role}","${op.roleColor}","${op.shift}",${op.ra.join(',')},${op.exits||0},${op.mins||0},${op.prlPen||0},"${ins}",${pr}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Plantilla_PORTAL_PUBLICO_P1_a_P27.csv';
+      a.click();
+    }
+
+    function saveWebhookConfig() {
+      const url = document.getElementById('webhook-url-input').value.trim();
+      localStorage.setItem('tf_webhook_url', url);
+      showToast('💾 URL de Webhook guardada. Ya puedes pulsar "⚡ Sincronizar TODO".');
+    }
+
+    function sendToWebhook(payload) {
+      const url = localStorage.getItem('tf_webhook_url');
+      if (!url) return;
+      const qs = new URLSearchParams(payload).toString();
+      fetch(`${url}?${qs}`, { mode: 'no-cors' }).catch(() => {});
+    }
+
+    function submitHRForm(e) {
+      e.preventDefault();
+      const op = document.getElementById('hr-op-code').value.trim() || 'ANÓNIMO';
+      const cat = document.getElementById('hr-category').value;
+      const msg = document.getElementById('hr-message').value.trim();
+      sendToWebhook({ action: 'HR_BUZON', codigoOp: op, categoria: cat, mensaje: msg });
+      document.getElementById('hr-message').value = '';
+      showToast('📨 Parte confidencial enviado a RRHH / Tutoría.');
+    }
+
+    // -------------------------------------------------------------------------
+    // 13. INICIALIZACIÓN
+    // -------------------------------------------------------------------------
+    const DEFAULT_SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSKknmlwxHN0uVXrIOcj9QvEATQAcM-iH2B6Jizku-CRrT25q-hpG1McO2LQtXmebx5FN_sp7_kARjc/pub?output=csv';
+
+    window.onload = function () {
+      refreshAllViews();
+      renderCustomsLog();
+      document.getElementById('csv-url-input').value = DEFAULT_SHEET_CSV;
+
+      // Si ya hay un Webhook guardado, sincroniza todo automáticamente; si no, sincroniza PORTAL_PUBLICO por CSV
+      const savedWebhook = localStorage.getItem('tf_webhook_url');
+      if (savedWebhook) {
+        document.getElementById('webhook-url-input').value = savedWebhook;
+        syncAllFromWebhook();
+      } else {
+        syncPracticesNow();
+      }
+    };
+  </script>
+</body>
+</html>
