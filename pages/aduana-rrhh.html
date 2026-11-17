@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TECNOFLUX 3013 // Permisos / Absentismo &amp; Buzón Ético RRHH</title>
+  <link rel="stylesheet" href="../css/tecnoflux-theme.css" />
+  <style>
+    .traffic-box {
+      background: var(--bg-surface-alt);
+      border: 2px solid var(--border-strong);
+      border-radius: 10px;
+      padding: 1.2rem;
+      text-align: center;
+      margin: 0.75rem 0;
+    }
+    .traffic-box.green { border-color: var(--status-ok); background: var(--status-ok-bg); }
+    .traffic-box.amber { border-color: var(--status-warn); background: var(--status-warn-bg); }
+    .traffic-box.red   { border-color: var(--red-primary); background: var(--red-soft); }
+
+    .bulbs-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 0.5rem 0;
+    }
+    .bulb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: 2px solid #94a3b8;
+    }
+    .bulb.on-green { background: var(--status-ok); border-color: #065f46; box-shadow: 0 0 10px rgba(5,150,105,0.5); }
+    .bulb.on-amber { background: var(--status-warn); border-color: #92400e; box-shadow: 0 0 10px rgba(217,119,6,0.5); }
+    .bulb.on-red   { background: var(--red-primary); border-color: #7f1d1d; box-shadow: 0 0 10px rgba(220,38,38,0.5); }
+  </style>
+</head>
+<body>
+
+  <!-- CABECERA TÉCNICA SUPERIOR -->
+  <header class="tf-topbar">
+    <div class="tf-topbar-inner">
+      <div class="tf-brand">
+        <div class="tf-logo-box">
+          <span>TF</span>
+          <span>3013</span>
+        </div>
+        <div>
+          <div class="tf-brand-title">
+            <span>PERMISOS / ABSENTISMO DE AULA &amp; BUZÓN ÉTICO RRHH</span>
+            <span class="tf-spec-tag">MOD-05 // CONTROL DE PUESTO Y TUTORÍA</span>
+          </div>
+          <div class="tf-brand-sub">Registro Cronometrado de Salidas al Lavabo (Cr) y Canal Confidencial de Mediación</div>
+        </div>
+      </div>
+
+      <div class="tf-actions">
+        <div class="rfid-pill">
+          <span class="rfid-dot"></span>
+          <span id="aduana-rfid-status">FICHAJE RFID LAVABO: LISTO</span>
+        </div>
+        <a href="../index.html" class="btn-tech btn-outline" style="text-decoration:none;">
+          <span>📊</span>
+          <span>Volver al Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="tf-subnav" aria-label="Módulos del Portal">
+      <div class="tf-subnav-inner" id="tf-dynamic-nav"></div>
+    </nav>
+  </header>
+
+  <main class="tf-container">
+
+    <!-- BLOQUE 1: TERMINAL DE SALIDA AL LAVABO + HISTORIAL PERMANENTE -->
+    <section class="grid-2" style="margin-bottom:1.15rem;">
+      <!-- Izquierda: Cronómetro y Semáforo -->
+      <div class="tech-panel" style="border-top:4px solid var(--red-primary);">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[ADUANA_LAVABO // CRONÓMETRO_DE_PUESTO]</span>
+            <h1 class="tech-panel-title">🚽 Control de Salidas al Servicio (Manual o Tarjeta RFID)</h1>
+          </div>
+        </div>
+
+        <label style="font-size:0.74rem; font-weight:700; color:var(--ink-secondary); display:block; margin-bottom:0.25rem;">
+          Operario que solicita salida (o pasa su tarjeta RFID al salir y volver):
+        </label>
+        <select id="aduana-op-select" class="tf-select"></select>
+
+        <div id="traffic-box" class="traffic-box green">
+          <div id="aduana-active-label" style="font-family:var(--font-mono); font-size:0.74rem; font-weight:700; color:var(--ink-secondary);">
+            PUESTO EN ESPERA · NINGÚN OPERARIO FUERA DEL TALLER
+          </div>
+          <div class="bulbs-row">
+            <div id="bulb-green" class="bulb on-green"></div>
+            <div id="bulb-amber" class="bulb"></div>
+            <div id="bulb-red" class="bulb"></div>
+          </div>
+          <div id="aduana-timer" style="font-family:var(--font-display); font-size:2.9rem; font-weight:700; color:var(--status-ok); line-height:1.1;">
+            00:00
+          </div>
+          <div id="aduana-status-msg" style="font-size:0.8rem; font-weight:700; color:var(--status-ok); margin-top:0.3rem;">
+            🟢 Margen de cortesía: 0:00 a 3:59 min (Máx. 2 salidas gratuitas/semana)
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem; margin-bottom:0.8rem;">
+          <button id="btn-aduana-start" class="btn-tech btn-red" style="justify-content:center; padding:0.75rem;" onclick="startRestroomTimer()">
+            🚽 Registrar Salida
+          </button>
+          <button id="btn-aduana-stop" class="btn-tech btn-dark" style="justify-content:center; padding:0.75rem; opacity:0.5;" disabled onclick="stopRestroomTimer()">
+            ✅ Registrar Regreso
+          </button>
+        </div>
+
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-radius:6px; padding:0.7rem; font-size:0.75rem; color:var(--ink-secondary);">
+          <strong>Baremo de Nómina Virtual (Cr):</strong>
+          <ul style="margin-left:1.15rem; margin-top:0.2rem;">
+            <li><strong>0:00 – 3:59 min (hasta 2/sem):</strong> 0 Cr (Cortesía).</li>
+            <li><strong>4:00 – 5:59 min:</strong> -15 Cr en nómina virtual por retraso en puesto.</li>
+            <li><strong>&ge; 6:00 min o &gt;2 salidas/semana:</strong> -50 Cr y pérdida de puntos de cargo.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Derecha: Historial Guardado -->
+      <div class="tech-panel">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[REGISTRO_PERMISOS_AULA // SINCRONIZADO]</span>
+            <h2 class="tech-panel-title">📋 Historial Permanente de Absentismo de Aula</h2>
+          </div>
+          <button class="btn-tech btn-outline" style="font-size:0.72rem; padding:0.3rem 0.6rem;" onclick="exportAduanaCsv()">
+            📥 Descargar CSV
+          </button>
+        </div>
+
+        <div class="tech-table-wrap" style="max-height:375px; overflow-y:auto;">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>Fecha / Hora</th>
+                <th>Operario</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Sanción Cr</th>
+              </tr>
+            </thead>
+            <tbody id="aduana-logs-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOQUE 2: CONVENIO DE CONVIVENCIA Y BUZÓN ÉTICO RRHH -->
+    <section class="grid-2">
+      <!-- Normativa del Centro -->
+      <div class="tech-panel">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[NORMATIVA_CENTRO // REGLAMENTO_INTERNO]</span>
+            <h2 class="tech-panel-title">📜 Convenio de Convivencia y Garantías del Alumnado</h2>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:0.65rem; font-size:0.79rem; color:var(--ink-secondary);">
+          <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-left:4px solid var(--status-ok); border-radius:6px; padding:0.7rem;">
+            <strong style="color:var(--ink-primary);">1. Respeto Estricto a la Normativa Oficial del Centro:</strong> Ningún alumno tiene prohibido acudir al servicio ante una necesidad fisiológica real o urgencia médica acreditada (exenta de penalización). El sistema de Bono de Relevos gamifica únicamente el hábito profesional de aprovechar los descansos y el recreo.
+          </div>
+          <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-left:4px solid var(--status-info); border-radius:6px; padding:0.7rem;">
+            <strong style="color:var(--ink-primary);">2. Privacidad Pseudonimizada (RGPD):</strong> Todas las comunicaciones en este portal emplean exclusivamente el Código de Operario (Op_01 a Op_21) sin exponer datos personales en red.
+          </div>
+          <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-left:4px solid var(--red-primary); border-radius:6px; padding:0.7rem;">
+            <strong style="color:var(--ink-primary);">3. Protocolo de Mediación en Cooperativas:</strong> Si un miembro de la cuadrilla no colabora o acapara herramientas, cualquier compañero puede elevar un parte confidencial a Tutoría desde el Buzón Ético.
+          </div>
+        </div>
+      </div>
+
+      <!-- Buzón Ético RRHH -->
+      <div class="tech-panel">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[BUZÓN_ÉTICO_RRHH // CANAL_TUTORÍA]</span>
+            <h2 class="tech-panel-title">📮 Enviar Parte Confidencial de Mediación o Revisión</h2>
+          </div>
+        </div>
+
+        <form onsubmit="handleHrSubmit(event)" style="display:flex; flex-direction:column; gap:0.65rem;">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.55rem;">
+            <div>
+              <label style="font-size:0.72rem; font-weight:700; color:var(--ink-secondary);">Código Operario (o ANÓNIMO):</label>
+              <input id="hr-op-input" type="text" class="tf-input" placeholder="Ej. Operario #06 o ANÓNIMO" />
+            </div>
+            <div>
+              <label style="font-size:0.72rem; font-weight:700; color:var(--ink-secondary);">Categoría del Parte:</label>
+              <select id="hr-cat-select" class="tf-select">
+                <option value="Convivencia / Tutor">🔴 Alerta personal o convivencia (Solo Tutor)</option>
+                <option value="Mediación Equipo">🟡 Desajuste de tareas en Cooperativa</option>
+                <option value="Revisión Cargo/Nómina">🔵 Consulta de Cargo, Turno o Nómina Cr</option>
+                <option value="Mejora Taller">🟢 Sugerencia de mejora para el taller</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:0.72rem; font-weight:700; color:var(--ink-secondary);">Descripción de la situación y propuesta de solución:</label>
+            <textarea id="hr-msg-input" rows="4" class="tf-textarea" required placeholder="Explica brevemente qué ocurre y qué solución propones..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-tech btn-red" style="justify-content:center; padding:0.7rem;">
+            📨 Enviar Parte Confidencial a Dirección y Tutoría
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="tf-footer">
+    TECNOFLUX INSTALACIONES S.L. · Control de Permisos y Buzón Ético RRHH · Módulo 3013 (1.º CFGB) · Salesianos Santísima Trinidad
+  </footer>
+
+  <script src="../js/tecnoflux-core.js"></script>
+  <script>
+    let activePin = null;
+    let startTimestamp = null;
+    let timerInterval = null;
+
+    function populateOps() {
+      const st = TecnofluxCore.getState();
+      const sel = document.getElementById('aduana-op-select');
+      const sorted = [...st.operators].sort((a, b) => a.code.localeCompare(b.code));
+      sel.innerHTML = sorted.map(o => `<option value="${o.pin}">${o.code} (Coop. ${o.coop} · Salidas sem: ${o.exits || 0})</option>`).join('');
+    }
+
+    function startRestroomTimer() {
+      if (activePin) return;
+      const pin = document.getElementById('aduana-op-select').value;
+      const op = TecnofluxCore.getOperatorByPin(pin);
+      if (!op) return;
+
+      activePin = pin;
+      startTimestamp = Date.now();
+      document.getElementById('btn-aduana-start').disabled = true;
+      document.getElementById('btn-aduana-start').style.opacity = '0.5';
+      document.getElementById('btn-aduana-stop').disabled = false;
+      document.getElementById('btn-aduana-stop').style.opacity = '1';
+      document.getElementById('aduana-active-label').textContent = `🚽 FUERA DE AULA: ${op.code.toUpperCase()} (COOP. ${op.coop})`;
+
+      updateTimerDisplay();
+      timerInterval = setInterval(updateTimerDisplay, 1000);
+      TecnofluxCore.toast(`🚽 Salida iniciada para ${op.code}.`);
+    }
+
+    function updateTimerDisplay() {
+      if (!startTimestamp) return;
+      const sec = Math.floor((Date.now() - startTimestamp) / 1000);
+      const mm = String(Math.floor(sec / 60)).padStart(2, '0');
+      const ss = String(sec % 60).padStart(2, '0');
+
+      const box = document.getElementById('traffic-box');
+      const timerEl = document.getElementById('aduana-timer');
+      const msgEl = document.getElementById('aduana-status-msg');
+      document.getElementById('bulb-green').className = 'bulb';
+      document.getElementById('bulb-amber').className = 'bulb';
+      document.getElementById('bulb-red').className = 'bulb';
+
+      timerEl.textContent = `${mm}:${ss}`;
+
+      if (sec < 240) {
+        box.className = 'traffic-box green';
+        timerEl.style.color = 'var(--status-ok)';
+        document.getElementById('bulb-green').className = 'bulb on-green';
+        msgEl.style.color = 'var(--status-ok)';
+        msgEl.textContent = '🟢 En margen de cortesía (< 4:00 min)';
+      } else if (sec < 360) {
+        box.className = 'traffic-box amber';
+        timerEl.style.color = 'var(--status-warn)';
+        document.getElementById('bulb-amber').className = 'bulb on-amber';
+        msgEl.style.color = 'var(--status-warn)';
+        msgEl.textContent = '🟡 AVISO RETRASO: Penalización de -15 Cr en nómina virtual';
+      } else {
+        box.className = 'traffic-box red';
+        timerEl.style.color = 'var(--red-primary)';
+        document.getElementById('bulb-red').className = 'bulb on-red';
+        msgEl.style.color = 'var(--red-primary)';
+        msgEl.textContent = '🔴 EXCESO GRAVE (>= 6:00 min): -50 Cr y pérdida de puntos de cargo';
+      }
+    }
+
+    function stopRestroomTimer() {
+      if (!activePin) return;
+      clearInterval(timerInterval);
+      const sec = Math.floor((Date.now() - startTimestamp) / 1000);
+      const entry = TecnofluxCore.registerRestroomLog(activePin, sec);
+
+      activePin = null;
+      startTimestamp = null;
+      document.getElementById('btn-aduana-start').disabled = false;
+      document.getElementById('btn-aduana-start').style.opacity = '1';
+      document.getElementById('btn-aduana-stop').disabled = true;
+      document.getElementById('btn-aduana-stop').style.opacity = '0.5';
+      document.getElementById('aduana-active-label').textContent = 'PUESTO EN ESPERA · NINGÚN OPERARIO FUERA DEL TALLER';
+      document.getElementById('aduana-timer').textContent = '00:00';
+      document.getElementById('aduana-timer').style.color = 'var(--status-ok)';
+      document.getElementById('traffic-box').className = 'traffic-box green';
+      document.getElementById('bulb-green').className = 'bulb on-green';
+      document.getElementById('bulb-amber').className = 'bulb';
+      document.getElementById('bulb-red').className = 'bulb';
+      document.getElementById('aduana-status-msg').style.color = 'var(--status-ok)';
+      document.getElementById('aduana-status-msg').textContent = '🟢 Margen de cortesía: 0:00 a 3:59 min (Máx. 2 salidas gratuitas/semana)';
+
+      populateOps();
+      renderLogs();
+      TecnofluxCore.toast(`✅ Regreso de ${entry.opCode} (${entry.duration}) · Sanción: -${entry.penaltyCr} Cr.`);
+    }
+
+    function renderLogs() {
+      const st = TecnofluxCore.getState();
+      const logs = st.aduanaLogs || [];
+      const tbody = document.getElementById('aduana-logs-tbody');
+      if (logs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-muted); padding:1rem;">Sin registros en esta sesión.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = logs.map(l => `
+        <tr>
+          <td style="font-family:var(--font-mono); font-size:0.72rem;">${l.date}</td>
+          <td><strong>${l.opCode}</strong> <span class="tf-spec-tag">${l.coop}</span></td>
+          <td style="font-family:var(--font-mono);">${l.duration}</td>
+          <td>${l.status}</td>
+          <td><span class="badge-status ${l.penaltyCr > 0 ? 'badge-red' : 'badge-ok'}">${l.penaltyCr > 0 ? '-' + l.penaltyCr + ' Cr' : '0 Cr'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function exportAduanaCsv() {
+      const st = TecnofluxCore.getState();
+      let csv = 'Fecha_Hora,Codigo_Op,Cooperativa,Duracion,Estado,Penalizacion_Cr\n';
+      (st.aduanaLogs || []).forEach(l => {
+        csv += `"${l.date}","${l.opCode}","${l.coop}","${l.duration}","${l.status}",${l.penaltyCr}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'PERMISOS_AULA_TECNOFLUX_3013.csv';
+      a.click();
+    }
+
+    function handleHrSubmit(e) {
+      e.preventDefault();
+      const opCode = document.getElementById('hr-op-input').value.trim() || 'ANÓNIMO';
+      const cat = document.getElementById('hr-cat-select').value;
+      const msg = document.getElementById('hr-msg-input').value.trim();
+      if (!msg) return;
+      TecnofluxCore.submitHrTicket(opCode, cat, msg);
+      document.getElementById('hr-msg-input').value = '';
+      TecnofluxCore.toast('📨 Parte confidencial registrado y enviado al panel de Tutoría.');
+    }
+
+    window.onload = function () {
+      TecnofluxCore.renderNavBar('aduana', true);
+      populateOps();
+      renderLogs();
+
+      // Auto-fichaje con tarjeta RFID USB al salir y regresar del lavabo
+      TecnofluxCore.initGlobalRfidListener(function (res) {
+        if (res.role === 'STUDENT' && res.operator) {
+          document.getElementById('aduana-rfid-status').textContent = `RFID: ${res.operator.code.toUpperCase()}`;
+          if (!activePin) {
+            document.getElementById('aduana-op-select').value = res.operator.pin;
+            startRestroomTimer();
+          } else if (activePin === res.operator.pin) {
+            stopRestroomTimer();
+          } else {
+            TecnofluxCore.toast(`⚠️ Ya hay un operario fuera del aula (${activePin}). Registra su regreso primero.`);
+          }
+        }
+      });
+    };
+  </script>
+</body>
+</html>

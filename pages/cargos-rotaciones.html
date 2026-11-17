@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TECNOFLUX 3013 // Cargos Principales, Radar &amp; Calendario Dual</title>
+  <link rel="stylesheet" href="../css/tecnoflux-theme.css" />
+</head>
+<body>
+
+  <!-- CABECERA TÉCNICA SUPERIOR -->
+  <header class="tf-topbar">
+    <div class="tf-topbar-inner">
+      <div class="tf-brand">
+        <div class="tf-logo-box">
+          <span>TF</span>
+          <span>3013</span>
+        </div>
+        <div>
+          <div class="tf-brand-title">
+            <span>ESCALAFÓN DE MANDOS, RADAR &amp; CALENDARIO DUAL</span>
+            <span class="tf-spec-tag">MOD-04 // ROTACIÓN M - X - J</span>
+          </div>
+          <div class="tf-brand-sub">Cuadrante de Cargos Principales, Mérito Transversal y Cuenta Atrás a Empresa (RD 659/2023)</div>
+        </div>
+      </div>
+
+      <div class="tf-actions">
+        <a href="../index.html" class="btn-tech btn-outline" style="text-decoration:none;">
+          <span>📊</span>
+          <span>Volver al Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="tf-subnav" aria-label="Módulos del Portal">
+      <div class="tf-subnav-inner" id="tf-dynamic-nav"></div>
+    </nav>
+  </header>
+
+  <main class="tf-container">
+
+    <!-- BLOQUE 1: TABLA OFICIAL DE CARGOS PRINCIPALES Y ROTACIÓN SEMANAL (M-X-J) -->
+    <section class="tech-panel" style="margin-bottom:1.15rem; border-top:4px solid var(--red-primary);">
+      <div class="tech-panel-header">
+        <div>
+          <span class="tech-code-label">[SEC-01 // CUADRANTE_OFICIAL_DE_MANDOS]</span>
+          <h1 class="tech-panel-title">1. Tabla de Cargos Principales y Turnos de Guardia (Martes · Miércoles · Jueves)</h1>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:0.45rem; align-items:center;">
+          <button id="btn-cyc-octubre" class="btn-tech btn-outline" style="font-size:0.74rem;" onclick="setCycle('octubre')">📜 Histórico Octubre</button>
+          <button id="btn-cyc-noviembre" class="btn-tech btn-red" style="font-size:0.74rem;" onclick="setCycle('noviembre')">🟢 Actual Noviembre</button>
+          <button id="btn-cyc-diciembre" class="btn-tech btn-outline" style="font-size:0.74rem;" onclick="setCycle('diciembre')">🔮 Proyección Diciembre</button>
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; background:var(--bg-surface-alt); padding:0.6rem 0.85rem; border-radius:6px; border:1px solid var(--border-tech); margin-bottom:0.85rem;">
+        <span style="font-size:0.78rem; color:var(--ink-secondary);">
+          🔄 <strong>Rotación Semanal de Turnos (M - X - J):</strong> Pulsa cada semana para comprobar qué operario ejerce como Titular cada día de taller:
+        </span>
+        <div style="display:flex; gap:0.35rem;">
+          <button id="btn-wk-1" class="btn-tech btn-dark" style="padding:0.3rem 0.7rem; font-size:0.74rem;" onclick="setWeek(1)">Semana 1</button>
+          <button id="btn-wk-2" class="btn-tech btn-outline" style="padding:0.3rem 0.7rem; font-size:0.74rem;" onclick="setWeek(2)">Semana 2</button>
+          <button id="btn-wk-3" class="btn-tech btn-outline" style="padding:0.3rem 0.7rem; font-size:0.74rem;" onclick="setWeek(3)">Semana 3</button>
+        </div>
+      </div>
+
+      <div class="tech-table-wrap">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>Departamento / Área Técnica</th>
+              <th>MARTES (3h Taller)</th>
+              <th>MIÉRCOLES (3h Taller)</th>
+              <th>JUEVES (4h Cierre Obra)</th>
+              <th>Suplente de Retén &amp; Trazabilidad</th>
+            </tr>
+          </thead>
+          <tbody id="cargos-table-body"></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top:0.75rem; padding:0.6rem 0.85rem; border-radius:6px; background:var(--red-soft); border:1px solid var(--red-border); font-size:0.76rem; color:var(--red-dark);">
+        ⚠️ <strong>Nota de Trazabilidad PRL:</strong> El puesto de Inspector PRL del tercer turno fue relevado del <strong>Operario #09</strong> al <strong>Operario #10</strong> tras incumplir la normativa obligatoria de uso de guantes y EPIs.
+      </div>
+    </section>
+
+    <!-- BLOQUE 2: RADAR DE ASCENSO DEL OPERARIO EN TIEMPO REAL -->
+    <section class="tech-panel" style="margin-bottom:1.15rem;">
+      <div class="tech-panel-header">
+        <div>
+          <span class="tech-code-label">[SEC-02 // RADAR_DE_OPOSICIÓN_Y_MÉRITO]</span>
+          <h2 class="tech-panel-title">2. Radar del Operario: ¿Quiénes están más cerca de lograr el cargo y por qué?</h2>
+        </div>
+        <span class="tf-spec-tag">CÁLCULO EN VIVO (70% EX + 30% PR)</span>
+      </div>
+
+      <div class="grid-2" id="radar-grid"></div>
+    </section>
+
+    <!-- BLOQUE 3: REGLAMENTO E INSTRUCCIONES DE ACCESO Y MANTENIMIENTO DE CARGOS -->
+    <section class="tech-panel" style="margin-bottom:1.15rem;">
+      <div class="tech-panel-header">
+        <div>
+          <span class="tech-code-label">[SEC-03 // NORMATIVA_DE_ACCESO_Y_PRIVILEGIOS]</span>
+          <h2 class="tech-panel-title">3. Instrucciones: Cómo se consigue, qué funciones tiene y cómo se pierde cada cargo</h2>
+        </div>
+        <span class="badge-status badge-ok">+200 Cr/MES PLUS CARGO</span>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:0.9rem;">
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-top:4px solid #1d4ed8; border-radius:8px; padding:0.95rem;">
+          <strong style="font-family:var(--font-display); color:#1d4ed8; font-size:0.98rem;">1. SUPERVISOR DE OBRA (+200 Cr/mes)</strong>
+          <div style="font-size:0.78rem; margin-top:0.45rem;"><strong>• Fórmula de Acceso:</strong> 40% Módulo 3015 (Equipos) + 40% Ámbito Científico-Aplicado + 20% Módulo 3013.</div>
+          <div style="font-size:0.76rem; color:var(--ink-secondary); margin-top:0.35rem;">
+            <strong>• 3 Funciones Observables:</strong> 1) Auditar continuidad y aislamiento con polímetro antes de dar tensión. 2) Verificar nivelación de cajas y tubos. 3) Firmar el visto bueno en la Orden de Trabajo.<br>
+            <strong style="color:var(--status-ok);">• 2 Privilegios:</strong> 1 Comodín de revisión gratuita del profesor por semana + Bonificación en CE (1.i, 2.j, 3.i, 4.i, 5.d).
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-top:4px solid #059669; border-radius:8px; padding:0.95rem;">
+          <strong style="font-family:var(--font-display); color:#059669; font-size:0.98rem;">2. JEFE DE HERRAMIENTAS (+200 Cr/mes)</strong>
+          <div style="font-size:0.78rem; margin-top:0.45rem;"><strong>• Fórmula de Acceso:</strong> 50% Evolución práctica en Módulo 3013 + 50% Prácticas de montaje en Módulo 3015.</div>
+          <div style="font-size:0.76rem; color:var(--ink-secondary); margin-top:0.35rem;">
+            <strong>• 3 Funciones Observables:</strong> 1) Control de préstamos de carros y herramientas. 2) Revisión del aislamiento VDE 1000V. 3) Orden y cierre del panel de herramientas.<br>
+            <strong style="color:var(--status-ok);">• 2 Privilegios:</strong> Alquiler VIP gratis (0 Cr) de pelacables automático y destornillador eléctrico en el TPV + Bonificación en CE (1.h, 2.h, 4.g, 5.f).
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-top:4px solid #d97706; border-radius:8px; padding:0.95rem;">
+          <strong style="font-family:var(--font-display); color:#d97706; font-size:0.98rem;">3. JEFE DE MATERIALES (+200 Cr/mes)</strong>
+          <div style="font-size:0.78rem; margin-top:0.45rem;"><strong>• Fórmula de Acceso:</strong> 50% Ámbito Comunicación e Inglés Técnico + 30% Cuaderno Ciencias + 20% Identificación materiales (3013).</div>
+          <div style="font-size:0.76rem; color:var(--ink-secondary); margin-top:0.35rem;">
+            <strong>• 3 Funciones Observables:</strong> 1) Calcular secciones de tubo y cables sin mermas. 2) Tramitar albaranes en el TPV. 3) Clasificar recortes de cobre y PVC para reciclaje.<br>
+            <strong style="color:var(--status-ok);">• 2 Privilegios:</strong> 15% de descuento directo en compras de almacén (TPV) para su cooperativa + Bonificación en CE (1.g, 2.a, 3.a, 4.a).
+          </div>
+        </div>
+
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-top:4px solid #dc2626; border-radius:8px; padding:0.95rem;">
+          <strong style="font-family:var(--font-display); color:#dc2626; font-size:0.98rem;">4. INSPECTOR DE PRL Y 5S (+200 Cr/mes)</strong>
+          <div style="font-size:0.78rem; margin-top:0.45rem;"><strong>• Fórmula de Acceso:</strong> 60% Calificación Seguridad/PRL (3013) + 40% Constancia transversal (0 entregas en cero) + 0 sanciones EPIs.</div>
+          <div style="font-size:0.76rem; color:var(--ink-secondary); margin-top:0.35rem;">
+            <strong>• 3 Funciones Observables:</strong> 1) Exigir gafas y guantes antes de empezar. 2) Colocar candado de bloqueo LOTO sin tensión. 3) Auditar el Check-List 5S de cierre.<br>
+            <strong style="color:var(--status-ok);">• 2 Privilegios:</strong> Escudo mensual que anula 1 penalización leve de su cuadrilla + Bonificación en CE (1.j, 2.i, 3.h, 5.e, 5.g).
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="font-size:0.76rem; color:var(--ink-secondary);">
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-radius:6px; padding:0.7rem;">
+          <strong style="color:var(--ink-primary);">1. Rotación Mensual Obligatoria:</strong> Ningún operario puede repetir el mismo puesto dos meses seguidos; al cierre de mes oposita a un departamento distinto.
+        </div>
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-radius:6px; padding:0.7rem;">
+          <strong style="color:var(--ink-primary);">2. Beca de Impulso al Esfuerzo:</strong> Cada mes se reserva 1 plaza para el operario que registre la mayor subida de nota media respecto al periodo anterior.
+        </div>
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-radius:6px; padding:0.7rem;">
+          <strong style="color:var(--ink-primary);">3. Cese Inmediato al Suplente:</strong> Trabajar sin EPIs, acumular excesos de absentismo de aula o suspender el examen quincenal con &lt;4 transfiere el cargo al Retén.
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOQUE 4: CALENDARIO OFICIAL DE CURSO 2026/27 Y CUENTA ATRÁS A FASE DUAL -->
+    <section class="tech-panel">
+      <div class="tech-panel-header">
+        <div>
+          <span class="tech-code-label">[SEC-04 // CRONOGRAMA_2026_2027_Y_FASE_DUAL]</span>
+          <h2 class="tech-panel-title">4. Calendario Oficial de Exámenes y Cuenta Atrás a Empresa (Fase Dual)</h2>
+        </div>
+        <span class="badge-status badge-red" id="dual-target-tag">SALIDA EMPRESA: 03/05/2027</span>
+      </div>
+
+      <div class="grid-3" style="margin-bottom:1rem;">
+        <div class="kpi-card kpi-red">
+          <span class="tech-code-label">[CUENTA_ATRÁS_EMPRESA]</span>
+          <div class="kpi-value" id="cal-days-left" style="color:var(--red-primary);">— DÍAS</div>
+          <div class="kpi-sub" id="cal-sessions-left">— jornadas reales de taller (M-X-J) restantes</div>
+        </div>
+        <div class="kpi-card">
+          <span class="tech-code-label">[AVANCE_LECTIVO_26_27]</span>
+          <div class="kpi-value" id="cal-pct-text">— %</div>
+          <div class="bar-track" style="margin-top:0.35rem;">
+            <div class="bar-fill" id="cal-pct-bar" style="width:25%; background:var(--red-primary);"></div>
+          </div>
+        </div>
+        <div class="kpi-card kpi-safety">
+          <span class="tech-code-label">[PRÓXIMO_EXAMEN_UT]</span>
+          <div class="kpi-value" id="cal-next-exam" style="font-size:1.15rem; margin:0.55rem 0;">—</div>
+          <div class="kpi-sub">Peso exámenes: 70% de los Criterios RD 127/2014</div>
+        </div>
+      </div>
+
+      <div class="tech-table-wrap">
+        <table class="tech-table">
+          <thead>
+            <tr>
+              <th>Columna</th>
+              <th>Unidad de Trabajo</th>
+              <th>Evaluación</th>
+              <th>Fecha Examen</th>
+              <th>Criterios Evaluados (RD 127/2014)</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="cal-exams-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="tf-footer">
+    TECNOFLUX INSTALACIONES S.L. · Escalafón de Mandos y Calendario Dual · Módulo 3013 (1.º CFGB) · Salesianos Santísima Trinidad
+  </footer>
+
+  <script src="../js/tecnoflux-core.js"></script>
+  <script>
+    function setCycle(cyc) {
+      const st = TecnofluxCore.getState();
+      st.rotationMeta.cycle = cyc;
+      TecnofluxCore.saveState();
+      renderCargosPage();
+    }
+
+    function setWeek(wk) {
+      const st = TecnofluxCore.getState();
+      st.rotationMeta.week = wk;
+      TecnofluxCore.saveState();
+      renderCargosPage();
+    }
+
+    function renderCargosPage() {
+      const st = TecnofluxCore.getState();
+      const cyc = st.rotationMeta.cycle || 'noviembre';
+      const wk = st.rotationMeta.week || 1;
+
+      ['octubre', 'noviembre', 'diciembre'].forEach(c => {
+        const b = document.getElementById('btn-cyc-' + c);
+        if (b) b.className = 'btn-tech ' + (c === cyc ? 'btn-red' : 'btn-outline');
+      });
+      [1, 2, 3].forEach(n => {
+        const b = document.getElementById('btn-wk-' + n);
+        if (b) b.className = 'btn-tech ' + (n === wk ? 'btn-dark' : 'btn-outline');
+      });
+
+      const rows = st.rolesCycles[cyc] || st.rolesCycles.noviembre;
+      document.getElementById('cargos-table-body').innerHTML = rows.map(r => {
+        const idxM = (0 + wk - 1) % 3;
+        const idxX = (1 + wk - 1) % 3;
+        const idxJ = (2 + wk - 1) % 3;
+        return `
+          <tr>
+            <td>
+              <strong style="font-family:var(--font-display); color:${r.color}; font-size:0.9rem;">${r.area}</strong>
+              <div style="font-size:0.72rem; color:var(--ink-muted);">${r.sub}</div>
+            </td>
+            <td><span class="op-chip" style="border-left:3px solid ${r.color};">${r.titulares[idxM]}</span></td>
+            <td><span class="op-chip" style="border-left:3px solid ${r.color};">${r.titulares[idxX]}</span></td>
+            <td><span class="op-chip" style="border-left:3px solid ${r.color};">${r.titulares[idxJ]}</span></td>
+            <td style="font-size:0.75rem; color:var(--ink-secondary);">${r.reten}</td>
+          </tr>
+        `;
+      }).join('');
+
+      // Radar dinámico calculado con las métricas reales de cada operario
+      const enriched = st.operators.map(op => ({
+        op,
+        m: TecnofluxCore.calculateOperatorMetrics(op)
+      }));
+
+      const topSup = [...enriched].sort((a, b) => b.m.weightedTotalPts - a.m.weightedTotalPts).slice(0, 3);
+      const topHer = [...enriched].sort((a, b) => b.m.avgPracs - a.m.avgPracs).slice(0, 3);
+      const topMat = [...enriched].sort((a, b) => (b.m.weightedTotalPts + b.m.attBonusCr * 5) - (a.m.weightedTotalPts + a.m.attBonusCr * 5)).slice(3, 6);
+      const topPrl = enriched.filter(x => (x.op.prlPen || 0) === 0 && (x.op.exits || 0) <= 1).sort((a, b) => b.m.weightedTotalPts - a.m.weightedTotalPts).slice(0, 3);
+
+      const radarCards = [
+        { title: '1. Candidatos Líderes · SUPERVISOR DE OBRA', color: '#1d4ed8', list: topSup, detail: x => `Global ${x.m.finalGrade10}/10 · Exámenes: ${x.m.avgExams.toFixed(2)} · Prácticas: ${x.m.avgPracs.toFixed(2)}` },
+        { title: '2. Candidatos Líderes · JEFE DE HERRAMIENTAS', color: '#059669', list: topHer, detail: x => `Media Taller P1–P27: ${x.m.avgPracs.toFixed(2)}/10 (${x.m.validPracs.length} O.T. superadas)` },
+        { title: '3. Candidatos Líderes · JEFE DE MATERIALES', color: '#d97706', list: topMat, detail: x => `Índice Mérito: ${x.m.weightedTotalPts} pts · Coop. ${x.op.coop}` },
+        { title: '4. Candidatos Líderes · INSPECTOR PRL Y 5S', color: '#dc2626', list: topPrl, detail: x => `0 Cr multas PRL · ${x.op.exits || 0} salidas aula · Nota ${x.m.finalGrade10}/10` }
+      ];
+
+      document.getElementById('radar-grid').innerHTML = radarCards.map(rc => `
+        <div style="background:var(--bg-surface-alt); border:1px solid var(--border-tech); border-left:4px solid ${rc.color}; border-radius:8px; padding:0.85rem;">
+          <div style="font-family:var(--font-display); font-weight:700; font-size:0.92rem; color:${rc.color}; margin-bottom:0.5rem;">${rc.title}</div>
+          <div style="display:flex; flex-direction:column; gap:0.4rem;">
+            ${rc.list.map((item, idx) => `
+              <div style="background:#ffffff; border:1px solid var(--border-tech); border-radius:6px; padding:0.45rem 0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.3rem; font-size:0.75rem;">
+                <strong>#${idx + 1} · ${item.op.code} (${item.op.role})</strong>
+                <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--ink-secondary);">${rc.detail(item)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      // Calendario y Cuenta Atrás Dual
+      const now = new Date();
+      const startCourse = new Date('2026-09-15T08:00:00');
+      const dualDate = new Date((st.rotationMeta.dualStartDate || '2027-05-03') + 'T08:00:00');
+      document.getElementById('dual-target-tag').textContent = `SALIDA EMPRESA: ${dualDate.toLocaleDateString('es-ES')}`;
+
+      const daysLeft = Math.max(0, Math.ceil((dualDate - now) / (1000 * 60 * 60 * 24)));
+      let sessions = 0;
+      const cur = new Date(now);
+      while (cur < dualDate) {
+        const d = cur.getDay();
+        if (d === 2 || d === 3 || d === 4) sessions++;
+        cur.setDate(cur.getDate() + 1);
+      }
+
+      const pct = Math.min(100, Math.max(0, Math.round(((now - startCourse) / (dualDate - startCourse)) * 100)));
+      document.getElementById('cal-days-left').textContent = `${daysLeft} DÍAS`;
+      document.getElementById('cal-sessions-left').textContent = `${sessions} jornadas de taller (M-X-J) hasta incorporación a empresa`;
+      document.getElementById('cal-pct-text').textContent = `${pct} %`;
+      document.getElementById('cal-pct-bar').style.width = pct + '%';
+
+      const units = TecnofluxCore.getUnitsCatalog();
+      const nextEx = units.find(u => new Date(u.examDate) >= now) || units[units.length - 1];
+      document.getElementById('cal-next-exam').textContent = `${nextEx.col} · ${nextEx.title} (${nextEx.examDate})`;
+
+      document.getElementById('cal-exams-tbody').innerHTML = units.map(u => {
+        const passed = new Date(u.examDate) < now;
+        return `
+          <tr>
+            <td><strong style="font-family:var(--font-mono); color:var(--red-primary);">${u.col}</strong></td>
+            <td><strong>${u.title}</strong></td>
+            <td><span class="tf-spec-tag">${u.evalTerm}</span></td>
+            <td style="font-family:var(--font-mono);">${u.examDate}</td>
+            <td style="font-family:var(--font-mono); font-size:0.72rem; color:var(--ink-secondary);">${u.ce}</td>
+            <td><span class="badge-status ${passed ? 'badge-ok' : 'badge-info'}">${passed ? '✅ REALIZADO' : '📅 PROGRAMADO'}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    window.onload = function () {
+      TecnofluxCore.renderNavBar('cargos', true);
+      renderCargosPage();
+    };
+  </script>
+</body>
+</html>

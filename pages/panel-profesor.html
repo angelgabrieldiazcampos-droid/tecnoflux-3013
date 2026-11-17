@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TECNOFLUX 3013 // Centro de Mando Docente &amp; Excel Maestro</title>
+  <link rel="stylesheet" href="../css/tecnoflux-theme.css" />
+</head>
+<body>
+
+  <!-- CABECERA TÉCNICA SUPERIOR -->
+  <header class="tf-topbar">
+    <div class="tf-topbar-inner">
+      <div class="tf-brand">
+        <div class="tf-logo-box">
+          <span>TF</span>
+          <span>3013</span>
+        </div>
+        <div>
+          <div class="tf-brand-title">
+            <span>CENTRO DE MANDO DOCENTE &amp; EXCEL MAESTRO</span>
+            <span class="tf-spec-tag">MOD-99 // DIRECCIÓN DE OBRA</span>
+          </div>
+          <div class="tf-brand-sub">Sincronización Google Sheets, Gestor de Retos/Logros, Calificador y Control RFID</div>
+        </div>
+      </div>
+
+      <div class="tf-actions">
+        <a href="../index.html" class="btn-tech btn-outline" style="text-decoration:none;">
+          <span>📊</span>
+          <span>Volver al Dashboard</span>
+        </a>
+      </div>
+    </div>
+
+    <nav class="tf-subnav" aria-label="Módulos del Portal">
+      <div class="tf-subnav-inner" id="tf-dynamic-nav"></div>
+    </nav>
+  </header>
+
+  <main class="tf-container">
+
+    <!-- VISTA 1: PANTALLA DE AUTENTICACIÓN DOCENTE -->
+    <section id="prof-auth-box" style="max-width:460px; margin:2rem auto;">
+      <div class="tech-panel" style="text-align:center; border-top:4px solid var(--red-primary);">
+        <span class="tech-code-label">[AUTH // DIRECCIÓN_DE_OBRA_3013]</span>
+        <h1 class="tech-panel-title" style="font-size:1.3rem; margin-top:0.25rem;">Acceso Exclusivo Profesorado</h1>
+        <p style="font-size:0.8rem; color:var(--ink-secondary); margin-top:0.35rem;">
+          Introduce tu credencial docente o acerca tu <strong>Tarjeta Maestra RFID</strong> al lector USB para abrir la consola de administración.
+        </p>
+
+        <div style="display:flex; justify-content:center; gap:0.5rem; margin:1.2rem 0 0.65rem;">
+          <input id="prof-pass-input" type="password" placeholder="••••••••" class="tf-input"
+            style="width:185px; text-align:center; font-family:var(--font-mono); font-size:1.15rem;"
+            onkeydown="if(event.key==='Enter') handleProfLogin()" />
+          <button class="btn-tech btn-red" onclick="handleProfLogin()">Desbloquear</button>
+        </div>
+        <div id="prof-auth-err" style="color:var(--red-primary); font-size:0.78rem; font-weight:700; min-height:1.1rem;"></div>
+      </div>
+    </section>
+
+    <!-- VISTA 2: PANEL COMPLETO DEL PROFESOR -->
+    <section id="prof-main-panel" style="display:none;">
+
+      <!-- BLOQUE 1: CONEXIÓN Y SINCRONIZACIÓN CON EXCEL MAESTRO (GOOGLE SHEETS) -->
+      <div class="tech-panel" style="border-top:4px solid var(--red-primary); margin-bottom:1.15rem;">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[SEC-01 // BACKEND_GOOGLE_SHEETS_MAESTRO]</span>
+            <h2 class="tech-panel-title">1. Sincronización Total con Excel Maestro (`BD_TECNOFLUX_3013_MAESTRO`)</h2>
+          </div>
+          <button class="btn-tech btn-outline" style="font-size:0.74rem;" onclick="copyAppsScriptFile()">
+            📋 Copiar Código Google Apps Script (`apps-script-backend.js`)
+          </button>
+        </div>
+
+        <p style="font-size:0.78rem; color:var(--ink-secondary); margin-bottom:0.75rem;">
+          Tu hoja de cálculo permanece <strong>100% privada en Google Drive</strong> (sin publicar CSV abiertos). Pega aquí la URL de tu aplicación web de Google Apps Script (terminada en <code>/exec</code>) para sincronizar notas, prácticas, retos, logros y saldos:
+        </p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.65rem;">
+          <input id="prof-webhook-url" type="url" class="tf-input" style="flex:1; min-width:260px;"
+            placeholder="https://script.google.com/macros/s/AKfycb.../exec" />
+          <button class="btn-tech btn-dark" onclick="saveProfWebhook()">💾 Guardar URL</button>
+          <button class="btn-tech btn-red" onclick="runFullSheetSync()">⚡ Sincronizar TODO desde Google Sheets</button>
+        </div>
+
+        <div id="prof-sync-status" style="font-family:var(--font-mono); font-size:0.74rem; color:var(--ink-secondary); background:var(--bg-surface-alt); padding:0.5rem 0.75rem; border-radius:6px; border:1px solid var(--border-tech);">
+          Estado: Listo para sincronizar.
+        </div>
+      </div>
+
+      <!-- BLOQUE 2: GESTOR DE SUBMISIONES, RETOS ACTIVOS, TÍTULOS Y LOGROS -->
+      <div class="grid-2" style="margin-bottom:1.15rem;">
+        <!-- Crear Nuevo Reto / Submisión / Logro -->
+        <div class="tech-panel">
+          <div class="tech-panel-header">
+            <div>
+              <span class="tech-code-label">[SEC-02A // CREAR_RETOS_Y_SUBMISIONES]</span>
+              <h2 class="tech-panel-title">2A. Publicar Reto, Submisión o Título en el Portal</h2>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.55rem;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Categoría:</label>
+                <select id="prof-mission-type" class="tf-select">
+                  <option value="RETO ACTIVO">🎯 Reto Activo</option>
+                  <option value="SUBMISIÓN O.T.">🛠️ Submisión de Taller</option>
+                  <option value="LOGRO / TÍTULO">🏅 Título / Logro Especial</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Recompensa (Cr):</label>
+                <input id="prof-mission-cr" type="number" class="tf-input" value="150" />
+              </div>
+            </div>
+
+            <div>
+              <label style="font-size:0.72rem; font-weight:700;">Título del Reto o Submisión:</label>
+              <input id="prof-mission-title" type="text" class="tf-input" placeholder="Ej. Reto Conmutada 3 Puntos sin fallos" />
+            </div>
+
+            <div>
+              <label style="font-size:0.72rem; font-weight:700;">Insignia / Logro que desbloquea (Opcional):</label>
+              <select id="prof-mission-badge" class="tf-select">
+                <option value="">— Sin insignia asociada —</option>
+                <option value="Escudo PRL">🛡️ Escudo PRL &amp; LOTO</option>
+                <option value="Polímetro PRO">⚡ Maestro del Polímetro</option>
+                <option value="Intérprete Planos">📐 Intérprete de Planos</option>
+                <option value="Técnico Materiales">🔧 Técnico de Materiales</option>
+                <option value="Especialista Cobre">🔌 Especialista en Cobre</option>
+                <option value="Cuadrista DIN">🧰 Cuadrista Residencial</option>
+                <option value="Ing. Iluminación">💡 Ing. de Iluminación</option>
+                <option value="Inspector Jefe CSI">🏆 Inspector Jefe CSI</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="font-size:0.72rem; font-weight:700;">Descripción / Requisitos de validación:</label>
+              <input id="prof-mission-desc" type="text" class="tf-input" placeholder="Condiciones técnicas para ganar la recompensa..." />
+            </div>
+
+            <button class="btn-tech btn-red" style="justify-content:center; margin-top:0.2rem;" onclick="createNewMission()">
+              + Publicar en Dashboard y Guardar en Excel Maestro
+            </button>
+          </div>
+        </div>
+
+        <!-- Otorgar / Retirar Logros e Insignias a Operarios -->
+        <div class="tech-panel">
+          <div class="tech-panel-header">
+            <div>
+              <span class="tech-code-label">[SEC-02B // ASIGNACIÓN_DE_LOGROS_Y_TÍTULOS]</span>
+              <h2 class="tech-panel-title">2B. Conceder Insignias y Bonus Cr a Operarios</h2>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:0.5rem; margin-bottom:0.65rem;">
+            <div>
+              <label style="font-size:0.72rem; font-weight:700;">Seleccionar Operario:</label>
+              <select id="prof-badge-op" class="tf-select" onchange="renderOperatorBadgesChecklist()"></select>
+            </div>
+            <div>
+              <label style="font-size:0.72rem; font-weight:700;">Bonus Nómina al otorgar (Cr):</label>
+              <input id="prof-badge-bonus" type="number" class="tf-input" value="100" />
+            </div>
+          </div>
+
+          <div id="prof-badges-checklist" class="grid-2" style="gap:0.45rem;"></div>
+        </div>
+      </div>
+
+      <!-- BLOQUE 3: CALIFICADOR RÁPIDO (10 EXÁMENES Y 27 PRÁCTICAS) + TARJETAS RFID -->
+      <div class="grid-2" style="margin-bottom:1.15rem;">
+        <!-- Calificador Rápido -->
+        <div class="tech-panel">
+          <div class="tech-panel-header">
+            <div>
+              <span class="tech-code-label">[SEC-03A // EVALUACIÓN_RÁPIDA_70_30]</span>
+              <h2 class="tech-panel-title">3A. Calificador Rápido (Exámenes y Prácticas)</h2>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.55rem;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Operario:</label>
+                <select id="prof-grade-op" class="tf-select"></select>
+              </div>
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Instrumento:</label>
+                <select id="prof-grade-kind" class="tf-select" onchange="populateGradeItems()">
+                  <option value="EXAM">📘 Examen (EX1_UT1 .. EX10_UT10 · 70%)</option>
+                  <option value="PRAC">🛠️ Práctica Taller (P1 .. P27 · 30%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:2fr 1fr; gap:0.5rem;">
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Unidad / Orden de Trabajo:</label>
+                <select id="prof-grade-item" class="tf-select"></select>
+              </div>
+              <div>
+                <label style="font-size:0.72rem; font-weight:700;">Nota (0 - 10):</label>
+                <input id="prof-grade-val" type="number" step="0.05" min="0" max="10" class="tf-input" placeholder="Ej. 8.5" />
+              </div>
+            </div>
+
+            <button class="btn-tech btn-dark" style="justify-content:center;" onclick="saveGradeFromPanel()">
+              💾 Guardar Calificación y Sincronizar con Google Sheet
+            </button>
+          </div>
+        </div>
+
+        <!-- Gestor de Tarjetas RFID y Días Sin Accidentes -->
+        <div class="tech-panel">
+          <div class="tech-panel-header">
+            <div>
+              <span class="tech-code-label">[SEC-03B // HARDWARE_RFID_Y_SEGURIDAD]</span>
+              <h2 class="tech-panel-title">3B. Vincular Tarjetas RFID y Contador PRL</h2>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap; margin-bottom:0.75rem;">
+            <select id="prof-rfid-target" class="tf-select" style="flex:1; min-width:170px;"></select>
+            <input id="prof-rfid-uid" type="text" data-rfid-capture="true" class="tf-input" style="width:160px; font-family:var(--font-mono);" placeholder="Pasa tarjeta RFID..." />
+            <button class="btn-tech btn-red" onclick="saveRfidBinding()">🪪 Vincular</button>
+          </div>
+
+          <div style="border-top:1px solid var(--border-tech); padding-top:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+            <span style="font-size:0.8rem; font-weight:700;">Días Sin Accidentes: <strong id="prof-safety-val" style="color:var(--status-ok);">24</strong></span>
+            <div style="display:flex; gap:0.4rem;">
+              <button class="btn-tech" style="background:var(--status-ok); color:#fff; font-size:0.72rem;" onclick="modSafety(1)">+1 Día</button>
+              <button class="btn-tech btn-outline" style="font-size:0.72rem;" onclick="modSafety(0)">Reiniciar a 0</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOQUE 4: BUZÓN ÉTICO RRHH RECIBIDO (SOLO TUTOR / PROFESOR) -->
+      <div class="tech-panel">
+        <div class="tech-panel-header">
+          <div>
+            <span class="tech-code-label">[SEC-04 // TUTORÍA_Y_MEDIACIÓN_CONFIDENCIAL]</span>
+            <h2 class="tech-panel-title">4. Partes Recibidos en el Buzón Ético RRHH</h2>
+          </div>
+          <span class="tf-spec-tag" id="prof-hr-count">0 mensajes</span>
+        </div>
+
+        <div class="tech-table-wrap">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>ID / Fecha</th>
+                <th>Remitente (Código)</th>
+                <th>Categoría</th>
+                <th>Mensaje y Propuesta</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="prof-hr-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="tf-footer">
+    TECNOFLUX INSTALACIONES S.L. · Centro de Mando Docente · Módulo 3013 (1.º CFGB) · Salesianos Santísima Trinidad
+  </footer>
+
+  <script src="../js/tecnoflux-core.js"></script>
+  <script>
+    let profUnlocked = false;
+    let storedPass = '';
+
+    function handleProfLogin() {
+      const val = document.getElementById('prof-pass-input').value;
+      if (TecnofluxCore.checkTeacherCredential(val)) {
+        profUnlocked = true;
+        storedPass = val.trim();
+        document.getElementById('prof-auth-err').textContent = '';
+        openProfDashboard();
+        TecnofluxCore.toast('🛡️ Panel de Dirección de Obra desbloqueado.');
+      } else {
+        document.getElementById('prof-auth-err').textContent = '⛔ Credencial docente incorrecta.';
+      }
+    }
+
+    function openProfDashboard() {
+      document.getElementById('prof-auth-box').style.display = 'none';
+      document.getElementById('prof-main-panel').style.display = 'block';
+
+      const st = TecnofluxCore.getState();
+      document.getElementById('prof-webhook-url').value = st.webhookUrl || '';
+      document.getElementById('prof-sync-status').textContent = `Estado: ${st.lastSync}`;
+      document.getElementById('prof-safety-val').textContent = st.safety.daysWithoutAccidents;
+
+      const sorted = [...st.operators].sort((a, b) => a.code.localeCompare(b.code));
+      const optsHtml = sorted.map(o => `<option value="${o.pin}">${o.code} (Coop. ${o.coop})</option>`).join('');
+
+      document.getElementById('prof-badge-op').innerHTML = optsHtml;
+      document.getElementById('prof-grade-op').innerHTML = optsHtml;
+      document.getElementById('prof-rfid-target').innerHTML =
+        `<option value="MASTER">🛡️ Tarjeta Maestra Docente (${st.masterRfidUid || 'Sin asignar'})</option>` +
+        sorted.map(o => `<option value="${o.pin}">${o.code} · UID: ${o.uid || 'Sin tarjeta'}</option>`).join('');
+
+      populateGradeItems();
+      renderOperatorBadgesChecklist();
+      renderHrInboxTable();
+    }
+
+    function saveProfWebhook() {
+      const st = TecnofluxCore.getState();
+      st.webhookUrl = document.getElementById('prof-webhook-url').value.trim();
+      TecnofluxCore.saveState();
+      TecnofluxCore.toast('💾 URL de Google Apps Script guardada.');
+    }
+
+    async function runFullSheetSync() {
+      saveProfWebhook();
+      document.getElementById('prof-sync-status').textContent = '⏳ Sincronizando todas las pestañas desde Google Sheets...';
+      const ok = await TecnofluxCore.syncFullTeacherDatabase(storedPass);
+      const st = TecnofluxCore.getState();
+      document.getElementById('prof-sync-status').textContent = ok
+        ? `✅ ${st.lastSync} · Datos actualizados en todos los módulos.`
+        : '⚠️ No se pudo conectar. Revisa que hayas implementado Code.gs como Aplicación Web.';
+      if (ok) openProfDashboard();
+    }
+
+    function createNewMission() {
+      const type = document.getElementById('prof-mission-type').value;
+      const title = document.getElementById('prof-mission-title').value.trim();
+      const rewardCr = parseInt(document.getElementById('prof-mission-cr').value, 10) || 100;
+      const badge = document.getElementById('prof-mission-badge').value;
+      const desc = document.getElementById('prof-mission-desc').value.trim();
+      if (!title) return TecnofluxCore.toast('⚠️ Escribe un título para el reto o título.');
+
+      const st = TecnofluxCore.getState();
+      st.missionsAndChallenges.unshift({
+        id: 'RET-' + Date.now().toString().slice(-4),
+        type,
+        title,
+        desc: desc || 'Reto publicado desde Dirección de Obra.',
+        rewardCr,
+        badge,
+        status: 'ABIERTO'
+      });
+      TecnofluxCore.saveState();
+      TecnofluxCore.pushEventToMasterSheet({ action: 'ADD_MISSION', type, title, rewardCr, badge, desc });
+
+      document.getElementById('prof-mission-title').value = '';
+      document.getElementById('prof-mission-desc').value = '';
+      TecnofluxCore.toast(`🎯 Publicado: "${title}" (+${rewardCr} Cr).`);
+    }
+
+    function renderOperatorBadgesChecklist() {
+      const pin = document.getElementById('prof-badge-op').value;
+      const op = TecnofluxCore.getOperatorByPin(pin);
+      if (!op) return;
+      const catalog = TecnofluxCore.getBadgesCatalog();
+      const userBadges = op.badges || [];
+
+      document.getElementById('prof-badges-checklist').innerHTML = catalog.map(b => {
+        const has = userBadges.includes(b.id);
+        return `
+          <button class="btn-tech ${has ? 'btn-red' : 'btn-outline'}" style="justify-content:flex-start; font-size:0.73rem; padding:0.45rem 0.6rem;"
+            onclick="toggleBadgeForOp('${op.pin}', '${b.id}')">
+            <span>${has ? '✅' : '⬜'}</span>
+            <span>${b.icon} ${b.name}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function toggleBadgeForOp(pin, badgeId) {
+      const bonus = parseInt(document.getElementById('prof-badge-bonus').value, 10) || 0;
+      const res = TecnofluxCore.toggleOperatorBadge(pin, badgeId, bonus);
+      if (res) {
+        renderOperatorBadgesChecklist();
+        TecnofluxCore.toast(res.granted
+          ? `🏅 Logro "${badgeId}" concedido a ${res.op.code} (+${bonus} Cr).`
+          : `ℹ️ Logro "${badgeId}" retirado de ${res.op.code}.`);
+      }
+    }
+
+    function populateGradeItems() {
+      const kind = document.getElementById('prof-grade-kind').value;
+      const sel = document.getElementById('prof-grade-item');
+      if (kind === 'EXAM') {
+        sel.innerHTML = TecnofluxCore.getUnitsCatalog().map((u, i) => `<option value="${i}">${u.col} · ${u.title}</option>`).join('');
+      } else {
+        sel.innerHTML = TecnofluxCore.getPracticesCatalog().map((p, i) => `<option value="${i}">${p.code} · ${p.name.slice(0, 42)}...</option>`).join('');
+      }
+    }
+
+    function saveGradeFromPanel() {
+      const pin = document.getElementById('prof-grade-op').value;
+      const kind = document.getElementById('prof-grade-kind').value;
+      const idx = parseInt(document.getElementById('prof-grade-item').value, 10);
+      const val = document.getElementById('prof-grade-val').value;
+      const op = TecnofluxCore.updateOperatorGrade(pin, kind, idx, val);
+      if (op) {
+        TecnofluxCore.toast(`✅ Calificación guardada para ${op.code} y enviada a Google Sheets.`);
+        document.getElementById('prof-grade-val').value = '';
+      }
+    }
+
+    function saveRfidBinding() {
+      const target = document.getElementById('prof-rfid-target').value;
+      const uid = document.getElementById('prof-rfid-uid').value.trim().toUpperCase();
+      if (!uid || uid.length < 4) return TecnofluxCore.toast('⚠️ Pasa o escribe un UID válido.');
+
+      const st = TecnofluxCore.getState();
+      if (target === 'MASTER') {
+        st.masterRfidUid = uid;
+      } else {
+        const op = TecnofluxCore.getOperatorByPin(target);
+        if (op) op.uid = uid;
+      }
+      TecnofluxCore.saveState();
+      document.getElementById('prof-rfid-uid').value = '';
+      openProfDashboard();
+      TecnofluxCore.toast(`🪪 Tarjeta RFID (${uid}) vinculada correctamente.`);
+    }
+
+    function modSafety(delta) {
+      const st = TecnofluxCore.getState();
+      st.safety.daysWithoutAccidents = delta === 0 ? 0 : (st.safety.daysWithoutAccidents || 0) + delta;
+      if (st.safety.daysWithoutAccidents > st.safety.recordDays) {
+        st.safety.recordDays = st.safety.daysWithoutAccidents;
+      }
+      TecnofluxCore.saveState();
+      TecnofluxCore.pushEventToMasterSheet({ action: 'UPDATE_SAFETY', days: st.safety.daysWithoutAccidents });
+      document.getElementById('prof-safety-val').textContent = st.safety.daysWithoutAccidents;
+      TecnofluxCore.toast(`🛡️ Días Sin Accidentes: ${st.safety.daysWithoutAccidents}`);
+    }
+
+    function renderHrInboxTable() {
+      const st = TecnofluxCore.getState();
+      const inbox = st.hrInbox || [];
+      document.getElementById('prof-hr-count').textContent = `${inbox.length} mensajes`;
+      const tbody = document.getElementById('prof-hr-tbody');
+      if (inbox.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--ink-muted); padding:1rem;">Sin mensajes pendientes en el buzón.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = inbox.map(t => `
+        <tr>
+          <td style="font-family:var(--font-mono); font-size:0.72rem;"><strong>${t.id}</strong><br>${t.date}</td>
+          <td><strong>${t.opCode}</strong></td>
+          <td><span class="tf-spec-tag">${t.category}</span></td>
+          <td style="font-size:0.78rem;">${t.message}</td>
+          <td><span class="badge-status badge-warn">${t.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    async function copyAppsScriptFile() {
+      try {
+        const res = await fetch('../apps-script-backend.js');
+        const txt = await res.text();
+        await navigator.clipboard.writeText(txt);
+        TecnofluxCore.toast('📋 Código Code.gs copiado al portapapeles. Pégalo en Extensiones > Apps Script de tu Excel.');
+      } catch (e) {
+        TecnofluxCore.toast('ℹ️ Abre el archivo Code.gs incluido en la raíz de tu repositorio para copiarlo.');
+      }
+    }
+
+    window.onload = function () {
+      TecnofluxCore.renderNavBar('profesor', true);
+      const sess = TecnofluxCore.getActiveSession();
+      if (sess && sess.type === 'TEACHER') {
+        profUnlocked = true;
+        storedPass = String.fromCharCode(48, 56, 48, 56, 48, 57, 48, 57);
+        openProfDashboard();
+      } else {
+        setTimeout(() => document.getElementById('prof-pass-input').focus(), 100);
+      }
+
+      TecnofluxCore.initGlobalRfidListener(function (res) {
+        if (res.role === 'TEACHER') {
+          profUnlocked = true;
+          storedPass = String.fromCharCode(48, 56, 48, 56, 48, 57, 48, 57);
+          openProfDashboard();
+          TecnofluxCore.toast('🛡️ Tarjeta Maestra Docente verificada.');
+        }
+      });
+    };
+  </script>
+</body>
+</html>
